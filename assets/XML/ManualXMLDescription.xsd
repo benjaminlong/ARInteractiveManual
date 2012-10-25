@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:complexType name="manualinfo">
+        <xsd:sequence>
+            <xsd:element name="name"/>
+            <xsd:element name="trackingdata"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="steps">
+        <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="step">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="cosName" type="xsd:string" />
+						<xsd:element name="geometry" type="xsd:string" />
+						<xsd:element name="info" type="xsd:string" />
+					</xsd:sequence>
+					<xsd:attribute name="ID" type="xsd:byte"/>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="manual">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="manualinfo" type="manualinfo"/>
+                <xsd:element name="steps" type="steps"/>
+            </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

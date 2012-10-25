@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AR Interactive Manual</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_main_activity">AR Interactive Manual</string>
+    <string name="recentTextView">Recent</string>
+    <string name="catalogueTextView">Catalogue</string>
+    <string name="titleTextView">Welcome</string>
+    <string name="manualTextView1">Manual : Table Ikea FUSTA</string>
+    <string name="manualTextView2">Manual : Chaise Ikea HARISTO</string>
+    <string name="downloadButton">Add new manual</string>
+    <string name="skipButton">Skip</string>
+    <string name="nextButton">Next</string>
+
+    <color name="grey_light">#E7EFEE</color>
+
+</resources>
