@@ -9,7 +9,10 @@
 
 package com.android.augmentedManual.simple;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -23,7 +26,6 @@ import com.metaio.unifeye.UnifeyeDebug;
 import com.metaio.unifeye.ndk.IUnifeyeMobileAndroid;
 import com.metaio.unifeye.ndk.IUnifeyeMobileGeometry;
 import com.metaio.unifeye.ndk.PoseVector;
-import com.metaio.unifeye.ndk.Vector3d;
 
 
 //------------------------------------------------------------------------
@@ -34,16 +36,10 @@ public class ARManualViewActivity extends ARViewActivity  {
 		IUnifeyeMobileAndroid.loadNativeLibs();
 	}
 	
-	private IUnifeyeMobileGeometry mGeometryMetaioMan;
-	private IUnifeyeMobileGeometry mGeometryTruck;
-
-	private IUnifeyeMobileGeometry mCurrentGeometry;
-	
-	private int CounterGeometry = 0;
-	
-	private ManualXMLParser XmlParser;
-
-	private final String mTrackingDataML3D = "TrackingData_ML3D.xml";
+	List<IUnifeyeMobileGeometry> 	mGeometryList;
+	private IUnifeyeMobileGeometry 	mCurrentGeometry;
+	private ManualXMLParser 		XmlParser;
+	private String 					mTrackingDataML3D = "";
 
 	public final static float PI_2 = (float) (Math.PI / 2.0);
 	
@@ -59,10 +55,15 @@ public class ARManualViewActivity extends ARViewActivity  {
 		try {
 			this.XmlParser = new ManualXMLParser();
 			
-			String path = manualName.replaceAll("_", "") + "/" + manualName + ".xml";
-
+			String path = 
+					manualName.replaceAll("_", "") + "/" + manualName + ".xml";
 //			this.XmlParser.setXMLDescription(getAssets().open("XML/ManualXMLDescription.xsd"));
 			this.XmlParser.setXMLManual(getAssets().open(path));
+			
+			String trackingData = this.XmlParser.getManualInfo().get("trackingdata");
+			this.mTrackingDataML3D = 
+					manualName.replaceAll("_", "") + "/" + trackingData;
+			Log.v("DEBUG", "tracking data path : " + this.mTrackingDataML3D);
 		
 			if (this.XmlParser.getCurrentFile() == null) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -90,6 +91,81 @@ public class ARManualViewActivity extends ARViewActivity  {
 	}
 	
 	// ------------------------------------------------------------------------
+	public void onNextButtonClick(final View view) {
+		this.XmlParser.nextStep();
+		
+		String geometryName = this.XmlParser.getCurrentGeometry();
+		Log.v("DEBUG", "new geometry name :" + geometryName);
+//		this.setCurrentGeometry(this.getGeometryFromName(geometryName));
+//		this.setCurrentTrackedData(this.XmlParser.getCurrentCosName());
+//		this.showGeometry(this.mCurrentGeometry);
+//		
+	}
+	
+	// ------------------------------------------------------------------------
+	public void onInfoButtonClick(final View view) {
+		// TODO Give more information about what to do.
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setCancelable(true);
+		builder.setIcon(R.drawable.ic_launcher);
+		builder.setTitle("Info");
+		builder.setMessage(this.XmlParser.getCurrentStepInfo());
+		builder.setInverseBackgroundForced(true);
+		builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+		  public void onClick(DialogInterface dialog, int which) {
+		    dialog.dismiss();
+		  }
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+		
+	}
+	
+	// ------------------------------------------------------------------------
+	public void onPreviousButtonClick(final View view) {
+		this.XmlParser.previousStep();
+//		this.showGeometry(this.XmlParser.getCurrentGeometry());
+//		this.setCurrentTrackedData(this.XmlParser.getCurrentCosName());
+	}
+	
+	@Override
+	// ------------------------------------------------------------------------
+	public void onDrawFrame() {
+		super.onDrawFrame();
+		
+		PoseVector poses = mMobileSDK.getValidTrackingValues();
+		if( poses.size() > 0)
+		{
+			// TODO
+		}
+	}
+	
+	// ------------------------------------------------------------------------
+	protected void onStart() {
+		super.onStart();
+		
+		if (mGUIView != null) {
+			mGUIView.findViewById(R.id.buttonBar).setVisibility(View.GONE);
+			mGUIView.findViewById(R.id.loadingProgressBar).setVisibility(View.VISIBLE);
+			mGUIView.findViewById(R.id.loadingTextView).setVisibility(View.VISIBLE);
+		}
+	}
+	
+//	// ------------------------------------------------------------------------
+//	public void onSurfaceCreated() {
+//		super.onSurfaceChanged();
+//		// If GUI view is inflated, add it
+//		this.runOnUiThread(new Runnable() {
+//			public void run() {
+//				if (mGUIView != null) 
+//					mGUIView.findViewById(R.id.loadingProgressBar).setVisibility(View.GONE);
+//					mGUIView.findViewById(R.id.loadingTextView	).setVisibility(View.GONE);
+//					mGUIView.findViewById(R.id.buttonBar).setVisibility(View.VISIBLE);
+//				}
+//		});
+//	}
+	
+	// ------------------------------------------------------------------------
 	protected int getGUILayout() {
 		Log.v("DEBUG", "getGUILayout");
 		return R.layout.manualarlayout;
@@ -114,108 +190,79 @@ public class ARManualViewActivity extends ARViewActivity  {
 			}
 			
 			// Load all geometry
-			// MetaioMan
-			this.mGeometryMetaioMan = this.loadGeometry("metaioman.md2");
-			this.mGeometryMetaioMan.setMoveScale( new Vector3d(10,10,10) );
-			this.mGeometryMetaioMan.setMoveRotation(new Vector3d(0, PI_2, 0 ));
-			this.mGeometryMetaioMan.setMoveTranslation(new Vector3d(50, 75 ,2));
-			this.mGeometryMetaioMan.setVisible(true);
-			this.mGeometryMetaioMan.setCos(2);
-		
-			// Truck
-			this.mGeometryTruck = this.loadGeometry("truck/truck.obj");
-			this.mGeometryTruck.setMoveRotation(
-					new Vector3d( (float) Math.PI / 2.0f, 0 , 0 ));
-			this.mGeometryTruck.setMoveRotation(
-					new Vector3d( 0, 0 , (float) Math.PI  ), true);
-			this.mGeometryTruck.setVisible(true);
-			this.mGeometryTruck.setCos(1);
-
+			Log.v("DEBUG", "geometries :" + this.XmlParser.getGeometryList().toString());
+			this.mGeometryList = new ArrayList<IUnifeyeMobileGeometry>();
+			this.loadGeometries(this.XmlParser.getGeometryList());
 			
 		} catch (Exception e) {
 			UnifeyeDebug.printStackTrace(Log.ERROR, e);
+			Log.v("VISIBILITY", "tracking data fail exception");
 		}
 	}
 	
 	// ------------------------------------------------------------------------
-	protected String getNextTrackingDataName() {
+	protected String getCurrentTrackingDataName() {
 		String newName = null; 
 		return newName;
 	}
 	
 	// ------------------------------------------------------------------------
-	protected IUnifeyeMobileGeometry getNextGeometry() {
-		this.CounterGeometry ++;
-		if (this.CounterGeometry%2 == 0) {
-			this.mCurrentGeometry = this.mGeometryMetaioMan;
-		}
-		else {
-			this.mCurrentGeometry = this.mGeometryTruck;
-		}
-		Log.v("CURRENT GEO", this.mCurrentGeometry.toString());
-//		mCurrentGeometry = getNextGeometryFromXML(); return a String
+	protected void setCurrentTrackingDataName(String name) {
+		
+	}
+	
+	// ------------------------------------------------------------------------
+	protected IUnifeyeMobileGeometry getCurrentGeometry() {
 		return mCurrentGeometry;
 	}
 	
 	// ------------------------------------------------------------------------
+	protected void setCurrentGeometry(IUnifeyeMobileGeometry newGeometry) {
+		this.mCurrentGeometry= newGeometry ;
+	}
+	
+	// ------------------------------------------------------------------------
 	private void showGeometry(IUnifeyeMobileGeometry newGeometry) {
-		this.mGeometryMetaioMan.setVisible(newGeometry == this.mGeometryMetaioMan);
-		this.mGeometryTruck.setVisible(newGeometry == this.mGeometryTruck);
-	}
-
-	// ------------------------------------------------------------------------
-	public void onNextButtonClick(final View view) {
-		this.XmlParser.nextStep();
-//		this.showGeometry(this.XmlParser.getCurrentGeometry());
-//		this.setCurrentTrackedData(this.XmlParser.getCurrentCosName());
+		for (int i = 0; i < this.mGeometryList.size(); i++ ) {
+			if (newGeometry == this.mGeometryList.get(i)) {
+				newGeometry.setVisible(true);
+				continue;
+			}
+			this.mGeometryList.get(i).setVisible(false);
+		}
 	}
 	
 	// ------------------------------------------------------------------------
-	public void onInfoButtonClick(final View view) {
-		// TODO Give more information about what to do.
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setCancelable(true);
-		builder.setIcon(R.drawable.ic_launcher);
-		builder.setTitle("Info");
-		builder.setMessage(this.XmlParser.getCurrentStepInfo());
-		builder.setInverseBackgroundForced(true);
-		builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-		  public void onClick(DialogInterface dialog, int which) {
-		    dialog.dismiss();
-		  }
-		});
-		AlertDialog alert = builder.create();
-		alert.show();
+	private IUnifeyeMobileGeometry getGeometryFromName(String name) {
+		IUnifeyeMobileGeometry geometry = null;
 		
-	}
-	
-	// ------------------------------------------------------------------------
-	public void onPreviousButtonClick(final View view) {
-		// TODO ask the user if he really want to skip this step,
-		// then do as the nextButton.
-		this.XmlParser.previousStep();
-//		this.showGeometry(this.XmlParser.getCurrentGeometry());
-//		this.setCurrentTrackedData(this.XmlParser.getCurrentCosName());
-	}
-	
-	@Override
-	// ------------------------------------------------------------------------
-	public void onDrawFrame() {
-		super.onDrawFrame();
+		for (int i = 0; i < this.mGeometryList.size(); i++ ) {
+			if (name == this.mGeometryList.get(i).getName()) {
+				geometry = this.mGeometryList.get(i);
+				break;
+			}
+		}
 		
-		PoseVector poses = mMobileSDK.getValidTrackingValues();
-		if( poses.size() > 0)
-		{
-//			Log.v("DEBUG", "*************************************" + poses.size());
-//			Log.v("DEBUG", "Sensor informatio " + this.mMobileSDK.getSensorInformation(mTrackingDataML3D));
-//			Log.v("DEBUG", "Sensor Type " + this.mMobileSDK.getSensorType());
-//			Log.v("DEBUG", "CosName " + poses.get(0).getCosName());
-//			Log.v("DEBUG", "Cos ID " + poses.get(0).getCosID());
-//			Log.v("DEBUG", "Rotation " +  poses.get(0).getRotation().toString() );
-//			Log.v("DEBUG", "Translation " +  poses.get(0).getTranslation().toString() );
-//			Log.v("DEBUG", "Quality " +  poses.get(0).getQuality() );
-//			Log.v("DEBUG", "Additional Value " +  poses.get(0).getAdditionalValues() );
-//			Log.v("DEBUG", "CPtr " +  Pose.getCPtr(poses.get(0)) );
+		return geometry;
+	}
+	
+	// ------------------------------------------------------------------------
+	private void loadGeometries(List<String> geometries) {
+		
+		if (geometries.isEmpty()) {
+			return;
+		}
+		
+		try {
+			for (int i = 0; i < geometries.size(); i++) {
+				String geometryName = geometries.get(i);
+				IUnifeyeMobileGeometry geometry = this.loadGeometry(geometryName);
+				geometry.setVisible(true);
+				geometry.setCos(i + 1);
+				this.mGeometryList.add(geometry);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 }

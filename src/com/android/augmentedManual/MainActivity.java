@@ -53,6 +53,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        UnifeyeDebug.enableLogging(true);
         
         this.mCatalogueView = (ListView) findViewById(R.id.catalogueListView);
         this.mCatalogueMap = this.getCatalogueList();

@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <manual>
 	<manualinfo>
-		<name>ManualTest</name>
+		<name>Manual_Test.xml</name>
 		<trackingdata>TrackingData_Test_ML3D.xml</trackingdata>
 	</manualinfo>
 	<steps>
 		<step ID="1">
 			<cosName>object1</cosName>
-			<geometry>object1.md2</geometry>
+			<geometry>metaioman.md2</geometry>
 			<info>Detection of the first object</info>
 		</step>
 		<step ID="2">
 			<cosName>object2</cosName>
-			<geometry>object1.md2</geometry>
+			<geometry>truck/truck.obj</geometry>
 			<info>No information</info>
 		</step>
 	</steps>

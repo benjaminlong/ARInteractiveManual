@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -90,7 +91,7 @@ public class ManualXMLParserTest extends TestCase{
 			
 			Map<String, String> info = parser.getManualInfo();
 			assertEquals(true, info.containsKey("name"));
-			assertEquals("ManualTest", info.get("name"));
+			assertEquals("ManualTest.xml", info.get("name"));
 			assertEquals(true, info.containsKey("trackingdata"));
 			assertEquals("TrackingData_Test_ML3D.xml", info.get("trackingdata"));
 	
@@ -133,6 +134,26 @@ public class ManualXMLParserTest extends TestCase{
 		assertEquals("", parser.getCurrentGeometry());
 		assertEquals("", parser.getCurrentStepInfo());
 		assertEquals(-1, parser.getStepCount());
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+	
+	// ------------------------------------------------------------------------
+	public void testGetGeometryList()
+	{
+		ManualXMLParser parser = new ManualXMLParser();
+		try {
+			InputStream xml = new FileInputStream(
+					"C:\\Work\\ARInteractiveManual\\assets\\data_tests\\ManualTest.xml");
+			parser.setXMLManual(xml);
+			assertNotNull(parser.getCurrentFile());
+			
+			List<String> list = parser.getGeometryList();
+			assertEquals(1 , list.size());
+			assertEquals(true , list.contains("object1.md2"));
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();

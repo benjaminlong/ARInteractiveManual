@@ -32,6 +32,7 @@
         <activity
             android:configChanges="keyboardHidden|orientation"
 			android:name=".simple.ARManualViewActivity"
+			android:screenOrientation="landscape"
             android:theme="@style/Theme.FullScreen" >
         </activity>
     </application>

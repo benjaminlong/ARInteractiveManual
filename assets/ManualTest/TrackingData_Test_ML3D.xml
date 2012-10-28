@@ -1,0 +1,239 @@
+<?xml version="1.0"?>
+<TrackingData>
+	<Sensors>
+		<Sensor type="FeatureBasedSensorSource" subtype="ML3D">
+      
+    		<SensorID>FeatureTracking1</SensorID>
+      		
+		    <Parameters>
+		    	<FeatureDescriptorAlignment>regular</FeatureDescriptorAlignment>
+			</Parameters>
+		      
+		    <SensorCOS>
+				<SensorCosID>Map3D_Book</SensorCosID>
+				<Parameters>
+					<SourceSensorID>FeatureTracking1</SourceSensorID>
+					<minMatches>20</minMatches>
+					<minTrackingMatches>20</minTrackingMatches>
+					<numExtensibleFeatures>400</numExtensibleFeatures>
+					<useTriangulation>1</useTriangulation>
+				    <GravityToleranceAngle>20.0</GravityToleranceAngle>	
+					<Map>Cos/map_book.raw</Map>
+				</Parameters>
+			</SensorCOS>
+		    
+   			<SensorCOS>
+		        <SensorCosID>Map3D_Metaioman</SensorCosID>
+		        <Parameters>
+			        <SourceSensorID>FeatureTracking1</SourceSensorID>
+			        <minMatches>20</minMatches>
+			        <minTrackingMatches>20</minTrackingMatches>
+			        <numExtensibleFeatures>400</numExtensibleFeatures>
+			        <useTriangulation>1</useTriangulation>
+			        <GravityToleranceAngle>12.0</GravityToleranceAngle>
+			        <Map>Cos/map0.raw</Map>
+		        </Parameters>
+			</SensorCOS>
+
+<!--       		<SensorCOS>
+				<SensorCosID>Map3D_Car</SensorCosID>
+				<Parameters>
+					<SourceSensorID>FeatureTracking1</SourceSensorID>
+					<minMatches>20</minMatches>
+					<minTrackingMatches>20</minTrackingMatches>
+					<numExtensibleFeatures>400</numExtensibleFeatures>
+					<useTriangulation>1</useTriangulation>
+				   <GravityToleranceAngle>20.0</GravityToleranceAngle>	
+					<Map>map_car.raw</Map>
+				</Parameters>
+			</SensorCOS>
+			
+       		<SensorCOS>
+				<SensorCosID>Map3D_Book</SensorCosID>
+				<Parameters>
+					<SourceSensorID>FeatureTracking1</SourceSensorID>
+					<minMatches>20</minMatches>
+					<minTrackingMatches>20</minTrackingMatches>
+					<numExtensibleFeatures>400</numExtensibleFeatures>
+					<useTriangulation>1</useTriangulation>
+				   <GravityToleranceAngle>20.0</GravityToleranceAngle>	
+					<Map>map_book.raw</Map>
+				</Parameters>
+			</SensorCOS> -->
+			
+    	</Sensor>
+    </Sensors>
+  
+ 	<Connections>
+		
+  		<COS>
+			<COSName>MarkerlessCOS1</COSName>
+			<Fuser type="SmoothingFuser">
+				<Parameters>
+					<AlphaRotation>0.5</AlphaRotation>
+                    <AlphaTranslation>0.8</AlphaTranslation>
+                    <GammaRotation>0.5</GammaRotation>
+                    <GammaTranslation>0.8</GammaTranslation>
+                    <KeepPoseForNumberOfFrames>0</KeepPoseForNumberOfFrames>
+				</Parameters>
+			</Fuser>
+			<SensorSource trigger="1">
+				<SensorID>FeatureTracking1</SensorID>
+				<SensorCosID>Map3D_Book</SensorCosID>
+				<HandEyeCalibration>
+					<TranslationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+					</TranslationOffset>
+					<RotationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+						<w>1</w>
+					</RotationOffset>
+				</HandEyeCalibration>
+				<COSOffset>
+					<TranslationOffset>
+						<x>0</x>
+						<y>200</y>
+						<z>0</z>
+					</TranslationOffset>
+					<RotationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+						<w>1</w>
+					</RotationOffset>
+				</COSOffset>
+			</SensorSource>		
+		</COS>
+		
+  		<COS>
+			<COSName>MarkerlessCOS2</COSName>
+			<Fuser type="SmoothingFuser">
+				<Parameters>
+					<AlphaRotation>0.5</AlphaRotation>
+                    <AlphaTranslation>0.8</AlphaTranslation>
+                    <GammaRotation>0.5</GammaRotation>
+                    <GammaTranslation>0.8</GammaTranslation>
+                    <KeepPoseForNumberOfFrames>0</KeepPoseForNumberOfFrames>
+				</Parameters>
+			</Fuser>
+			<SensorSource trigger="2">
+				<SensorID>FeatureTracking1</SensorID>
+				<SensorCosID>Map3D_Metaioman</SensorCosID>
+				<HandEyeCalibration>
+					<TranslationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+					</TranslationOffset>
+					<RotationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+						<w>1</w>
+					</RotationOffset>
+				</HandEyeCalibration>
+				<COSOffset>
+					<TranslationOffset>
+						<x>-200</x>
+						<y>0</y>
+						<z>0</z>
+					</TranslationOffset>
+					<RotationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+						<w>1</w>
+					</RotationOffset>
+				</COSOffset>
+			</SensorSource>
+		</COS>
+
+<!-- 		<COS>
+			<COSName>MarkerlessCOS3</COSName>
+			<Fuser type="SmoothingFuser">
+				<Parameters>
+					<AlphaRotation>0.5</AlphaRotation> 
+					<AlphaTranslation>0.8</AlphaTranslation>
+					<KeepPoseForNumberOfFrames>2</KeepPoseForNumberOfFrames>
+				</Parameters>
+			</Fuser>
+			<SensorSource trigger="1">
+				<SensorID>FeatureTracking1</SensorID>
+				<SensorCosID>Map3D_Car</SensorCosID>
+				<HandEyeCalibration>
+					<TranslationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+					</TranslationOffset>
+					<RotationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+						<w>1</w>
+					</RotationOffset>
+				</HandEyeCalibration>
+				<COSOffset>
+					<TranslationOffset>
+						<x>-200</x>
+						<y>0</y>
+						<z>0</z>
+					</TranslationOffset>
+					<RotationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+						<w>1</w>
+					</RotationOffset>
+				</COSOffset>
+			</SensorSource>
+		</COS>
+		
+ 		<COS>
+			<COSName>MarkerlessCOS4</COSName>
+			<Fuser type="SmoothingFuser">
+				<Parameters>
+					<AlphaRotation>0.5</AlphaRotation> 
+					<AlphaTranslation>0.8</AlphaTranslation>
+					<KeepPoseForNumberOfFrames>2</KeepPoseForNumberOfFrames>
+				</Parameters>
+			</Fuser>
+			<SensorSource trigger="1">
+				<SensorID>FeatureTracking1</SensorID>
+				<SensorCosID>Map3D_Book</SensorCosID>
+				<HandEyeCalibration>
+					<TranslationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+					</TranslationOffset>
+					<RotationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+						<w>1</w>
+					</RotationOffset>
+				</HandEyeCalibration>
+				<COSOffset>
+					<TranslationOffset>
+						<x>-200</x>
+						<y>0</y>
+						<z>0</z>
+					</TranslationOffset>
+					<RotationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+						<w>1</w>
+					</RotationOffset>
+				</COSOffset>
+			</SensorSource>
+		</COS> -->
+		
+	</Connections>
+  
+</TrackingData>

@@ -31,10 +31,12 @@ public final class R {
         public static final int catalogueListView=0x7f090004;
         public static final int catalogueTextView=0x7f090002;
         public static final int downloadButton=0x7f090005;
-        public static final int infoButton=0x7f090008;
-        public static final int menu_settings=0x7f09000b;
+        public static final int infoButton=0x7f090009;
+        public static final int loadingProgressBar=0x7f09000b;
+        public static final int loadingTextView=0x7f09000c;
+        public static final int menu_settings=0x7f09000d;
         public static final int nextButton=0x7f09000a;
-        public static final int previousButton=0x7f090009;
+        public static final int previousButton=0x7f090008;
         public static final int titleTextView=0x7f090001;
     }
     public static final class layout {

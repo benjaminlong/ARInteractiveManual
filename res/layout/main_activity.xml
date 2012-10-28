@@ -3,7 +3,6 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/darker_gray"
     android:orientation="vertical" >
 
     <TextView
@@ -16,8 +15,7 @@
         android:layout_marginTop="@dimen/spaceMarginTop_Catalogue"
         android:gravity="center"
         android:text="@string/titleTextView"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/white" />
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/catalogueTextView"
@@ -28,8 +26,7 @@
         android:layout_marginLeft="7dip"
         android:layout_marginTop="@dimen/spaceMarginTop_Catalogue"
         android:text="@string/catalogueTextView"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/white" />
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <View
         android:id="@+id/View1"
@@ -39,7 +36,7 @@
         android:layout_below="@+id/catalogueTextView"
         android:layout_marginLeft="7dip"
         android:layout_marginRight="7dip"
-        android:background="#FF909090" />
+        android:background="#FF909090"  />
     <!--
     <TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

@@ -24,6 +24,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 
 import com.android.augmentedManual.Configuration;
+import com.android.augmentedManual.R;
 //import com.android.augmentedManual.MobileSDKExampleApplication;
 import com.metaio.tools.io.AssetsManager;
 import com.metaio.unifeye.UnifeyeDebug;
@@ -143,13 +144,15 @@ public abstract class ARViewActivity extends Activity implements
 	@Override
 	// ------------------------------------------------------------------------
 	public void onCreate(Bundle savedInstanceState) {
+		Log.v("DEBUG", "onCreate !");
 		super.onCreate(savedInstanceState);
+		
 		UnifeyeDebug.log("ARViewActivity.onCreate()");
 		mMobileSDK = null;
 		mUnifeyeSurfaceView = null;
 
 		mHandler = null;
-
+		
 		try {
 			// create the sensor manager
 			if (mSensorsManager == null) {
@@ -177,6 +180,8 @@ public abstract class ARViewActivity extends Activity implements
 	// ------------------------------------------------------------------------
 	protected void onStart() {
 		Log.v("DEBUG", "onStart !");
+		Log.v("DEBUG", "ARViewActivity.onStart(): "
+				+ Thread.currentThread().getId());
 		super.onStart();
 		UnifeyeDebug.log("ARViewActivity.onStart(): "
 				+ Thread.currentThread().getId());
@@ -236,6 +241,7 @@ public abstract class ARViewActivity extends Activity implements
 	@Override
 	// ------------------------------------------------------------------------
 	protected void onPause() {
+		Log.v("DEBUG", "onPause !");
 		super.onPause();
 		UnifeyeDebug.log("ARViewActivity.onPause()");
 
@@ -255,6 +261,7 @@ public abstract class ARViewActivity extends Activity implements
 	@Override
 	// ------------------------------------------------------------------------
 	protected void onResume() {
+		Log.v("DEBUG", "onPause !");
 		super.onResume();
 		UnifeyeDebug.log("ARViewActivity.onResume()");
 
@@ -274,6 +281,8 @@ public abstract class ARViewActivity extends Activity implements
 	@Override
 	// ------------------------------------------------------------------------
 	protected void onStop() {
+		
+		Log.v("DEBUG", "onStop !");
 		super.onStop();
 
 		UnifeyeDebug.log("ARViewActivity.onStop()");
@@ -361,16 +370,27 @@ public abstract class ARViewActivity extends Activity implements
 				loadUnifeyeContents();
 				rendererInitialized = true;
 			} else
-				mMobileSDK.reloadTextures();
-
+//				mMobileSDK.reloadTextures();
+			
 			// connect the audio callbacks
 			mMobileSDK.registerAudioCallback(mUnifeyeSurfaceView
 					.getUnifeyeAudioRenderer());
 			mHandler = getMobileSDKCallbackHandler();
 			if (mHandler != null)
 				mMobileSDK.registerCallback(mHandler);
+			
+			this.runOnUiThread(new Runnable() {
+				public void run() {
+					if (mGUIView != null) 
+						mGUIView.findViewById(R.id.loadingProgressBar).setVisibility(View.GONE);
+						mGUIView.findViewById(R.id.loadingTextView	).setVisibility(View.GONE);
+						mGUIView.findViewById(R.id.buttonBar).setVisibility(View.VISIBLE);
+					}
+			});
 
+			
 		} catch (Exception e) {
+			Log.v("DEBUG", "onSurfaceNOTCreated: " + e);
 			UnifeyeDebug.log("onSurfaceNOTCreated: " + e);
 		}
 	}
@@ -380,6 +400,7 @@ public abstract class ARViewActivity extends Activity implements
 	 */
 	// ------------------------------------------------------------------------
 	private void createMobileSDK() {
+		Log.v("DEBUG", "createMobileSDK !");
 		try {
 			UnifeyeDebug.log("Creating the metaio mobile SDK");
 
@@ -396,6 +417,8 @@ public abstract class ARViewActivity extends Activity implements
 
 	// ------------------------------------------------------------------------
 	protected boolean loadTrackingData(String trackingDataFileName) {
+		
+		Log.v("DEBUG", "loadingTrackingData !");
 		
 		UnifeyeDebug.log("ARViewActivity.loadTrackingData()");
 		String filepathTracking = AssetsManager.getAssetPath(trackingDataFileName);
@@ -415,6 +438,7 @@ public abstract class ARViewActivity extends Activity implements
 	// ------------------------------------------------------------------------
 	protected IUnifeyeMobileGeometry loadGeometry(String modelFileName)
 			throws FileNotFoundException {
+		Log.v("DEBUG", "loadGeometry !");
 		IUnifeyeMobileGeometry loadedGeometry = null;
 		String filepath = AssetsManager.getAssetPath(modelFileName);
 		if (filepath != null) {

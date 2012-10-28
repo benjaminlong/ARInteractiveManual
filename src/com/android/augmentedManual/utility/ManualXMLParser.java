@@ -1,6 +1,8 @@
 package com.android.augmentedManual.utility;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.XMLConstants;
@@ -26,7 +28,7 @@ public class ManualXMLParser {
 
 	// XML file
 	InputStream				CurrentXMLStream = null;
-	InputStream					XMLDescriptionStream = null;
+	InputStream				XMLDescriptionStream = null;
 	Document 				CurrentDocFile = null;
 	DocumentBuilderFactory 	DbFactory = null;
 	DocumentBuilder 		DBuilder = null;
@@ -34,6 +36,7 @@ public class ManualXMLParser {
 	int						CurrentStepCount;
 	Map<String, String> 	CurrentManualInfo = null;
 	Map<String, String>		CurrentStep = null;
+	List<String>			GeometriesName = null;
 	
 	// ------------------------------------------------------------------------
 	public ManualXMLParser() {
@@ -80,6 +83,7 @@ public class ManualXMLParser {
 			this.CurrentXMLStream = manualStream;
 			this.CurrentDocFile = docFile;
 			this.CurrentManualInfo = this.recoverManualInfoFromXML();
+			this.GeometriesName = this.recoverGeometryNameFromXML();
 			
 //			Log.v("DeBUG", "return true");
 			return true;
@@ -109,6 +113,7 @@ public class ManualXMLParser {
 	// ------------------------------------------------------------------------
 	public void nextStep() {
 		this.CurrentStepCount ++;
+//		Log.v("DEBUG", "Count : " + this.CurrentStepCount);
 		this.CurrentStep = this.recoverStepFromXML(this.CurrentStepCount);
 		
 		if (this.CurrentStepCount > 0 && this.CurrentStep.isEmpty()) {
@@ -119,6 +124,7 @@ public class ManualXMLParser {
 	// ------------------------------------------------------------------------
 	public void previousStep() {
 		this.CurrentStepCount --;
+//		Log.v("DEBUG", "Count : " + this.CurrentStepCount);
 		if (this.CurrentStepCount < 0) {
 			this.CurrentStepCount = 0;
 		}
@@ -166,6 +172,11 @@ public class ManualXMLParser {
 	}
 	
 	// ------------------------------------------------------------------------
+	public List<String> getGeometryList() {
+		return this.GeometriesName;
+	}
+	
+	// ------------------------------------------------------------------------
 	private Map<String, String> recoverManualInfoFromXML() {
 		Map<String, String> tempMap = new HashMap<String, String>();
 		NodeList nList = this.CurrentDocFile.getElementsByTagName("manualinfo");
@@ -189,8 +200,9 @@ public class ManualXMLParser {
 	private Map<String, String> recoverStepFromXML(int value) {
 		Map<String, String> tempMap = new HashMap<String, String>();
 		
+//		Log.v("DEBUG", "recoverStepFromXML nO = " + this.CurrentStepCount);
 		NodeList nList = this.CurrentDocFile.getElementsByTagName("step");		
-		if (value < 0 || value > nList.getLength()) {
+		if (value < 1 || value > nList.getLength()) {
 			return tempMap;
 		}
 		
@@ -213,6 +225,20 @@ public class ManualXMLParser {
 			value = this.CurrentStep.get(tag);
 		}
 		return value;
+	}
+	
+	// ------------------------------------------------------------------------
+	private List<String> recoverGeometryNameFromXML() {
+		List<String> geometryList = new ArrayList<String>();
+		NodeList nList = this.CurrentDocFile.getElementsByTagName("geometry");		
+		
+		for (int temp = 0; temp < nList.getLength(); temp ++) {
+			if (geometryList.contains(nList.item(temp).getTextContent())) {
+				continue;
+			}
+			geometryList.add(nList.item(temp).getTextContent());
+		}
+		return geometryList;
 	}
 	
 	// ------------------------------------------------------------------------
