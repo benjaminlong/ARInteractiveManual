@@ -124,7 +124,6 @@ public class ManualXMLParser {
 	// ------------------------------------------------------------------------
 	public void previousStep() {
 		this.CurrentStepCount --;
-//		Log.v("DEBUG", "Count : " + this.CurrentStepCount);
 		if (this.CurrentStepCount < 0) {
 			this.CurrentStepCount = 0;
 		}
@@ -164,6 +163,11 @@ public class ManualXMLParser {
 	// ------------------------------------------------------------------------
 	public String getCurrentCosName() { 
 		return this.recoverTagValueFromCurrentStep("cosName");
+	}
+	
+	// ------------------------------------------------------------------------
+	public String getCurrentCosID() { 
+		return this.recoverTagValueFromCurrentStep("cosID");
 	}
 	
 	// ------------------------------------------------------------------------

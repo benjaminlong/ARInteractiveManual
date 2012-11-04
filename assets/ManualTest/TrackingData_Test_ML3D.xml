@@ -13,12 +13,12 @@
 				<SensorCosID>Map3D_Book</SensorCosID>
 				<Parameters>
 					<SourceSensorID>FeatureTracking1</SourceSensorID>
-					<minMatches>20</minMatches>
-					<minTrackingMatches>20</minTrackingMatches>
-					<numExtensibleFeatures>400</numExtensibleFeatures>
+					<minMatches>15</minMatches>
+					<minTrackingMatches>15</minTrackingMatches>
+					<numExtensibleFeatures>300</numExtensibleFeatures>
 					<useTriangulation>1</useTriangulation>
 				    <GravityToleranceAngle>20.0</GravityToleranceAngle>	
-					<Map>Cos/map_book.raw</Map>
+					<Map>Cos/map_penHolder.raw</Map>
 				</Parameters>
 			</SensorCOS>
 		    

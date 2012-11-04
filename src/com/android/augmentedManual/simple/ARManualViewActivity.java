@@ -37,7 +37,8 @@ public class ARManualViewActivity extends ARViewActivity  {
 	}
 	
 	List<IUnifeyeMobileGeometry> 	mGeometryList;
-	private IUnifeyeMobileGeometry 	mCurrentGeometry;
+	private IUnifeyeMobileGeometry 	mCurrentGeometry = null;
+	private int 					mCurrentCosID = 0;
 	private ManualXMLParser 		XmlParser;
 	private String 					mTrackingDataML3D = "";
 
@@ -93,13 +94,7 @@ public class ARManualViewActivity extends ARViewActivity  {
 	// ------------------------------------------------------------------------
 	public void onNextButtonClick(final View view) {
 		this.XmlParser.nextStep();
-		
-		String geometryName = this.XmlParser.getCurrentGeometry();
-		Log.v("DEBUG", "new geometry name :" + geometryName);
-//		this.setCurrentGeometry(this.getGeometryFromName(geometryName));
-//		this.setCurrentTrackedData(this.XmlParser.getCurrentCosName());
-//		this.showGeometry(this.mCurrentGeometry);
-//		
+		this.setCurrentContent();
 	}
 	
 	// ------------------------------------------------------------------------
@@ -124,8 +119,10 @@ public class ARManualViewActivity extends ARViewActivity  {
 	// ------------------------------------------------------------------------
 	public void onPreviousButtonClick(final View view) {
 		this.XmlParser.previousStep();
+		this.setCurrentContent();
 //		this.showGeometry(this.XmlParser.getCurrentGeometry());
 //		this.setCurrentTrackedData(this.XmlParser.getCurrentCosName());
+		// Remove the previous geometry to the renderer
 	}
 	
 	@Override
@@ -218,14 +215,16 @@ public class ARManualViewActivity extends ARViewActivity  {
 	
 	// ------------------------------------------------------------------------
 	protected void setCurrentGeometry(IUnifeyeMobileGeometry newGeometry) {
+		Log.v("DEBUG", "::setCurrentGeometry START");
 		this.mCurrentGeometry= newGeometry ;
 	}
 	
 	// ------------------------------------------------------------------------
 	private void showGeometry(IUnifeyeMobileGeometry newGeometry) {
+		Log.v("DEBUG", "::showGeometry START");
 		for (int i = 0; i < this.mGeometryList.size(); i++ ) {
 			if (newGeometry == this.mGeometryList.get(i)) {
-				newGeometry.setVisible(true);
+				this.mGeometryList.get(i).setVisible(true);
 				continue;
 			}
 			this.mGeometryList.get(i).setVisible(false);
@@ -234,16 +233,46 @@ public class ARManualViewActivity extends ARViewActivity  {
 	
 	// ------------------------------------------------------------------------
 	private IUnifeyeMobileGeometry getGeometryFromName(String name) {
-		IUnifeyeMobileGeometry geometry = null;
-		
+		Log.v("DEBUG", "::getGeometryFromName START with name = " + name);
 		for (int i = 0; i < this.mGeometryList.size(); i++ ) {
-			if (name == this.mGeometryList.get(i).getName()) {
-				geometry = this.mGeometryList.get(i);
-				break;
+			Log.v("DEBUG", "i = " + i + ", geo name = " + this.mGeometryList.get(i).getName() +", " +name );
+			if (name.equalsIgnoreCase(this.mGeometryList.get(i).getName())) {
+				Log.v("DEBUG", "name found, geo is : " + this.mGeometryList.get(i).toString());
+				return this.mGeometryList.get(i);
 			}
 		}
 		
-		return geometry;
+		Log.v("DEBUG", "::getGeometryFromName is null");
+		return null;
+	}
+	
+	// ------------------------------------------------------------------------
+	private void setCurrentContent() {
+		// Remove the previous geometry to the renderer
+		if (this.mCurrentGeometry != null) {
+			this.mCurrentGeometry.setCos(0);
+			this.mCurrentGeometry.setVisible(false);
+		}
+		
+		if (this.XmlParser.getStepCount() == -1){
+			this.mCurrentCosID = 0;
+			this.setCurrentGeometry(null);
+			return;
+		}
+		
+		String geometryName = this.XmlParser.getCurrentGeometry();
+		Log.v("DEBUG", "new geometry name :" + geometryName);
+		this.setCurrentGeometry(this.getGeometryFromName(geometryName));
+		
+//				this.setCurrentTrackedData(this.XmlParser.getCurrentCosName());
+		// If no current geo, we can't set the ID !
+		if (this.mCurrentGeometry != null) {
+			Log.v("DEBUG", "current geometry is : " + this.mCurrentGeometry.getName());
+			int id = Integer.parseInt(this.XmlParser.getCurrentCosID());
+			this.mCurrentGeometry.setCos(id);
+		}
+		
+		this.showGeometry(this.mCurrentGeometry);
 	}
 	
 	// ------------------------------------------------------------------------
@@ -257,8 +286,9 @@ public class ARManualViewActivity extends ARViewActivity  {
 			for (int i = 0; i < geometries.size(); i++) {
 				String geometryName = geometries.get(i);
 				IUnifeyeMobileGeometry geometry = this.loadGeometry(geometryName);
-				geometry.setVisible(true);
-				geometry.setCos(i + 1);
+				geometry.setVisible(false);
+				geometry.setName(geometryName);
+//				geometry.setCos(i + 1);
 				this.mGeometryList.add(geometry);
 			}
 		} catch (FileNotFoundException e) {

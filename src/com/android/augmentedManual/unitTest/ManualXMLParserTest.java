@@ -113,18 +113,21 @@ public class ManualXMLParserTest extends TestCase{
 		assertNotNull(parser.getCurrentFile());
 		
 		assertEquals("", parser.getCurrentCosName());
+		assertEquals("", parser.getCurrentCosID());
 		assertEquals("", parser.getCurrentGeometry());
 		assertEquals("", parser.getCurrentStepInfo());
 		assertEquals(0, parser.getStepCount());
 		
 		parser.nextStep();
 		assertEquals("object1", parser.getCurrentCosName());
+		assertEquals("1", parser.getCurrentCosID());
 		assertEquals("object1.md2", parser.getCurrentGeometry());
 		assertEquals("Detection of the first object", parser.getCurrentStepInfo());
 		assertEquals(1, parser.getStepCount());
 		
 		parser.nextStep();
 		assertEquals("object2", parser.getCurrentCosName());
+		assertEquals("2", parser.getCurrentCosID());
 		assertEquals("object1.md2", parser.getCurrentGeometry());
 		assertEquals("No information", parser.getCurrentStepInfo());
 		assertEquals(2, parser.getStepCount());

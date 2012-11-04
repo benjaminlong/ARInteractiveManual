@@ -7,13 +7,21 @@
 	<steps>
 		<step ID="1">
 			<cosName>object1</cosName>
+			<cosID>2</cosID>
 			<geometry>metaioman.md2</geometry>
-			<info>Detection of the first object</info>
+			<info>Target = MetaiomanTarget - nGeometry = Metaioman</info>
 		</step>
 		<step ID="2">
 			<cosName>object2</cosName>
+			<cosID>2</cosID>
 			<geometry>truck/truck.obj</geometry>
-			<info>No information</info>
+			<info>Target = MetaiomanTarget - Geometry = Truck</info>
+		</step>
+		<step ID="3">
+			<cosName>object2</cosName>
+			<cosID>1</cosID>
+			<geometry>metaioman.md2</geometry>
+			<info>Target = My Object - Geometry = Metaioman</info>
 		</step>
 	</steps>
 </manual>
