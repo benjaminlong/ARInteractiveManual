@@ -1,6 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menu_settings"
         android:title="@string/menu_settings"
+        android:icon="@drawable/ic_action_settings"
+        android:onClick="OnOptionsItemSelected"
         android:orderInCategory="100"
         android:showAsAction="never" />
+  	
+    <item android:id="@+id/menu_refresh"
+        android:title="@string/menu_refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:onClick="OnOptionsItemSelected"
+        android:showAsAction="collapseActionView" />
+    
+    <item android:id="@+id/menu_about"
+        android:title="@string/menu_about"
+        android:icon="@drawable/ic_action_about"
+        android:onClick="OnOptionsItemSelected"
+        android:showAsAction="ifRoom|collapseActionView" />
+    
+    <item android:id="@+id/menu_help"
+        android:title="@string/menu_help"
+        android:icon="@drawable/ic_action_help"
+        android:onClick="OnOptionsItemSelected"
+        android:showAsAction="never" />
+    
 </menu>

@@ -8,59 +8,94 @@
 package com.android.augmentedManual;
 
 public final class R {
+    public static final class anim {
+        public static final int mainfadein=0x7f040000;
+        public static final int splashfadeout=0x7f040001;
+    }
     public static final class attr {
     }
     public static final class color {
-        public static final int grey_light=0x7f060000;
+        public static final int black=0x7f070002;
+        public static final int grey_light=0x7f070000;
+        public static final int white=0x7f070001;
     }
     public static final class dimen {
-        public static final int BasicMarginList=0x7f040003;
-        public static final int basicPaddingList=0x7f040002;
-        public static final int basicSpaceMargin=0x7f040001;
-        public static final int spaceMarginTop_Catalogue=0x7f040000;
+        public static final int BasicMarginList=0x7f050003;
+        public static final int basicPaddingList=0x7f050002;
+        public static final int basicSpaceMargin=0x7f050001;
+        public static final int spaceMarginTop_Catalogue=0x7f050000;
     }
     public static final class drawable {
-        public static final int ic_action_search=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
+        public static final int arrow_right=0x7f020000;
+        public static final int gradient_bg=0x7f020001;
+        public static final int gradient_bg_hover=0x7f020002;
+        public static final int gradient_buttonbar_bg=0x7f020003;
+        public static final int ic_action_about=0x7f020004;
+        public static final int ic_action_help=0x7f020005;
+        public static final int ic_action_refresh=0x7f020006;
+        public static final int ic_action_search=0x7f020007;
+        public static final int ic_action_settings=0x7f020008;
+        public static final int ic_launcher=0x7f020009;
+        public static final int icon_ikea=0x7f02000a;
+        public static final int image_bg=0x7f02000b;
+        public static final int list_selector=0x7f02000c;
+        public static final int no_icon=0x7f02000d;
     }
     public static final class id {
-        public static final int RelativeLayout1=0x7f090000;
-        public static final int View1=0x7f090003;
-        public static final int button1=0x7f090006;
-        public static final int buttonBar=0x7f090007;
-        public static final int catalogueListView=0x7f090004;
-        public static final int catalogueTextView=0x7f090002;
-        public static final int downloadButton=0x7f090005;
-        public static final int infoButton=0x7f090009;
-        public static final int loadingProgressBar=0x7f09000b;
-        public static final int loadingTextView=0x7f09000c;
-        public static final int menu_settings=0x7f09000d;
-        public static final int nextButton=0x7f09000a;
-        public static final int previousButton=0x7f090008;
-        public static final int titleTextView=0x7f090001;
+        public static final int ImageButton1=0x7f0a000e;
+        public static final int RelativeLayout1=0x7f0a0000;
+        public static final int View1=0x7f0a0008;
+        public static final int button1=0x7f0a000c;
+        public static final int buttonBar=0x7f0a000d;
+        public static final int catalogueListView=0x7f0a0009;
+        public static final int catalogueTextView=0x7f0a0007;
+        public static final int downloadButton=0x7f0a000b;
+        public static final int linearLayout1=0x7f0a000a;
+        public static final int loadingProgressBar=0x7f0a0011;
+        public static final int loadingTextView=0x7f0a0012;
+        public static final int manualIcon=0x7f0a0004;
+        public static final int manualInfo=0x7f0a0006;
+        public static final int manualTitle=0x7f0a0005;
+        public static final int menu_about=0x7f0a0015;
+        public static final int menu_help=0x7f0a0016;
+        public static final int menu_refresh=0x7f0a0014;
+        public static final int menu_settings=0x7f0a0013;
+        public static final int nextButton=0x7f0a0010;
+        public static final int previousButton=0x7f0a000f;
+        public static final int progressBar1=0x7f0a0001;
+        public static final int textView1=0x7f0a0002;
+        public static final int thumbnail=0x7f0a0003;
     }
     public static final class layout {
-        public static final int main_activity=0x7f030000;
-        public static final int manualarlayout=0x7f030001;
+        public static final int activity_splash_screen=0x7f030000;
+        public static final int list_row=0x7f030001;
+        public static final int main_activity=0x7f030002;
+        public static final int manualarlayout=0x7f030003;
     }
     public static final class menu {
-        public static final int main_activity=0x7f080000;
+        public static final int activity_splash_screen=0x7f090000;
+        public static final int main_activity=0x7f090001;
     }
     public static final class string {
-        public static final int app_name=0x7f050000;
-        public static final int catalogueTextView=0x7f050004;
-        public static final int downloadButton=0x7f050008;
-        public static final int manualTextView1=0x7f050006;
-        public static final int manualTextView2=0x7f050007;
-        public static final int menu_settings=0x7f050001;
-        public static final int nextButton=0x7f05000a;
-        public static final int recentTextView=0x7f050003;
-        public static final int skipButton=0x7f050009;
-        public static final int titleTextView=0x7f050005;
-        public static final int title_main_activity=0x7f050002;
+        public static final int app_name=0x7f060000;
+        public static final int catalogueTextView=0x7f060008;
+        public static final int downloadButton=0x7f06000c;
+        public static final int manualTextView1=0x7f06000a;
+        public static final int manualTextView2=0x7f06000b;
+        public static final int menu_about=0x7f060003;
+        public static final int menu_help=0x7f060004;
+        public static final int menu_refresh=0x7f060002;
+        public static final int menu_settings=0x7f060001;
+        public static final int nextButton=0x7f06000e;
+        public static final int recentTextView=0x7f060007;
+        public static final int skipButton=0x7f06000d;
+        public static final int titleTextView=0x7f060009;
+        public static final int title_activity_splash_screen=0x7f060006;
+        public static final int title_main_activity=0x7f060005;
     }
     public static final class style {
-        public static final int AppTheme=0x7f070000;
-        public static final int Theme_FullScreen=0x7f070001;
+        public static final int AppTheme=0x7f080000;
+        public static final int Theme_FullScreen=0x7f080001;
+        public static final int Theme_FullScreenWithAndroidBar=0x7f080002;
     }
 }

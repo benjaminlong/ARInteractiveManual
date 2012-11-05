@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="spaceMarginTop_Catalogue">30dp</dimen>
+    <dimen name="spaceMarginTop_Catalogue">15dp</dimen>
     <dimen name="basicSpaceMargin">10dp</dimen>
     <dimen name="basicPaddingList">5dip</dimen>
     <dimen name="BasicMarginList">5dp</dimen>

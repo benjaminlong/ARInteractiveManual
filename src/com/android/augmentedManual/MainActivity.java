@@ -7,15 +7,15 @@ import java.util.List;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import android.widget.Button;
 import android.widget.TableRow;
@@ -34,15 +34,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		IUnifeyeMobileAndroid.loadNativeLibs();
 	} 
 	
-	String[][] repertoire = new String[][]{
-            {"Manual : Table Ikea FUSTA", "More Information ..."},
-            {"Manual : Chaise Ikea HARISTO", "More Information ..."}};
+//	String[][] repertoire = new String[][]{
+//            {"Manual : Table Ikea FUSTA", "More Information ..."},
+//            {"Manual : Chaise Ikea HARISTO", "More Information ..."}};
 	
+	// XML node keys
+    static final String KEY_MANUAL = "manual"; // parent node
+    static final String KEY_ID = "manual_id";
+    static final String KEY_TITLE = "manual_title";
+    static final String KEY_ARTIST = "manual_info";
+    static final String KEY_THUMB_URL = "manual_thumb_url";
 	
 	AssetsExtracter 				mTask;
 	View 							mProgress;
 	ListView 						mCatalogueView;
-	List<HashMap<String, String>> 	mCatalogueMap;
+	ListCatalogueAdapter			mAdapter;
+	ArrayList<HashMap<String, String>> mCatalogueMap = 
+			new ArrayList<HashMap<String, String>>();
 
 	Boolean			 				beta = true;
 	Button 							downloadButton = null;
@@ -58,13 +66,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         this.mCatalogueView = (ListView) findViewById(R.id.catalogueListView);
         this.mCatalogueMap = this.getCatalogueList();
 
-        ListAdapter adapter = 
-        		new SimpleAdapter(this,
-        						  this.mCatalogueMap,
-								  android.R.layout.simple_list_item_2,
-								  new String[] {"Title", "Info"},
-								  new int[] {android.R.id.text1, android.R.id.text2});
-        this.mCatalogueView.setAdapter(adapter);
+        // Getting adapter by passing xml data ArrayList
+        this.mAdapter= new ListCatalogueAdapter(this, this.mCatalogueMap);
+        this.mCatalogueView.setAdapter(this.mAdapter);
         this.mCatalogueView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, 
 									View view, 
@@ -98,9 +102,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	@Override
 	// ------------------------------------------------------------------------
 	public boolean onCreateOptionsMenu(Menu menu) {
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+//		actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_buttonbar_bg));
         getMenuInflater().inflate(R.menu.main_activity, menu);
         return true;
     }
+	
+	
+	// ------------------------------------------------------------------------
+	public boolean OnOptionsItemSelected(MenuItem item)
+	{
+	    //TODO: Handle the selection event here.
+		String message = "Action on Menu not implemented yet";
+		Toast msgT = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+    	msgT.show();
+	    return false;
+	}
     
 	// ------------------------------------------------------------------------
 	public void onClick(View view) {
@@ -121,7 +139,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     	final Intent newActivity;
     	newActivity = new Intent(MainActivity.this, ARManualViewActivity.class);
     	Bundle newBundle = new Bundle();
-    	newBundle.putString("manualName", this.mCatalogueMap.get(tmp).get("Title"));
+    	newBundle.putString("manualName", this.mCatalogueMap.get(tmp).get(KEY_TITLE));
     	newActivity.putExtras(newBundle);
     	startActivity(newActivity);
     	return true;
@@ -158,21 +176,32 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	}
 	
 	// ------------------------------------------------------------------------
-	public List<HashMap<String, String>> getCatalogueList() {
-		List<HashMap<String, String>> catalogue = 
+	public ArrayList<HashMap<String, String>> getCatalogueList() {
+		ArrayList<HashMap<String, String>> catalogue = 
 				new ArrayList<HashMap<String, String>>();
 			
 //		List<String> manuals = this.recoverManualFromAsset();
-		List<String> manuals = new ArrayList<String>();
+		ArrayList<String> manuals = new ArrayList<String>();
 		manuals.add("Manual_Test");
 		manuals.add("Manual_Table_Ikea_BANARA");
 
 		HashMap<String, String> manualMap;
+//		NodeList nl = doc.getElementsByTagName(KEY_MANUAL);
 		for (int i = 0; i < manuals.size(); i++) {
 			manualMap = new HashMap<String, String>();
 			manualMap.put("Title", manuals.get(i));
 			manualMap.put("Info", "More information ...");
-			catalogue.add(manualMap);
+			
+			// creating new HashMap
+			HashMap<String, String> map = new HashMap<String, String>();
+//            Element e = (Element) nl.item(i);
+			// adding each child node to HashMap key = value
+//            map.put(KEY_ID, parser.getValue(e, KEY_ID));
+			map.put(KEY_TITLE, manuals.get(i));
+			map.put(KEY_ARTIST, "More Information ...");
+//            map.put(KEY_THUMB_URL, parser.getValue(e, KEY_THUMB_URL));
+			// adding HashList to ArrayList
+			catalogue.add(map);
 		}
 		
 		return catalogue;

@@ -3,170 +3,62 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/gradient_bg"
+    android:gravity="center_horizontal"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="top|center"
-        android:layout_marginTop="@dimen/spaceMarginTop_Catalogue"
-        android:gravity="center"
-        android:text="@string/titleTextView"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
+
     <TextView
         android:id="@+id/catalogueTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/titleTextView"
-        android:layout_marginLeft="7dip"
-        android:layout_marginTop="@dimen/spaceMarginTop_Catalogue"
+        android:layout_alignTop="@id/RelativeLayout1"
+        android:background="@drawable/gradient_buttonbar_bg"
+        android:paddingBottom="10dip"
+        android:paddingLeft="7dip"
+        android:paddingTop="@dimen/spaceMarginTop_Catalogue"
         android:text="@string/catalogueTextView"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/white" />
 
     <View
         android:id="@+id/View1"
         android:layout_width="wrap_content"
         android:layout_height="2dip"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/catalogueTextView"
-        android:layout_marginLeft="7dip"
-        android:layout_marginRight="7dip"
-        android:background="#FF909090"  />
-    <!--
-    <TableLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/TableLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/titleTextView"
-        android:stretchColumns="1" >
-
-        <TextView
-            android:id="@+id/catalogueTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dip"
-            android:layout_marginTop="@dimen/spaceMarginTop_Catalogue"
-            android:text="@string/catalogueTextView" 
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/white" />
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="2dip"
-            android:layout_marginLeft="7dip"
-            android:layout_marginRight="7dip"
-            android:background="#FF909090" />
-
-       	<TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/BasicMarginList"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:padding="5dip" >
-            <ImageButton
-                android:id="@+id/manualButton1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/basicSpaceMargin"
-                android:clickable="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:src="@drawable/ic_launcher" />
-
-            <LinearLayout 
-                android:orientation="vertical"
-                android:layout_width="0dip"
-        		android:layout_weight="1"
-        		android:layout_height="fill_parent"
-        		
-        		android:gravity="center_vertical">
-	            	            <TextView
-	                android:id="@+id/manualtextView1"
-	                android:layout_width="fill_parent"
-            		android:layout_height="0dip"
-            		android:layout_weight="1"
-                    
-            		android:gravity="center_vertical"
-	                
-	                android:text="@string/manualTextView1"
-	                android:textColor="@android:color/white"
-        			android:textAppearance="@android:attr/textAppearanceLarge" />
-
-	            <TextView
-	                android:id="@+id/manualtextbisView1"
-	                android:layout_width="fill_parent"
-            		android:layout_height="0dip"
-            		android:layout_weight="1" 
-	                
-	                android:text="Give more information ..."
-	                android:textColor="@android:color/white"
-	                android:textAppearance="@android:attr/textAppearanceSmall"
-	                
-	                android:paddingLeft="20dip" />
-	            
-	        </LinearLayout>
-        </TableRow>
-
-        <View
-            android:layout_marginLeft="15dip"
-            android:layout_marginRight="15dip"
-            android:layout_height="1dip"
-            android:background="#FF909090" />
-        
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/BasicMarginList"
-            android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:padding="5dip" >
-
-            <ImageButton
-                android:id="@+id/manualButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/basicSpaceMargin"
-                android:clickable="false"
-                android:focusable="false"
-                android:src="@drawable/ic_launcher" />
-
-            <TextView
-                android:id="@+id/manualtextView2"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="@dimen/basicSpaceMargin"
-                android:text="@string/manualTextView2"
-                android:textColor="@android:color/white" />
-        </TableRow>
-    </TableLayout>
-    -->
+        android:layout_below="@id/catalogueTextView"
+        android:background="#FF909090" />
 
     <ListView
         android:id="@+id/catalogueListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/View1" >
-    </ListView>
+        android:layout_above="@+id/linearLayout1"
+        android:layout_below="@id/View1"
+        android:divider="#b5b5b5"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/list_selector" />
 
-    <Button
-        android:id="@+id/downloadButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        style="@android:style/ButtonBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/catalogueListView"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="bottom|center_horizontal"
-        android:gravity="center_vertical|fill_horizontal"
-        android:text="@string/downloadButton" />
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/gradient_buttonbar_bg"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:paddingBottom="7dip"
+        android:paddingTop="7dip" >
+
+        <Button
+            android:id="@+id/downloadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:text="@string/downloadButton"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
 </RelativeLayout>
