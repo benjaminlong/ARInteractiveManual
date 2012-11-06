@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ManualListActivity"
             android:label="@string/title_main_activity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,6 +46,10 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.FullScreen" >
+        </activity>
+        <activity
+            android:name=".ManualViewerActivity"
+            android:label="@string/title_activity_manual_viewer" >
         </activity>
     </application>
 

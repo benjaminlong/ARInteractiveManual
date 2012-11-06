@@ -51,9 +51,9 @@ public class ListCatalogueAdapter extends BaseAdapter {
         song = data.get(position);
  
         // Setting all values in listview
-        title.setText(song.get(MainActivity.KEY_TITLE));
-        artist.setText(song.get(MainActivity.KEY_ARTIST));
-        imageLoader.DisplayImage(song.get(MainActivity.KEY_THUMB_URL), thumb_image);
+        title.setText(song.get(ManualListActivity.KEY_TITLE));
+        artist.setText(song.get(ManualListActivity.KEY_ARTIST));
+        imageLoader.DisplayImage(song.get(ManualListActivity.KEY_THUMB_URL), thumb_image);
         return view;
 	}
 	
