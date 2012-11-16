@@ -3,13 +3,12 @@ package com.android.augmentedManual;
 import java.io.IOException;
 
 import com.metaio.tools.io.AssetsManager;
-import com.metaio.unifeye.UnifeyeDebug;
+import com.metaio.sdk.MetaioDebug;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.app.Activity;
 import android.content.Intent;
 
@@ -49,7 +48,7 @@ public void onCreate(Bundle savedInstanceState) {
 			return true;
 		}
 		catch (Exception e) {
-			UnifeyeDebug.log(Log.ERROR, "Error extracting assets: "+e.getMessage());
+			MetaioDebug.log(Log.ERROR, "Error extracting assets: "+e.getMessage());
 			return false;
 		}
 	}
@@ -71,7 +70,7 @@ public void onCreate(Bundle savedInstanceState) {
     			AssetsManager.extractAllAssets(getApplicationContext(), true);
     		} 
     		catch (IOException e) {
-    			UnifeyeDebug.printStackTrace(Log.ERROR, e);
+    			MetaioDebug.printStackTrace(Log.ERROR, e);
     			return false;
     		}
     		return true;
@@ -84,11 +83,11 @@ public void onCreate(Bundle savedInstanceState) {
     			//mWebView.loadUrl("http://192.168.10.190/WebWrapper/index.html");
     			//mWebView.loadUrl("file:///android_asset/WebWrapper/index.html");
     			Log.v("DEBUG", "result extrqct asset OK");
-    			UnifeyeDebug.log(Log.ERROR, "Extracting assets from web");
+    			MetaioDebug.log(Log.ERROR, "Extracting assets from web");
     		}
     		else {
     			Log.v("DEBUG", "result extrqct qsset false");
-    			UnifeyeDebug.log(Log.ERROR, "Error extracting assets, closing the application...");
+    			MetaioDebug.log(Log.ERROR, "Error extracting assets, closing the application...");
     			finish();
     		}
     	}

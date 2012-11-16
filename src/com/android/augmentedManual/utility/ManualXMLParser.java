@@ -59,40 +59,43 @@ public class ManualXMLParser {
 	// ------------------------------------------------------------------------
 	public boolean setXMLManual(InputStream manualStream){
 
-//		Log.v("DEBGU", "setXMLManual Start");
+//		Log.v("DEBUG", "setXMLManual Start");
 		try {
 			// Check if the xml file exists
 			if (manualStream.toString().isEmpty()) {
-//				Log.v("DeBUG", "return false because empty");
+				Log.v("DEBUG", "return false because empty");
 				return false;
 			}
 			
-			Document docFile = this.DBuilder.parse(manualStream);
+			InputStream input = manualStream;
+//			Log.v("DEBUG", "setXMLManual DOcFile " + input.toString());
+			Document docFile = this.DBuilder.parse(input);
+//			Log.v("DEBUG", "setXMLManual DOcFile parsed");
 			docFile.getDocumentElement().normalize();
+//			Log.v("DEBUG", "setXMLManual DOcFile normalized");
 			
 			// Check if the xml if a Manual XML
 			if (this.XMLDescriptionStream != null) {
 				if (!this.isValidManualXML(docFile)) {
-//					Log.v("DeBUG", "return false because not valid");
+					Log.v("DeBUG", "return false because not valid");
 					return false;
 				}
 			}
 			
-//			Log.v("DeBUG", "Init manual information");
+//			Log.v("DEBUG", "Init manual information");
 			// Init manual information
 			this.CurrentXMLStream = manualStream;
 			this.CurrentDocFile = docFile;
 			this.CurrentManualInfo = this.recoverManualInfoFromXML();
 			this.GeometriesName = this.recoverGeometryNameFromXML();
 			
-//			Log.v("DeBUG", "return true");
+//			Log.v("DEBUG", "return true");
 			return true;
 								
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		
-		Log.v("DeBUG", "return false");
+			Log.v("DEBUG", "return false e : " + e);
+		}		
 		return false;
 	}
 	

@@ -20,6 +20,8 @@
     <color name="grey_light">#E7EFEE</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="green_light_gd">#73C435</color>
+    <color name="green_dark_gd">#3b8f35</color>
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_manual_viewer">ManualViewerActivity</string>

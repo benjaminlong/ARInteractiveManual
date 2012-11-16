@@ -10,8 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent"
-        android:onClick="onButtonClick" />
-
+        android:onClick="onButtonClick" />
     <LinearLayout
         android:id="@+id/buttonBar"
         style="@android:style/ButtonBar"
@@ -22,15 +21,14 @@
         android:background="@drawable/gradient_buttonbar_bg"
         android:orientation="horizontal"
         android:paddingBottom="5dip" >
-
+
         <ImageButton
             android:id="@+id/ImageButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onInfoButtonClick"
-            android:src="@drawable/ic_action_help" />
-
+            android:src="@drawable/ic_action_help" />
         <Button
             android:id="@+id/previousButton"
             android:layout_width="wrap_content"
@@ -39,8 +37,7 @@
             android:onClick="onPreviousButtonClick"
             android:text="Previous"
             android:textColor="@color/white"
-            android:textColorHint="@color/white" />
-
+            android:textColorHint="@color/white" />
         <Button
             android:id="@+id/nextButton"
             android:layout_width="wrap_content"

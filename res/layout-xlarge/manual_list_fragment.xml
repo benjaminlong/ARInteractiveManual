@@ -11,6 +11,12 @@
         android:id="@+id/manualList_fragment"
         android:layout_weight="1">
     </fragment>
+
+    <View
+    android:layout_width="2dp"
+    android:layout_height="fill_parent"
+    android:background="@color/green_dark_gd"/>
+    
     <fragment
         android:name="com.android.augmentedManual.ManualViewerFragment"
         android:layout_width="0dp"

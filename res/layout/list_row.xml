@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- android:background="?android:attr/activatedBackgroundIndicator" -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -19,7 +20,7 @@
             android:id="@+id/manualIcon"
             android:layout_width="50dip"
             android:layout_height="50dip"
-            android:src="@drawable/icon_ikea"/>
+            android:src="@drawable/no_icon"/>
  
     </LinearLayout>
  

@@ -3,43 +3,15 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_bg"
-    android:columnCount="3"
-    android:gravity="center_horizontal"
-    android:orientation="horizontal" >
+    android:background="@drawable/gradient_general_bg" >
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/splashImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="62dp" >
-
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dip"
-            android:gravity="center_vertical"
-            android:text="Loading ..."
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/black"
-            android:textStyle="normal|italic" />
-
-    </LinearLayout>
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:src="@drawable/ic_splash_white" />
 
 </RelativeLayout>

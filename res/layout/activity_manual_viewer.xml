@@ -2,15 +2,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:alpha="1"
     android:background="@drawable/gradient_bg" >
 
-    <TextView
-        android:id="@+id/manualViewerTitle"
+    <ImageView
+        android:id="@+id/manualViewerNoManualImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text=""
+        android:layout_centerVertical="true"
+        android:alpha="0.7"
+        android:src="@drawable/ic_splash_green" />
+
+    <Button
+        android:id="@+id/manualViewerStartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="15dip"
+        android:layout_marginRight="15dip"
+        android:background="@drawable/button_selector"
+        android:gravity="center|clip_vertical|clip_horizontal"
+        android:minWidth="96dip"
+        android:onClick="onButtonStartClick"
+        android:text="Start"
+        android:textAppearance="?android:attr/textAppearanceLargeInverse"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/manualViewerManualIconImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="10dip"
+        android:maxHeight="96dip"
+        android:maxWidth="96dip"
+        android:src="@drawable/no_icon" />
+
+    <TextView
+        android:id="@+id/manualViewerTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/manualViewerManualIconImageView"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/manualViewerManualIconImageView"
+        android:layout_marginRight="15dip"
+        android:layout_toRightOf="@+id/manualViewerManualIconImageView"
+        android:gravity="center"
+        android:text="Manual Title"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <LinearLayout
+        android:id="@+id/manualViewerDescriptionLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/manualViewerStartButton"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/manualViewerTitleTextView"
+        android:layout_margin="15dip"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/manualViewerDescriptionTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:layout_marginLeft="5dip"
+            android:text="Description :"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/manualViewerDescriptionContentTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dip"
+            android:layout_marginRight="10dip"
+            android:text="Small Text to descripte the manual"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    </LinearLayout>
 
 </RelativeLayout>

@@ -1,7 +1,12 @@
 package com.android.augmentedManual.utility;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
  
 public class Utils {
     public static void CopyStream(InputStream is, OutputStream os)
@@ -18,6 +23,6 @@ public class Utils {
               os.write(bytes, 0, count);
             }
         }
-        catch(Exception ex){}
+        catch(Exception ex){};
     }
 }

@@ -16,16 +16,17 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import com.android.augmentedManual.R;
 import com.android.augmentedManual.utility.ManualXMLParser;
-import com.metaio.unifeye.UnifeyeDebug;
-import com.metaio.unifeye.ndk.IUnifeyeMobileAndroid;
-import com.metaio.unifeye.ndk.IUnifeyeMobileGeometry;
-import com.metaio.unifeye.ndk.PoseVector;
+import com.metaio.sdk.MetaioDebug;
+import com.metaio.sdk.jni.IMetaioSDKAndroid;
+import com.metaio.sdk.jni.IGeometry;
+import com.metaio.sdk.jni.TrackingValuesVector;
 
 
 //------------------------------------------------------------------------
@@ -33,11 +34,11 @@ public class ARManualViewActivity extends ARViewActivity  {
 	
 	// ------------------------------------------------------------------------
 	static {
-		IUnifeyeMobileAndroid.loadNativeLibs();
+		IMetaioSDKAndroid.loadNativeLibs();
 	}
 	
-	List<IUnifeyeMobileGeometry> 	mGeometryList;
-	private IUnifeyeMobileGeometry 	mCurrentGeometry = null;
+	List<IGeometry> 	mGeometryList;
+	private IGeometry 	mCurrentGeometry = null;
 	private int 					mCurrentCosID = 0;
 	private ManualXMLParser 		XmlParser;
 	private String 					mTrackingDataML3D = "";
@@ -47,23 +48,23 @@ public class ARManualViewActivity extends ARViewActivity  {
 
 	// ------------------------------------------------------------------------
 	public void onCreate(Bundle savedInstanceState) {
+		Log.v("DEBUG", "ARManualViewActivity::onCreate");
 		super.onCreate(savedInstanceState);
 		
 		// Init variables
-		Bundle b = getIntent().getExtras();
-		String manualName = b.getString("manualName");
+		Intent launchingIntent = getIntent();
+        String manualName = launchingIntent.getData().toString();
+		Log.v("DEBUG", "ARManualViewActivity::onCreate manual Name : " + manualName);
 		
 		try {
 			this.XmlParser = new ManualXMLParser();
 			
-			String path = 
-					manualName.replaceAll("_", "") + "/" + manualName + ".xml";
+			String path = manualName + "/" + manualName + ".xml";
 //			this.XmlParser.setXMLDescription(getAssets().open("XML/ManualXMLDescription.xsd"));
 			this.XmlParser.setXMLManual(getAssets().open(path));
 			
 			String trackingData = this.XmlParser.getManualInfo().get("trackingdata");
-			this.mTrackingDataML3D = 
-					manualName.replaceAll("_", "") + "/" + trackingData;
+			this.mTrackingDataML3D = manualName + "/" + trackingData;
 			Log.v("DEBUG", "tracking data path : " + this.mTrackingDataML3D);
 		
 			if (this.XmlParser.getCurrentFile() == null) {
@@ -83,9 +84,7 @@ public class ARManualViewActivity extends ARViewActivity  {
 				AlertDialog alert = builder.create();
 				alert.show();
 			}
-			else {
-				Log.v("DEBUG", this.XmlParser.getManualInfo().toString());
-			}
+			Log.v("DEBUG", "INFO : " + this.XmlParser.getManualInfo().toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -130,7 +129,7 @@ public class ARManualViewActivity extends ARViewActivity  {
 	public void onDrawFrame() {
 		super.onDrawFrame();
 		
-		PoseVector poses = mMobileSDK.getValidTrackingValues();
+		TrackingValuesVector poses = mMobileSDK.getTrackingValues();
 		if( poses.size() > 0)
 		{
 			// TODO
@@ -179,20 +178,22 @@ public class ARManualViewActivity extends ARViewActivity  {
 		try {
 
 			// Load Tracking data
-			UnifeyeDebug.log("Hello.loadTrackingData()");
+			MetaioDebug.log("Hello.loadTrackingData()");
+			Log.v("DEBUG", "tracking data name : " + this.mTrackingDataML3D); 
+			
 			boolean success = loadTrackingData( this.mTrackingDataML3D );
 			if ( !success )
 			{
-				UnifeyeDebug.log("Loading of the tracking data failed.");
+				MetaioDebug.log("Loading of the tracking data failed.");
 			}
 			
 			// Load all geometry
 			Log.v("DEBUG", "geometries :" + this.XmlParser.getGeometryList().toString());
-			this.mGeometryList = new ArrayList<IUnifeyeMobileGeometry>();
+			this.mGeometryList = new ArrayList<IGeometry>();
 			this.loadGeometries(this.XmlParser.getGeometryList());
 			
 		} catch (Exception e) {
-			UnifeyeDebug.printStackTrace(Log.ERROR, e);
+			MetaioDebug.printStackTrace(Log.ERROR, e);
 			Log.v("VISIBILITY", "tracking data fail exception");
 		}
 	}
@@ -209,18 +210,18 @@ public class ARManualViewActivity extends ARViewActivity  {
 	}
 	
 	// ------------------------------------------------------------------------
-	protected IUnifeyeMobileGeometry getCurrentGeometry() {
+	protected IGeometry getCurrentGeometry() {
 		return mCurrentGeometry;
 	}
 	
 	// ------------------------------------------------------------------------
-	protected void setCurrentGeometry(IUnifeyeMobileGeometry newGeometry) {
+	protected void setCurrentGeometry(IGeometry newGeometry) {
 		Log.v("DEBUG", "::setCurrentGeometry START");
 		this.mCurrentGeometry= newGeometry ;
 	}
 	
 	// ------------------------------------------------------------------------
-	private void showGeometry(IUnifeyeMobileGeometry newGeometry) {
+	private void showGeometry(IGeometry newGeometry) {
 		Log.v("DEBUG", "::showGeometry START");
 		for (int i = 0; i < this.mGeometryList.size(); i++ ) {
 			if (newGeometry == this.mGeometryList.get(i)) {
@@ -232,7 +233,7 @@ public class ARManualViewActivity extends ARViewActivity  {
 	}
 	
 	// ------------------------------------------------------------------------
-	private IUnifeyeMobileGeometry getGeometryFromName(String name) {
+	private IGeometry getGeometryFromName(String name) {
 		Log.v("DEBUG", "::getGeometryFromName START with name = " + name);
 		for (int i = 0; i < this.mGeometryList.size(); i++ ) {
 			Log.v("DEBUG", "i = " + i + ", geo name = " + this.mGeometryList.get(i).getName() +", " +name );
@@ -250,7 +251,7 @@ public class ARManualViewActivity extends ARViewActivity  {
 	private void setCurrentContent() {
 		// Remove the previous geometry to the renderer
 		if (this.mCurrentGeometry != null) {
-			this.mCurrentGeometry.setCos(0);
+			this.mCurrentGeometry.setCoordinateSystemID(0);
 			this.mCurrentGeometry.setVisible(false);
 		}
 		
@@ -269,7 +270,7 @@ public class ARManualViewActivity extends ARViewActivity  {
 		if (this.mCurrentGeometry != null) {
 			Log.v("DEBUG", "current geometry is : " + this.mCurrentGeometry.getName());
 			int id = Integer.parseInt(this.XmlParser.getCurrentCosID());
-			this.mCurrentGeometry.setCos(id);
+			this.mCurrentGeometry.setCoordinateSystemID(id);
 		}
 		
 		this.showGeometry(this.mCurrentGeometry);
@@ -285,7 +286,7 @@ public class ARManualViewActivity extends ARViewActivity  {
 		try {
 			for (int i = 0; i < geometries.size(); i++) {
 				String geometryName = geometries.get(i);
-				IUnifeyeMobileGeometry geometry = this.loadGeometry(geometryName);
+				IGeometry geometry = this.loadGeometry(geometryName);
 				geometry.setVisible(false);
 				geometry.setName(geometryName);
 //				geometry.setCos(i + 1);

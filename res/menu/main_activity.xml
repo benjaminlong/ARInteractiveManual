@@ -3,21 +3,21 @@
         android:title="@string/menu_settings"
         android:icon="@drawable/ic_action_settings"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        android:showAsAction="ifRoom" />
   	
     <item android:id="@+id/menu_refresh"
         android:title="@string/menu_refresh"
         android:icon="@drawable/ic_action_refresh"
-        android:showAsAction="collapseActionView" />
+        android:showAsAction="ifRoom" />
     
     <item android:id="@+id/menu_about"
         android:title="@string/menu_about"
         android:icon="@drawable/ic_action_about"
-        android:showAsAction="ifRoom|collapseActionView" />
+        android:showAsAction="always" />
     
     <item android:id="@+id/menu_help"
         android:title="@string/menu_help"
         android:icon="@drawable/ic_action_help"
-        android:showAsAction="never" />
+        android:showAsAction="ifRoom" />
     
 </menu>
