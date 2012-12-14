@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<manual>
+	<manualinfo>
+	    <manualname>Manual Banch With Textured</manualname>
+	    <manualicon>Manual_Test.png</manualicon>
+	    <factoryname>IKEA</factoryname>
+	    <factoryicon>noIcon</factoryicon>
+	    <description>This is only a manual test to test the architecture of the application and to test fews trackings data, based on metaio SDK</description>
+		<trackingdata>TrackingData_ML3D.xml</trackingdata>
+	</manualinfo>
+	<steps>
+		<step ID="1">
+			<cosName>object1</cosName>
+			<cosID>1</cosID>
+			<geometry>metaioman.md2</geometry>
+			<info>Target = Top - nGeometry = Metaioman</info>
+		</step>
+		<step ID="2">
+			<cosName>object2</cosName>
+			<cosID>2</cosID>
+			<geometry>metaioman.md2</geometry>
+			<info>Target = Back - Geometry = metaioman.md2</info>
+		</step>
+		<step ID="3">
+			<cosName>object3</cosName>
+			<cosID>3</cosID>
+			<geometry>metaioman.md2</geometry>
+			<info>Target = Feet1 - Geometry = metaioman.md2</info>
+		</step>
+		<step ID="4">
+			<cosName>object4</cosName>
+			<cosID>4</cosID>
+			<geometry>metaioman.md2</geometry>
+			<info>Target = Feet2 - Geometry = metaioman.md2</info>
+		</step>
+	</steps>
+</manual>

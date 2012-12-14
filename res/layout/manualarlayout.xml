@@ -2,64 +2,71 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <ImageButton
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:background="@android:color/transparent"
-        android:onClick="onButtonClick" />
+    android:gravity="center"
+    android:orientation="vertical" >
+
     <LinearLayout
-        android:id="@+id/buttonBar"
+        android:id="@+id/manualActivityButtonBar"
         style="@android:style/ButtonBar"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/gradient_buttonbar_bg"
+        android:background="@drawable/transparent_gray_shade"
         android:orientation="horizontal"
         android:paddingBottom="5dip" >
-
+
         <ImageButton
-            android:id="@+id/ImageButton1"
+            android:id="@+id/manualActivityHelpButton"
+            style="buttonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:layout_marginTop="5dip"
+            android:minHeight="48dip"
+            android:minWidth="48dip"
             android:onClick="onInfoButtonClick"
-            android:src="@drawable/ic_action_help" />
+            android:src="@drawable/ic_action_help" />
+
         <Button
-            android:id="@+id/previousButton"
+            android:id="@+id/manualActivityPreviousButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="5dip"
             android:layout_weight="1"
+            android:minWidth="96dip"
             android:onClick="onPreviousButtonClick"
+            android:paddingLeft="2dip"
+            android:paddingRight="2dip"
             android:text="Previous"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white" />
+            android:textColor="@color/black"
+            android:textColorHint="@color/white" />
+
         <Button
-            android:id="@+id/nextButton"
+            android:id="@+id/manualActivityNextButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="5dip"
             android:layout_weight="1"
             android:onClick="onNextButtonClick"
             android:text="Next"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
         
     </LinearLayout>
-
+
     <ProgressBar
-        android:id="@+id/loadingProgressBar"
+        android:id="@+id/manualActivityLoadingProgressBar"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:visibility="invisible" />
-
+
     <TextView
-        android:id="@+id/loadingTextView"
+        android:id="@+id/manualActivityLoadingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/loadingProgressBar"
@@ -67,5 +74,22 @@
         android:text="Loading content ..."
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/manualActivityTopText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/transparent_gray_shade"
+        android:gravity="center"
+        android:minHeight="48dip"
+        android:paddingBottom="5dip"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
+        android:paddingTop="5dip"
+        android:shadowColor="@color/white"
+        android:text="TextView"
+        android:textStyle="bold" />
 
 </RelativeLayout>

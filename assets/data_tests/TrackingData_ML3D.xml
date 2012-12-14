@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<TrackingData>
+	<Sensors>
+		<Sensor type="FeatureBasedSensorSource" subtype="ML3D">
+      
+    		<SensorID>FeatureTracking1</SensorID>
+      		
+ 		    <Parameters>
+		    	<FeatureDescriptorAlignment>regular</FeatureDescriptorAlignment>
+			</Parameters>
+		      
+  			<SensorCOS>
+		        <SensorCosID>Map3D_Test</SensorCosID>
+		        <Parameters>
+			        <numExtensibleFeatures>200</numExtensibleFeatures>
+			        <Map>Cos/Test.f3b</Map>
+		        </Parameters>
+			</SensorCOS>
+			
+    	</Sensor>
+    </Sensors>
+  
+</TrackingData>

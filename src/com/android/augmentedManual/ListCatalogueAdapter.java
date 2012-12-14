@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,11 +65,25 @@ public class ListCatalogueAdapter extends BaseAdapter {
         manual = data.get(position);
  
         // Setting all values in listview
-        title.setText(manual.get(ManualListFragment.KEY_TITLE));
+        // Title list
+        title.setText(manual.get(ManualListFragment.KEY_TITLE).replace("_", " "));
+        
+        // Info List
         info.setText(manual.get(ManualListFragment.KEY_INFO));
+        
+        // Icon list
         Bitmap logo = getBitmapFromAsset(
         		manual.get(ManualListFragment.KEY_THUMB_URL));
-        thumb_image.setImageBitmap(logo);
+        // if icon not found, we load a default icon from the resources
+        if (logo == null) {
+        	Drawable drawable =
+        			this.activity.getResources().getDrawable(R.drawable.no_icon);
+        	thumb_image.setImageDrawable(drawable);
+        }
+        else {
+        	thumb_image.setImageBitmap(logo);
+        }
+ 
         return view;
 	}
 	

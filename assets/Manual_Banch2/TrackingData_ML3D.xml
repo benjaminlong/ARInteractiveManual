@@ -1,0 +1,250 @@
+<?xml version="1.0"?>
+<TrackingData>
+	<Sensors>
+		<Sensor Type="FeatureBasedSensorSource" Subtype="ML3D">
+			<SensorID>FeatureTracking1</SensorID>
+			<Parameters>
+				<FeatureDescriptorAlignment>regular</FeatureDescriptorAlignment>
+			</Parameters>
+			
+			<SensorCOS>
+				<SensorCosID>Maptopfacetop</SensorCosID>
+				<Parameters>
+			        <numExtensibleFeatures>400</numExtensibleFeatures>
+					<Map>Cos/banchtopfacetop.f3b</Map>
+				</Parameters>
+			</SensorCOS>
+			
+			<SensorCOS>
+				<SensorCosID>Maptopfacedown</SensorCosID>
+				<Parameters>
+				    <numExtensibleFeatures>400</numExtensibleFeatures>
+					<Map>Cos/banchtopfacedown.f3b</Map>
+				</Parameters>
+			</SensorCOS>
+			
+			<SensorCOS>
+				<SensorCosID>Mapbackfacefront</SensorCosID>
+				<Parameters>
+			        <numExtensibleFeatures>400</numExtensibleFeatures>
+					<Map>Cos/banchbackfacefront.f3b</Map>
+				</Parameters>
+			</SensorCOS>
+			
+			<SensorCOS>
+				<SensorCosID>Mapbackfaceback</SensorCosID>
+				<Parameters>
+			        <numExtensibleFeatures>400</numExtensibleFeatures>
+					<Map>Cos/banchbackfaceback.f3b</Map>
+				</Parameters>
+			</SensorCOS>
+			
+			<SensorCOS>
+				<SensorCosID>Mapfeetleftside1</SensorCosID>
+				<Parameters>
+			        <numExtensibleFeatures>400</numExtensibleFeatures>
+					<Map>Cos/banchfeetleftside1.f3b</Map>
+				</Parameters>
+			</SensorCOS>
+			
+			<SensorCOS>
+				<SensorCosID>Mapfeetleftside2</SensorCosID>
+				<Parameters>
+			        <numExtensibleFeatures>400</numExtensibleFeatures>
+					<Map>Cos/banchfeetleftside2.f3b</Map>
+				</Parameters>
+			</SensorCOS>
+			
+			<SensorCOS>
+				<SensorCosID>Mapfeetrightside1</SensorCosID>
+				<Parameters>
+			        <numExtensibleFeatures>400</numExtensibleFeatures>
+					<Map>Cos/banchfeetrightside1.f3b</Map>
+				</Parameters>
+			</SensorCOS>
+			
+			<SensorCOS>
+				<SensorCosID>Mapfeetrightside2</SensorCosID>
+				<Parameters>
+			        <numExtensibleFeatures>400</numExtensibleFeatures>
+					<Map>Cos/banchfeetrightside2.f3b</Map>
+				</Parameters>
+			</SensorCOS>
+			
+		</Sensor>
+	</Sensors>
+	<Connections>
+        <COS>
+            <Name>COS_1</Name>
+            <Fuser type="SmoothingFuser">
+                <Parameters>
+                    <AlphaRotation>0.5</AlphaRotation>
+                    <AlphaTranslation>0.8</AlphaTranslation>
+                    <GammaRotation>0.5</GammaRotation>
+                    <GammaTranslation>0.8</GammaTranslation>
+                    <KeepPoseForNumberOfFrames>30</KeepPoseForNumberOfFrames>
+                </Parameters>
+            </Fuser>
+            <SensorSource trigger="1">
+                <SensorID>FeatureTracking1</SensorID>
+                <SensorCosID>Maptopfacetop</SensorCosID>
+                <HandEyeCalibration>
+                    <TranslationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </TranslationOffset>
+                    <RotationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </RotationOffset>
+                </HandEyeCalibration>
+                <COSOffset>
+                    <TranslationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </TranslationOffset>
+                    <RotationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </RotationOffset>
+                </COSOffset>
+            </SensorSource>
+        </COS>
+        
+        <COS>
+            <Name>COS_2</Name>
+            <Fuser type="SmoothingFuser">
+                <Parameters>
+                    <AlphaRotation>0.5</AlphaRotation>
+                    <AlphaTranslation>0.8</AlphaTranslation>
+                    <GammaRotation>0.5</GammaRotation>
+                    <GammaTranslation>0.8</GammaTranslation>
+                    <KeepPoseForNumberOfFrames>30</KeepPoseForNumberOfFrames>
+                </Parameters>
+            </Fuser>
+            <SensorSource trigger="1">
+                <SensorID>FeatureTracking1</SensorID>
+                <SensorCosID>Maptopfacedown</SensorCosID>
+                <HandEyeCalibration>
+                    <TranslationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </TranslationOffset>
+                    <RotationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </RotationOffset>
+                </HandEyeCalibration>
+                <COSOffset>
+                    <TranslationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </TranslationOffset>
+                    <RotationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </RotationOffset>
+                </COSOffset>
+            </SensorSource>
+        </COS>
+        
+        <COS>
+            <Name>COS_3</Name>
+            <Fuser type="SmoothingFuser">
+                <Parameters>
+                    <AlphaRotation>0.5</AlphaRotation>
+                    <AlphaTranslation>0.8</AlphaTranslation>
+                    <GammaRotation>0.5</GammaRotation>
+                    <GammaTranslation>0.8</GammaTranslation>
+                    <KeepPoseForNumberOfFrames>2</KeepPoseForNumberOfFrames>
+                </Parameters>
+            </Fuser>
+            <SensorSource trigger="1">
+                <SensorID>FeatureTracking1</SensorID>
+                <SensorCosID>Mapbackfacefront</SensorCosID>
+                <HandEyeCalibration>
+                    <TranslationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </TranslationOffset>
+                    <RotationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </RotationOffset>
+                </HandEyeCalibration>
+                <COSOffset>
+                    <TranslationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </TranslationOffset>
+                    <RotationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </RotationOffset>
+                </COSOffset>
+            </SensorSource>
+        </COS>
+        
+        <COS>
+            <Name>COS_4</Name>
+            <Fuser type="SmoothingFuser">
+                <Parameters>
+                    <AlphaRotation>0.5</AlphaRotation>
+                    <AlphaTranslation>0.8</AlphaTranslation>
+                    <GammaRotation>0.5</GammaRotation>
+                    <GammaTranslation>0.8</GammaTranslation>
+                    <KeepPoseForNumberOfFrames>2</KeepPoseForNumberOfFrames>
+                </Parameters>
+            </Fuser>
+            <SensorSource trigger="1">
+                <SensorID>FeatureTracking1</SensorID>
+                <SensorCosID>Mapbackfaceback</SensorCosID>
+                <HandEyeCalibration>
+                    <TranslationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </TranslationOffset>
+                    <RotationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </RotationOffset>
+                </HandEyeCalibration>
+                <COSOffset>
+                    <TranslationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                    </TranslationOffset>
+                    <RotationOffset>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <w>1</w>
+                    </RotationOffset>
+                </COSOffset>
+            </SensorSource>
+        </COS>
+        
+    </Connections>
+</TrackingData>

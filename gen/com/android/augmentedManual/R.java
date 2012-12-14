@@ -50,24 +50,23 @@ public final class R {
         public static final int image_bg=0x7f020013;
         public static final int list_selector=0x7f020014;
         public static final int no_icon=0x7f020015;
+        public static final int transparent_gray_shade=0x7f020016;
     }
     public static final class id {
-        public static final int ImageButton1=0x7f0a0016;
         public static final int RelativeLayout1=0x7f0a0007;
-        public static final int View1=0x7f0a000e;
-        public static final int button1=0x7f0a0014;
-        public static final int buttonBar=0x7f0a0015;
-        public static final int catalogueListView=0x7f0a000f;
-        public static final int catalogueTextView=0x7f0a000d;
-        public static final int downloadButton=0x7f0a0011;
-        public static final int linearLayout1=0x7f0a0010;
-        public static final int loadingProgressBar=0x7f0a0019;
-        public static final int loadingTextView=0x7f0a001a;
+        public static final int loadingProgressBar=0x7f0a0015;
+        public static final int manualActivityButtonBar=0x7f0a000f;
+        public static final int manualActivityHelpButton=0x7f0a0010;
+        public static final int manualActivityLoadingProgressBar=0x7f0a0013;
+        public static final int manualActivityLoadingTextView=0x7f0a0014;
+        public static final int manualActivityNextButton=0x7f0a0012;
+        public static final int manualActivityPreviousButton=0x7f0a0011;
+        public static final int manualActivityTopText=0x7f0a0016;
         public static final int manualIcon=0x7f0a000a;
         public static final int manualInfo=0x7f0a000c;
-        public static final int manualList_fragment=0x7f0a0012;
+        public static final int manualList_fragment=0x7f0a000d;
         public static final int manualTitle=0x7f0a000b;
-        public static final int manualView_fragment=0x7f0a0013;
+        public static final int manualView_fragment=0x7f0a000e;
         public static final int manualViewerDescriptionContentTextView=0x7f0a0006;
         public static final int manualViewerDescriptionLinearLayout=0x7f0a0004;
         public static final int manualViewerDescriptionTitleTextView=0x7f0a0005;
@@ -75,12 +74,10 @@ public final class R {
         public static final int manualViewerNoManualImageView=0x7f0a0000;
         public static final int manualViewerStartButton=0x7f0a0001;
         public static final int manualViewerTitleTextView=0x7f0a0003;
-        public static final int menu_about=0x7f0a001d;
-        public static final int menu_help=0x7f0a001e;
-        public static final int menu_refresh=0x7f0a001c;
-        public static final int menu_settings=0x7f0a001b;
-        public static final int nextButton=0x7f0a0018;
-        public static final int previousButton=0x7f0a0017;
+        public static final int menu_about=0x7f0a0019;
+        public static final int menu_help=0x7f0a001a;
+        public static final int menu_refresh=0x7f0a0018;
+        public static final int menu_settings=0x7f0a0017;
         public static final int splashImageView=0x7f0a0008;
         public static final int thumbnail=0x7f0a0009;
     }
@@ -88,10 +85,9 @@ public final class R {
         public static final int activity_manual_viewer=0x7f030000;
         public static final int activity_splash_screen=0x7f030001;
         public static final int list_row=0x7f030002;
-        public static final int main_activity=0x7f030003;
-        public static final int manual_list_fragment=0x7f030004;
-        public static final int manual_viewer_fragment=0x7f030005;
-        public static final int manualarlayout=0x7f030006;
+        public static final int manual_list_fragment=0x7f030003;
+        public static final int manual_viewer_fragment=0x7f030004;
+        public static final int manualarlayout=0x7f030005;
     }
     public static final class menu {
         public static final int activity_manual_viewer=0x7f090000;

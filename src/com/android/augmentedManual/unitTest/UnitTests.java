@@ -24,6 +24,7 @@ public class UnitTests extends TestCase{
 		// Add tests here.
 		// suite.addTestSuite(TestClass.class);
 		suite.addTestSuite(ManualXMLParserTest.class);
+		suite.addTestSuite(GeometryTest.class);
 		
 		return suite;
 	}

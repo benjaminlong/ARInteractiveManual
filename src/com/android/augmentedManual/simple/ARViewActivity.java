@@ -387,9 +387,10 @@ public abstract class ARViewActivity extends Activity implements
 			this.runOnUiThread(new Runnable() {
 				public void run() {
 					if (mGUIView != null) 
-						mGUIView.findViewById(R.id.loadingProgressBar).setVisibility(View.GONE);
-						mGUIView.findViewById(R.id.loadingTextView	).setVisibility(View.GONE);
-						mGUIView.findViewById(R.id.buttonBar).setVisibility(View.VISIBLE);
+						mGUIView.findViewById(R.id.manualActivityLoadingProgressBar).setVisibility(View.GONE);
+						mGUIView.findViewById(R.id.manualActivityLoadingTextView).setVisibility(View.GONE);
+						mGUIView.findViewById(R.id.manualActivityButtonBar).setVisibility(View.VISIBLE);
+						mGUIView.findViewById(R.id.manualActivityTopText).setVisibility(View.VISIBLE);
 					}
 			});
 
@@ -462,38 +463,7 @@ public abstract class ARViewActivity extends Activity implements
 	
 	// ------------------------------------------------------------------------
 	public void onDrawFrame() {
-		try {
-			// render the the results
-			mMobileSDK.render();
-			
-			TrackingValuesVector poses = mMobileSDK.getTrackingValues();
-			if( poses.size() > 0)
-			{ 
-				// log the detected COS
-				int cosID = poses.get(0).getCoordinateSystemID();
-				if( cosID != mDetectedCosID ){
-					Log.v("DEBUG", "DETECTED " +  cosID );
-					Log.v("DEBUG", "CosID " +  poses.get(0).getCoordinateSystemID());
-					Log.v("DEBUG", "CosName " +  poses.get(0).getCosName() );
-					Log.v("DEBUG", "LlaCoordinate " +  poses.get(0).getLlaCoordinate().toString() );
-					Log.v("DEBUG", "Rotation " +  poses.get(0).getRotation().toString() );
-					Log.v("DEBUG", "Translation " +  poses.get(0).getTranslation().toString() );
-					Log.v("DEBUG", "Quality" +  poses.get(0).getQuality() );
-					
-					MetaioDebug.log( "DETECTED " +  cosID + poses);
-					Log.v("DETECTED", "DETECTED : " + cosID + poses);
-					mDetectedCosID = cosID;
-				}
-			}else{
-				// reset the detected COS if nothing has been detected 
-				mDetectedCosID = -1;
-			}
-				
-			
-		} catch (Exception e) {
-
-		}
-
+		// To implement in the child class
 	}
 
 	

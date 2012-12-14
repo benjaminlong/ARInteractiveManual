@@ -16,6 +16,9 @@ public abstract class Configuration
 	{
 		public static final long resolutionX = 640;  	
 		public static final long resolutionY = 400;
+		
+//		public static final long resolutionX = 1280;  	
+//		public static final long resolutionY = 800;
 		/*
 		 * 0: normal camera
 		 * 1: front facing camera

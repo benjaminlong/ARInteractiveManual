@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<manual>
+	<manualinfo>
+	    <manualname>Manual Banch With Textured</manualname>
+	    <manualicon>Manual_Test.png</manualicon>
+	    <factoryname>IKEA</factoryname>
+	    <factoryicon>noIcon</factoryicon>
+	    <description>This is only a manual test to test the architecture of the application and to test fews trackings data, based on metaio SDK</description>
+		<trackingdata>TrackingData_ML3D.xml</trackingdata>
+	</manualinfo>
+	<steps>	    
+		<step ID="1">
+		    <track cosIds="1;2">
+		    	<geometry name="square.obj">
+		    	    <translation><x>-26.074966430664063</x><y>190.52532958984375</y><z>1</z></translation>
+					<rotation><x>80.0000000</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>1.1826411390304565</x><y>0.45515586972236633</y><z>0.50943440198898315</z></scale>
+		    	</geometry>
+		    </track>
+			<info>Target = Top part of the banch - The piece will be surrounded by a green square.</info>
+		</step>
+		
+		<step ID="2">
+			<track cosIds="1;2">
+			    <geometry name="square.obj">
+		    	    <translation><x>-26.074966430664063</x><y>190.52532958984375</y><z>1</z></translation>
+					<rotation><x>80.0000000</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>1.1826411390304565</x><y>0.45515586972236633</y><z>0.50943440198898315</z></scale>
+		    	</geometry>
+		    	<geometry name="screw.obj">
+		    	    <translation><x>99.640510559082031</x><y>114.00665283203125</y><z>22.371505737304688</z></translation>
+					<rotation><x>0.0000000</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>0.80</x><y>0.80</y><z>0.80</z></scale>
+		    	</geometry>
+		    </track>
+			<info>Target = Add Screws to the top part</info>
+		</step>
+		
+		<step ID="3">
+		    <track cosIds="1;2">
+		    	<geometry name="screw.obj">
+		    	    <translation><x>-99.640510559082031</x><y>114.00665283203125</y><z>22.371505737304688</z></translation>
+					<rotation><x>0.0000000</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>0.80</x><y>0.80</y><z>0.80</z></scale>
+		    	</geometry>
+		    </track>
+			<info>Target = Add Screws to the top part</info>
+		</step>
+		
+		<step ID="3">
+		    <track cosIds="1">
+		    	<geometry name="screw.obj">
+		    	    <translation><x>-99.640510559082031</x><y>114.00665283203125</y><z>22.371505737304688</z></translation>
+					<rotation><x>0.0000000</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>0.80</x><y>0.80</y><z>0.80</z></scale>
+		    	</geometry>
+		    </track>
+		    <track cosIds="2">
+		    	<geometry name="square.obj">
+		    	    <translation><x>-26.074966430664063</x><y>190.52532958984375</y><z>1</z></translation>
+					<rotation><x>80.0000000</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>1.1826411390304565</x><y>0.45515586972236633</y><z>0.50943440198898315</z></scale>
+		    	</geometry>
+		    </track>
+			<info>Target = Add Screws to the top part</info>
+		</step>
+		
+		<step ID="5">
+		    <track cosIds="3;4">
+		    	<geometry name="square.obj">
+		    	    <translation><x>-27.26171875</x><y>144.48710632324219</y><z>1</z></translation>
+					<rotation><x>80.00</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>0.99157077074050903</x><y>0.46515586972236633</y><z>0.28516095876693726</z></scale>
+		    	</geometry>
+		    </track>
+			<info>Target = back piece of the banch - The piece will be surrounded.</info>
+		</step>
+		
+		<step ID="6">
+		    <track cosIds="1;2">
+		    	<geometry name="woodBoard.obj">
+		    	    <translation><x>-157.80027770996094</x><y>102.21029663085937</y><z>1</z></translation>
+					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>3.3404550552368164</x><y>1.1522939109802246</y><z>1.5394736528396606</z></scale>
+		    	</geometry>
+		    </track>
+			<info>Target = Top piece of the banch - We will show where to add the previous piece.</info>
+		</step>
+
+	</steps>
+</manual>

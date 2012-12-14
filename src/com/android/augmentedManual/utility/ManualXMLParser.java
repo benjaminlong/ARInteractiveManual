@@ -1,9 +1,11 @@
 package com.android.augmentedManual.utility;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,6 +18,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 
@@ -27,27 +30,34 @@ import java.io.InputStream;
 public class ManualXMLParser {
 
 	// XML file
-	InputStream				CurrentXMLStream = null;
-	InputStream				XMLDescriptionStream = null;
-	Document 				CurrentDocFile = null;
-	DocumentBuilderFactory 	DbFactory = null;
-	DocumentBuilder 		DBuilder = null;
+	InputStream							CurrentXMLStream = null;
+	InputStream							XMLDescriptionStream = null;
+	Document 							CurrentDocFile = null;
+	DocumentBuilderFactory 				DbFactory = null;
+	DocumentBuilder 					DBuilder = null;
 	
-	int						CurrentStepCount;
-	Map<String, String> 	CurrentManualInfo = null;
-	Map<String, String>		CurrentStep = null;
-	List<String>			GeometriesName = null;
+	Map<String, String> 				CurrentManualInfo = null;
+
+	int 								StepCount;
+	int									CurrentStepCount;
 	
-	// ------------------------------------------------------------------------
+	Map<String, List<Geometry>>			CurrentStep = null;
+
+	List<String>						GeometriesName = null;
+	
+	
+	// --------------------------------------------------------------v----------
 	public ManualXMLParser() {
 		
 		try {
+			// Init variables
 			this.DbFactory = DocumentBuilderFactory.newInstance();
 			this.DBuilder = this.DbFactory.newDocumentBuilder();
 			
-			// Init variables
 			this.CurrentManualInfo = new HashMap<String, String>();
-			this.CurrentStep = new HashMap<String, String>();
+			this.CurrentStep = new HashMap<String, List<Geometry>>();
+			
+			this.StepCount = 0;
 			this.CurrentStepCount = 0;
 		
 		} catch (Exception e) {
@@ -59,7 +69,6 @@ public class ManualXMLParser {
 	// ------------------------------------------------------------------------
 	public boolean setXMLManual(InputStream manualStream){
 
-//		Log.v("DEBUG", "setXMLManual Start");
 		try {
 			// Check if the xml file exists
 			if (manualStream.toString().isEmpty()) {
@@ -74,7 +83,8 @@ public class ManualXMLParser {
 			docFile.getDocumentElement().normalize();
 //			Log.v("DEBUG", "setXMLManual DOcFile normalized");
 			
-			// Check if the xml if a Manual XML
+			// Check if the xml is follow the ManualXML format ?!
+			// TODO, the function return false all the time ...
 			if (this.XMLDescriptionStream != null) {
 				if (!this.isValidManualXML(docFile)) {
 					Log.v("DeBUG", "return false because not valid");
@@ -82,14 +92,14 @@ public class ManualXMLParser {
 				}
 			}
 			
-//			Log.v("DEBUG", "Init manual information");
 			// Init manual information
 			this.CurrentXMLStream = manualStream;
 			this.CurrentDocFile = docFile;
 			this.CurrentManualInfo = this.recoverManualInfoFromXML();
 			this.GeometriesName = this.recoverGeometryNameFromXML();
+			this.StepCount = 
+					this.CurrentDocFile.getElementsByTagName("step").getLength();
 			
-//			Log.v("DEBUG", "return true");
 			return true;
 								
 		} catch (Exception e) {
@@ -102,13 +112,11 @@ public class ManualXMLParser {
 	// ------------------------------------------------------------------------
 	public boolean setXMLDescription(InputStream xmlDescription) {
 		
-//		Log.v("DEBGU", "setXMLDescription Start");
 		if (xmlDescription.toString().isEmpty()) {
 			Log.v("DEBUG", "return false");
 			return false;
 		}
 		
-//		Log.v("DEBGU", "return true");
 		this.XMLDescriptionStream = xmlDescription;
 		return true;
 	}
@@ -116,12 +124,13 @@ public class ManualXMLParser {
 	// ------------------------------------------------------------------------
 	public void nextStep() {
 		this.CurrentStepCount ++;
-//		Log.v("DEBUG", "Count : " + this.CurrentStepCount);
-		this.CurrentStep = this.recoverStepFromXML(this.CurrentStepCount);
-		
-		if (this.CurrentStepCount > 0 && this.CurrentStep.isEmpty()) {
+		if (this.CurrentStepCount > this.StepCount) {
 			this.CurrentStepCount = -1;
-		}
+		}		
+		// recoverStepFrom XML function will set recover all the information
+		// from the XML and set all the information into the appropriate variables
+		this.recoverCurrentStepFromXML(this.CurrentStepCount);
+
 	}
 	
 	// ------------------------------------------------------------------------
@@ -130,7 +139,10 @@ public class ManualXMLParser {
 		if (this.CurrentStepCount < 0) {
 			this.CurrentStepCount = 0;
 		}
-		this.CurrentStep = this.recoverStepFromXML(this.CurrentStepCount);
+		
+		// recoverStepFrom XML function will set recover all the information
+		// from the XML and set all the information into the appropriate variables
+		this.recoverCurrentStepFromXML(this.CurrentStepCount);
 	}
 	
 	// ------------------------------------------------------------------------
@@ -154,28 +166,90 @@ public class ManualXMLParser {
 	}
 	
 	// ------------------------------------------------------------------------
-	public Map<String, String> getCurrentStep() {
+	public Map<String, List<Geometry>> getCurrentStep() {
 		return this.CurrentStep;
 	}
 	
 	// ------------------------------------------------------------------------
-	public String getCurrentGeometry() { 
-		return this.recoverTagValueFromCurrentStep("geometry");
+	public List<String> getCurrentCosIDs() { 
+		List<String> list = new ArrayList<String>();
+		if (this.CurrentStep.isEmpty()) {
+			return list;
+		}
+		
+		for(Entry<String, List<Geometry>> entry : this.CurrentStep.entrySet()) {
+		    String key = entry.getKey();
+		    list.addAll(Arrays.asList(key.split(";")));
+		}
+		
+		return list;
 	}
 	
 	// ------------------------------------------------------------------------
-	public String getCurrentCosName() { 
-		return this.recoverTagValueFromCurrentStep("cosName");
+	public List<String> getCurrentGeometries() { 
+		List<String> geometries = new ArrayList<String>();
+		
+		for(Entry<String, List<Geometry>> entry : this.CurrentStep.entrySet()) {
+		    String key = entry.getKey();
+		    geometries.addAll(this.getCurrentGeometries(key));
+		}
+
+		return geometries;
 	}
 	
 	// ------------------------------------------------------------------------
-	public String getCurrentCosID() { 
-		return this.recoverTagValueFromCurrentStep("cosID");
+	public List<String> getCurrentGeometries(String cosId) {
+		List<String> geometries = new ArrayList<String>();
+		if (this.CurrentStep.isEmpty()) {
+			return geometries;
+		}
+		
+		for(Entry<String, List<Geometry>> entry : this.CurrentStep.entrySet()) {
+		    String key = entry.getKey();
+		    if (key.contains(cosId)) {
+		    	List<Geometry> values = entry.getValue();
+		    	for (int i = 0; i < values.size(); i++) {
+		    		geometries.add(values.get(i).getGeometryName());
+		    	}
+		    }
+		}
+		return geometries;
+	}
+	
+	// ------------------------------------------------------------------------
+	public Float[] getRotation(String geometryName, String cosId) {
+		Float[] rotation = new Float[3];
+		Geometry geo = this.getGeometryFromCurrentStep(cosId, geometryName);
+		if (geo != null) {
+			rotation = geo.getRotation();
+		}
+		return rotation;
+	}
+	
+	// ------------------------------------------------------------------------
+	public Float[] getTranslation(String geometryName, String cosId) {
+		Float[] translation = new Float[3];
+		Geometry geo = this.getGeometryFromCurrentStep(cosId, geometryName);
+		if (geo != null) {
+			translation = geo.getTranslation();
+		}
+		return translation;
+	}
+	
+	// ------------------------------------------------------------------------
+	public Float[] getScale(String geometryName, String cosId) {
+		Float[] scale = new Float[3];
+		Geometry geo = this.getGeometryFromCurrentStep(cosId, geometryName);
+		if (geo != null) {
+			scale = geo.getScale();
+		}
+		return scale;
 	}
 	
 	// ------------------------------------------------------------------------
 	public String getCurrentStepInfo() {
-		return this.recoverTagValueFromCurrentStep("info");
+		// TODO
+		return "";
 	}
 	
 	// ------------------------------------------------------------------------
@@ -204,33 +278,120 @@ public class ManualXMLParser {
 	}
 	
 	// ------------------------------------------------------------------------
-	private Map<String, String> recoverStepFromXML(int value) {
-		Map<String, String> tempMap = new HashMap<String, String>();
+	private void recoverCurrentStepFromXML(int value) {
 		
-//		Log.v("DEBUG", "recoverStepFromXML nO = " + this.CurrentStepCount);
-		NodeList nList = this.CurrentDocFile.getElementsByTagName("step");		
-		if (value < 1 || value > nList.getLength()) {
-			return tempMap;
+		this.CurrentStep.clear();
+		
+		// If we are at the biginning
+		if (value == 0) {
+			// TODO
+			return;
 		}
 		
-		NodeList nChildNode = nList.item(value - 1).getChildNodes();
-		for (int temp = 0; temp < nChildNode.getLength(); temp ++) {
-			Node nNode = nChildNode.item(temp);
-			
-			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-				tempMap.put(nNode.getNodeName(), nNode.getTextContent());
+		// If Manual is over
+		if (value == -1) {
+			/// TODO
+			return;
+		}
+		
+		NodeList nList = this.CurrentDocFile.getElementsByTagName("step");
+		Node stepNode = nList.item(value - 1);
+		this.recoverTracksFromCurrentStepNode(stepNode);
+	}
+	
+	// ---
+	// In this function, we will set the variable CurrentStep with all the info
+	// from the XML associated to the step
+	//
+	// We recover each track, with geometries associates and parameters
+	// ---
+	// ------------------------------------------------------------------------
+	private void recoverTracksFromCurrentStepNode(Node stepNode) {
+//		Log.v("DEBUG", "recoverTracksFromCurrentStepNode::Start");
+		NodeList childStepNode = stepNode.getChildNodes();
+		Node trackNode;
+		for (int i = 0; i < childStepNode.getLength(); i++) {
+//			Log.v("DEBUG", "recoverTracksFromCurrentStepNode::child " + i 
+//					+ " " + childStepNode.item(i).getNodeName() 
+//					+ " " + childStepNode.item(i).getNodeType()
+//					+ " " + Node.ELEMENT_NODE);
+			if (childStepNode.item(i).getNodeName().equals("track") &&
+				childStepNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
+				trackNode = childStepNode.item(i);
+//				Log.v("DEBUG", "recoverTracksFromCurrentStepNode::cosIds " + this.recoverAttributeValue(trackNode, "cosIds"));
+				this.CurrentStep.put(this.recoverAttributeValue(trackNode, "cosIds"),
+									 this.recoverGeometries(trackNode));
 			}
 		}
+	}
+	
+	// ---
+	// In this function, we recover the geometries information !
+	//
+	// Recover geometries and parameters
+	// ---
+	// ------------------------------------------------------------------------
+	private List<Geometry> recoverGeometries(Node trackNode) {
+		List<Geometry> temp = new ArrayList<Geometry>();
+		NodeList childTrackNode = trackNode.getChildNodes();
+		Node geometryNode;
+		for (int i = 0; i < childTrackNode.getLength(); i++) {
+			if (childTrackNode.item(i).getNodeName().equals("geometry") &&
+				childTrackNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
+				geometryNode = childTrackNode.item(i);
+				temp.add(this.recoverGeometry(geometryNode));
+			}
+		}
+		return temp;
+	}
+	
+	// ---
+	// In this function, we recover the vector !
+	//
+	// Recover vector
+	// ---
+	// ------------------------------------------------------------------------
+	private Geometry recoverGeometry(Node geometryNode) {
+		Geometry geometry = new Geometry();
+		geometry.setGeometryName(this.recoverAttributeValue(geometryNode, "name"));
 		
-		return tempMap;
+		NodeList childGeometryNode = geometryNode.getChildNodes();
+		Node child;
+		for (int i = 0; i < childGeometryNode.getLength(); i++) {
+			child = childGeometryNode.item(i);
+			if (child.getNodeName().equals("translation")) {
+				geometry.setTranslation(this.recoverVector(child));
+			}
+			else if (child.getNodeName().equals("rotation")) {
+				geometry.setRotation(this.recoverVector(child));
+			}
+			else if (child.getNodeName().equals("scale")) {
+				geometry.setScale(this.recoverVector(child));
+			}
+		}
+		return geometry;
+	}
+	
+	// ---
+	// In this function, we recover the vector !
+	//
+	// Recover vector
+	// ---
+	// ------------------------------------------------------------------------
+	private Float[] recoverVector(Node node) {
+		Float[] vector = new Float[3];
+		NodeList childNode = node.getChildNodes();
+		for (int i = 0; i < 3; i++) {
+			vector[i] = Float.parseFloat(childNode.item(i).getTextContent());
+		}
+		return vector;
 	}
 	
 	// ------------------------------------------------------------------------
-	private String recoverTagValueFromCurrentStep(String tag) {
+	private String recoverAttributeValue(Node node, String attribute) {
 		String value = "";
-		if (this.CurrentStep.containsKey(tag)){
-			value = this.CurrentStep.get(tag);
-		}
+		Node attributeNode = node.getAttributes().getNamedItem(attribute);
+		value = attributeNode.getTextContent();
 		return value;
 	}
 	
@@ -240,12 +401,31 @@ public class ManualXMLParser {
 		NodeList nList = this.CurrentDocFile.getElementsByTagName("geometry");		
 		
 		for (int temp = 0; temp < nList.getLength(); temp ++) {
-			if (geometryList.contains(nList.item(temp).getTextContent())) {
+			String geometryName = 
+					this.recoverAttributeValue(nList.item(temp), "name");
+			if (geometryList.contains(geometryName)) {
 				continue;
 			}
-			geometryList.add(nList.item(temp).getTextContent());
+			geometryList.add(geometryName);
 		}
 		return geometryList;
+	}
+	
+	// ------------------------------------------------------------------------
+	private Geometry getGeometryFromCurrentStep(String cosId, String name) {
+		for(Entry<String, List<Geometry>> entry : this.CurrentStep.entrySet()) {
+		    String key = entry.getKey();
+		    if (key.contains(cosId)) {
+		    	List<Geometry> values = entry.getValue();
+		    	for (int i = 0; i < values.size(); i++) {
+		    		if (values.get(i).getGeometryName().equals(name)) {
+		    			return values.get(i);
+		    		}
+		    	}
+		    }
+		}
+		
+		return null;
 	}
 	
 	// ------------------------------------------------------------------------

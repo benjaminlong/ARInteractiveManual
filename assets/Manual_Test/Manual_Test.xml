@@ -18,14 +18,14 @@
 		<step ID="2">
 			<cosName>object2</cosName>
 			<cosID>2</cosID>
-			<geometry>truck/truck.obj</geometry>
-			<info>Target = MetaiomanTarget - Geometry = Truck</info>
+			<geometry>screw.obj</geometry>
+			<info>Target = MetaiomanTarget - Geometry = screw.obj</info>
 		</step>
 		<step ID="3">
 			<cosName>object2</cosName>
-			<cosID>1</cosID>
-			<geometry>metaioman.md2</geometry>
-			<info>Target = My Object - Geometry = Metaioman</info>
+			<cosID>2</cosID>
+			<geometry>screw.zip</geometry>
+			<info>Target = metaioMan - Geometry = screw.zip</info>
 		</step>
 	</steps>
 </manual>
