@@ -147,7 +147,6 @@ public class ARManualViewActivity extends ARViewActivity  {
 			TrackingValuesVector poses = mMobileSDK.getTrackingValues();
 			int size = (int) poses.size();
 			if (size > 0 ) {
-//				Log.v("DEBUG", "Number of poses detected : " + size);
 				int cosID = poses.get(0).getCoordinateSystemID();
 				
 				// Check if a target has been just detected
@@ -156,15 +155,20 @@ public class ARManualViewActivity extends ARViewActivity  {
 					mDetectedCosID = cosID;
 					
 					if(this.mCurrentCosIDs.contains(String.valueOf(cosID))) {
-//						Log.v("DEBUG", "DrawFrame : CurrentGeos name" + this.mCurrentGeometries.toString());
+						Log.v("DEBUG", "DrawFrame : CurrentGeos name" + this.mCurrentGeometries.toString());
 						// TODO Maybe something better ?!
 						List<String> geometriesName = 
 								this.XmlParser.getCurrentGeometries(String.valueOf(cosID));
 						// Set the geometry that we have to link to this specific cosID
-						this.setCoordinatesSystemIdToGeometries(
-								this.getGeometriesFromName(geometriesName), cosID);
+						List<IGeometry> geoToShow = this.getGeometriesFromName(geometriesName); 
+						Log.v("DEBUG", "geoToShow size = " + geoToShow.size() + geometriesName);
+						this.setCoordinatesSystemIdToGeometries(geoToShow, cosID);
 						// Set the position
-						this.setGeometriesPosition(cosID);
+						Log.v("DEBUG", "geoToShow size = " + geoToShow.size() + geometriesName);
+						this.setGeometriesPosition(geoToShow, cosID);
+						// Start the animation
+						Log.v("DEBUG", "geoToShow size = " + geoToShow.size() + geometriesName);
+						this.startGeomtriesAnimation(geoToShow, "Take 001", true);
 					}
 				}
 			}
@@ -284,32 +288,60 @@ public class ARManualViewActivity extends ARViewActivity  {
 	// ------------------------------------------------------------------------
 	private void hideGeometry(IGeometry geometry) {
 		geometry.setVisible(false);
+		geometry.stopAnimation();
+	}
+	
+	// ------------------------------------------------------------------------
+	private void startGeomtriesAnimation(List<IGeometry> geometries, String name, Boolean loop) {
+		for (int i = 0; i < geometries.size(); i++) {
+			startGeomtryAnimation(geometries.get(i), name, loop);
+		}
+	}
+	
+	// ------------------------------------------------------------------------
+	private void startGeomtryAnimation(IGeometry geometry, String name, Boolean loop) {
+		Log.v("DEBUG", "startGeomtryAnimation : name : " + 
+				geometry.getAnimationNames().get(0) + " " );
+		if (geometry.getAnimationNames().isEmpty()) {
+			return;
+		}
+		geometry.setAnimationSpeed((float) 100);
+		geometry.startAnimation(name, loop);
 	}
 	
 	// ------------------------------------------------------------------------
 	private void setCoordinatesSystemIdToGeometries(List<IGeometry> geometries,
 													int id) {
+		Log.v("DEBUG", "setCoordinatesSystemIdToGeometries::START");
 		for (int i = 0; i < geometries.size(); i++) {
+			Log.v("DEBUG", "setcoord to geo name : " + geometries.get(i).getName());
 			geometries.get(i).setCoordinateSystemID(id);
 		}
 	}
 	
 	// ------------------------------------------------------------------------
-	private void setGeometriesPosition(int cosID) {
-		Log.v("DEBUG", "SetPosition : ");
-		for (int i = 0; i < this.mCurrentGeometries.size(); i++) {
+	private void setGeometriesPosition(List<IGeometry> geometries, int cosID) {
+		Log.v("DEBUG", "SetPosition::START ");
+		for (int i = 0; i < geometries.size(); i++) {
+			Log.v("DEBUG", "setPos to geo name : " + geometries.get(i).getName());
 			Float[] temp = new Float[3];
-			temp = this.XmlParser.getRotation(this.mCurrentGeometries.get(i).getName(),
+			Log.v("DEBUG", "get rotation");
+			temp = this.XmlParser.getRotation(geometries.get(i).getName(),
 											  String.valueOf(cosID));
-			this.mCurrentGeometries.get(i).setRotation(
+			Log.v("DEBUG", "set rotation");
+			geometries.get(i).setRotation(
 					new Rotation(temp[0], temp[1], temp[2]));
-			temp = this.XmlParser.getScale(this.mCurrentGeometries.get(i).getName(),
+			Log.v("DEBUG", "get scale");
+			temp = this.XmlParser.getScale(geometries.get(i).getName(),
 					  					   String.valueOf(cosID));
-			this.mCurrentGeometries.get(i).setScale(
+			Log.v("DEBUG", "set scale");
+			geometries.get(i).setScale(
 					new Vector3d(temp[0], temp[1], temp[2]));
-			temp = this.XmlParser.getTranslation(this.mCurrentGeometries.get(i).getName(),
+			Log.v("DEBUG", "get translation");
+			temp = this.XmlParser.getTranslation(geometries.get(i).getName(),
 					  							 String.valueOf(cosID));
-			this.mCurrentGeometries.get(i).setTranslation(
+			Log.v("DEBUG", "set translation");
+			geometries.get(i).setTranslation(
 					new Vector3d(temp[0], temp[1], temp[2]));
 		}
 	}
@@ -327,9 +359,9 @@ public class ARManualViewActivity extends ARViewActivity  {
 	private IGeometry getGeometryFromName(String name) {
 //		Log.v("DEBUG", "::getGeometryFromName START with name = " + name);
 		for (int i = 0; i < this.mGeometryList.size(); i++ ) {
-			Log.v("DEBUG", "i = " + i + ", geo name = " + this.mGeometryList.get(i).getName() +", " +name );
+//			Log.v("DEBUG", "i = " + i + ", geo name = " + this.mGeometryList.get(i).getName() +", " +name );
 			if (name.equalsIgnoreCase(this.mGeometryList.get(i).getName())) {
-				Log.v("DEBUG", "name found, geo is : " + this.mGeometryList.get(i).getName());
+//				Log.v("DEBUG", "name found, geo is : " + this.mGeometryList.get(i).getName());
 				return this.mGeometryList.get(i);
 			}
 		}
