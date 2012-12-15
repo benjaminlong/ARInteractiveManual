@@ -186,10 +186,10 @@ public class ARManualViewActivity extends ARViewActivity  {
 		super.onStart();
 		
 		if (mGUIView != null) {
-			this.mInfoView = (TextView)mGUIView.findViewById(R.id.manualActivityTopText);
-			this.mInfoView.setText("Please click the next button to start the manual");
+//			this.mInfoView = (TextView)mGUIView.findViewById(R.id.manualActivityTopText);
+//			this.mInfoView.setText("Please click the next button to start the manual");
 			mGUIView.findViewById(R.id.manualActivityButtonBar).setVisibility(View.GONE);
-			mGUIView.findViewById(R.id.manualActivityTopText).setVisibility(View.GONE);
+			mGUIView.findViewById(R.id.manualActivityPanelRelativeLayout).setVisibility(View.GONE);
 			mGUIView.findViewById(R.id.manualActivityLoadingProgressBar).setVisibility(View.VISIBLE);
 			mGUIView.findViewById(R.id.manualActivityLoadingTextView).setVisibility(View.VISIBLE);
 		}
@@ -406,7 +406,7 @@ public class ARManualViewActivity extends ARViewActivity  {
 		Log.v("DEBUG", "Current Ids : " + this.mCurrentCosIDs.toString());
 		
 		// We update the top view to give information
-		this.mInfoView.setText(this.XmlParser.getCurrentStepInfo());
+		// TODO
 	}
 	
 	// ------------------------------------------------------------------------
