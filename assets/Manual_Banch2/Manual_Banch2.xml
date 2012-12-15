@@ -12,60 +12,81 @@
 		<step ID="1">
 		    <track cosIds="1;2">
 		    	<geometry name="square.obj">
-		    	    <translation><x>-26.074966430664063</x><y>190.52532958984375</y><z>1</z></translation>
-					<rotation><x>80.0000000</x><y>0.00000</y><z>0.00000</z></rotation>
-					<scale><x>1.1826411390304565</x><y>0.45515586972236633</y><z>0.50943440198898315</z></scale>
+		    	    <translation><x>-25.374966430664063</x><y>183.52532958984375</y><z>-5</z></translation>
+					<rotation><x>89.50</x><y>0.00</y><z>0.00</z></rotation>
+					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
 		    	</geometry>
 		    </track>
 			<info>Target = Top part of the banch - The piece will be surrounded by a green square.</info>
 		</step>
 		
 		<step ID="2">
-			<track cosIds="1;2">
-			    <geometry name="square.obj">
-		    	    <translation><x>-26.074966430664063</x><y>190.52532958984375</y><z>1</z></translation>
-					<rotation><x>80.0000000</x><y>0.00000</y><z>0.00000</z></rotation>
-					<scale><x>1.1826411390304565</x><y>0.45515586972236633</y><z>0.50943440198898315</z></scale>
-		    	</geometry>
-		    	<geometry name="screw.obj">
-		    	    <translation><x>99.640510559082031</x><y>114.00665283203125</y><z>22.371505737304688</z></translation>
-					<rotation><x>0.0000000</x><y>0.00000</y><z>0.00000</z></rotation>
-					<scale><x>0.80</x><y>0.80</y><z>0.80</z></scale>
-		    	</geometry>
-		    </track>
-			<info>Target = Add Screws to the top part</info>
-		</step>
-		
-		<step ID="3">
-		    <track cosIds="1;2">
-		    	<geometry name="screw.obj">
-		    	    <translation><x>-99.640510559082031</x><y>114.00665283203125</y><z>22.371505737304688</z></translation>
-					<rotation><x>0.0000000</x><y>0.00000</y><z>0.00000</z></rotation>
-					<scale><x>0.80</x><y>0.80</y><z>0.80</z></scale>
-		    	</geometry>
-		    </track>
-			<info>Target = Add Screws to the top part</info>
-		</step>
-		
-		<step ID="3">
-		    <track cosIds="1">
-		    	<geometry name="screw.obj">
-		    	    <translation><x>-99.640510559082031</x><y>114.00665283203125</y><z>22.371505737304688</z></translation>
-					<rotation><x>0.0000000</x><y>0.00000</y><z>0.00000</z></rotation>
-					<scale><x>0.80</x><y>0.80</y><z>0.80</z></scale>
-		    	</geometry>
-		    </track>
 		    <track cosIds="2">
+		    	<geometry name="screw.zip">
+		    	    <translation><x>-94.940510559082031</x><y>114.55665283203125</y><z>22.371505737304688</z></translation>
+					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>3.2525129318237305</x><y>3.2525129318237305</y><z>3.2525129318237305</z></scale>
+		    	</geometry>
+		    	<geometry name="arrow1.zip">
+		    	    <translation><x>-94.945762634277344</x><y>114.55978393554687</y><z>11</z></translation>
+					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>1.8231074810028076</x><y>1.8231074810028076</y><z>1.8231074810028076</z></scale>
+		    	</geometry>
 		    	<geometry name="square.obj">
-		    	    <translation><x>-26.074966430664063</x><y>190.52532958984375</y><z>1</z></translation>
-					<rotation><x>80.0000000</x><y>0.00000</y><z>0.00000</z></rotation>
-					<scale><x>1.1826411390304565</x><y>0.45515586972236633</y><z>0.50943440198898315</z></scale>
+		    	    <translation><x>-25.374966430664063</x><y>183.52532958984375</y><z>-5</z></translation>
+					<rotation><x>89.50</x><y>0.00</y><z>0.00</z></rotation>
+					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
+		    	</geometry>
+		    </track>
+		    <track cosIds="1">
+		        <geometry name="fliparrow.zip">
+		    	    <translation><x>182.5985107421875</x><y>163.73446655273438</y><z>53.282119750976563</z></translation>
+					<rotation><x>-5.5282383982557803e-005</x><y>85.812637329101563</y><z>-90.000038146972656</z></rotation>
+					<scale><x>1.8870795965194702</x><y>1.8870795965194702</y><z>1.8870795965194702</z></scale>
+		    	</geometry>
+		    	<geometry name="square.obj">
+		    	    <translation><x>-25.374966430664063</x><y>183.52532958984375</y><z>-5</z></translation>
+					<rotation><x>89.50</x><y>0.00</y><z>0.00</z></rotation>
+					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
 		    	</geometry>
 		    </track>
 			<info>Target = Add Screws to the top part</info>
 		</step>
 		
-		<step ID="5">
+		<step ID="3">
+		    <track cosIds="2">
+		    	<geometry name="screw.zip">
+		    	    <translation><x>95.590522766113281</x><y>114.82634735107422</y><z>22</z></translation>
+					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>3.2525129318237305</x><y>3.2525129318237305</y><z>3.2525129318237305</z></scale>
+		    	</geometry>
+		    	<geometry name="arrow1.zip">
+		    	    <translation><x>95.445762634277344</x><y>114.55978393554687</y><z>11</z></translation>
+					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>1.8231074810028076</x><y>1.8231074810028076</y><z>1.8231074810028076</z></scale>
+		    	</geometry>
+		    	<geometry name="square.obj">
+		    	    <translation><x>-25.374966430664063</x><y>183.52532958984375</y><z>-5</z></translation>
+					<rotation><x>89.50</x><y>0.00</y><z>0.00</z></rotation>
+					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
+		    	</geometry>
+		    </track>
+		    <track cosIds="1">
+		        <geometry name="fliparrow.zip">
+		    	    <translation><x>182.5985107421875</x><y>163.73446655273438</y><z>53.282119750976563</z></translation>
+					<rotation><x>-5.5282383982557803e-005</x><y>85.812637329101563</y><z>-90.000038146972656</z></rotation>
+					<scale><x>1.8870795965194702</x><y>1.8870795965194702</y><z>1.8870795965194702</z></scale>
+		    	</geometry>
+		    	<geometry name="square.obj">
+		    	    <translation><x>-25.374966430664063</x><y>183.52532958984375</y><z>-5</z></translation>
+					<rotation><x>89.50</x><y>0.00</y><z>0.00</z></rotation>
+					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
+		    	</geometry>
+		    </track>
+			<info>Target = Add Screws to the top part</info>
+		</step>
+		
+		<step ID="4">
 		    <track cosIds="3;4">
 		    	<geometry name="square.obj">
 		    	    <translation><x>-27.26171875</x><y>144.48710632324219</y><z>1</z></translation>
@@ -76,12 +97,39 @@
 			<info>Target = back piece of the banch - The piece will be surrounded.</info>
 		</step>
 		
-		<step ID="6">
-		    <track cosIds="1;2">
-		    	<geometry name="woodBoard.obj">
-		    	    <translation><x>-157.80027770996094</x><y>102.21029663085937</y><z>1</z></translation>
+		<step ID="5">
+		    <track cosIds="1">
+		    	<geometry name="woodBoard.zip">
+		    	    <translation><x>-4.683563232421875</x><y>119.82212829589844</y><z>11.735542297363281</z></translation>
 					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
-					<scale><x>3.3404550552368164</x><y>1.1522939109802246</y><z>1.5394736528396606</z></scale>
+					<scale><x>2.6122682094573975</x><y>2.1397230625152588</y><z>2.1397230625152588</z></scale>
+		    	</geometry>
+		    	<geometry name="arrow1.zip">
+		    	    <translation><x>100.19468688964844</x><y>117.83078002929687</y><z>11</z></translation>
+					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>1.8231074810028076</x><y>1.8231074810028076</y><z>1.8231074810028076</z></scale>
+		    	</geometry>
+		    	<geometry name="arrow2.zip">
+		    	    <translation><x>-113.12998199462891</x><y>117.02534484863281</y><z>11</z></translation>
+					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>1.8231074810028076</x><y>1.8231074810028076</y><z>1.8231074810028076</z></scale>
+		    	</geometry>
+		    	<geometry name="square.obj">
+		    	    <translation><x>-25.374966430664063</x><y>183.52532958984375</y><z>-5</z></translation>
+					<rotation><x>89.50</x><y>0.00</y><z>0.00</z></rotation>
+					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
+		    	</geometry>
+		    </track>
+		    <track cosIds="2">
+		        <geometry name="fliparrow.zip">
+		    	    <translation><x>182.5985107421875</x><y>163.73446655273438</y><z>53.282119750976563</z></translation>
+					<rotation><x>-5.5282383982557803e-005</x><y>85.812637329101563</y><z>-90.000038146972656</z></rotation>
+					<scale><x>1.8870795965194702</x><y>1.8870795965194702</y><z>1.8870795965194702</z></scale>
+		    	</geometry>
+		    	<geometry name="square.obj">
+		    	    <translation><x>-25.374966430664063</x><y>183.52532958984375</y><z>-5</z></translation>
+					<rotation><x>89.50</x><y>0.00</y><z>0.00</z></rotation>
+					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
 		    	</geometry>
 		    </track>
 			<info>Target = Top piece of the banch - We will show where to add the previous piece.</info>
