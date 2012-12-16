@@ -17,7 +17,10 @@
 					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
 		    	</geometry>
 		    </track>
-			<info>Target = Top part of the banch - The piece will be surrounded by a green square.</info>
+			<tasks>
+			    <task>Find the top piece of the banch</task>
+			    <task>Place this piece somewhere else</task>
+			</tasks>
 		</step>
 		
 		<step ID="2">
@@ -50,7 +53,11 @@
 					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
 		    	</geometry>
 		    </track>
-			<info>Target = Add Screws to the top part</info>
+			<tasks>
+			    <task>Find the main piece of the banch</task>
+			    <task>Be sure to see the bottom part (The AR will tell you if you have to rotate the piece)</task>
+			    <task>Partially screw the first screw into the wood board</task>
+			</tasks>
 		</step>
 		
 		<step ID="3">
@@ -83,7 +90,11 @@
 					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
 		    	</geometry>
 		    </track>
-			<info>Target = Add Screws to the top part</info>
+		    <tasks>
+			    <task>Find the main piece of the banch</task>
+			    <task>Be sure to see the bottom part (The AR will tell you if you have to rotate the piece)</task>
+			    <task>Partially screw the second screw into the wood board</task>
+			</tasks>
 		</step>
 		
 		<step ID="4">
@@ -94,6 +105,10 @@
 					<scale><x>0.99157077074050903</x><y>0.46515586972236633</y><z>0.28516095876693726</z></scale>
 		    	</geometry>
 		    </track>
+		    <tasks>
+			    <task>Find the second piece of the banch</task>
+			    <task>Bring it next to the previous piece of wood</task>
+			</tasks>
 			<info>Target = back piece of the banch - The piece will be surrounded.</info>
 		</step>
 		
@@ -132,6 +147,11 @@
 					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
 		    	</geometry>
 		    </track>
+		    <tasks>
+			    <task>Find the main piece of the banch with the 2 screws partially added</task>
+			    <task>Place the second piece of wood on the main part</task>
+			    <task>Then finish to screw the 2 screws</task>
+			</tasks>
 			<info>Target = Top piece of the banch - We will show where to add the previous piece.</info>
 		</step>
 
