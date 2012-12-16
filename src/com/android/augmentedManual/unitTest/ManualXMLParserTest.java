@@ -115,9 +115,8 @@ public class ManualXMLParserTest extends TestCase{
 		
 		assertEquals(new ArrayList<String>(), parser.getCurrentCosIDs());
 		assertEquals(true, parser.getCurrentGeometries().isEmpty());
-		assertEquals("", parser.getCurrentStepInfo());
-		assertEquals(0, parser.getStepCount());
-		
+		assertEquals(0, parser.getCurrentStepCount());
+		assertEquals(2, parser.getStepCount());
 		
 		// STEP 1
 		parser.nextStep();
@@ -212,7 +211,7 @@ public class ManualXMLParserTest extends TestCase{
 		parser.nextStep();
 		assertEquals(true, parser.getCurrentStep().isEmpty());
 		assertEquals(true, parser.getCurrentStep().isEmpty());
-		assertEquals(-1, parser.getStepCount());
+		assertEquals(-1, parser.getCurrentStepCount());
 		
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -388,9 +388,9 @@ public abstract class ARViewActivity extends Activity implements
 				public void run() {
 					if (mGUIView != null) 
 						mGUIView.findViewById(R.id.manualActivityLoadingProgressBar).setVisibility(View.GONE);
-						mGUIView.findViewById(R.id.manualActivityLoadingTextView).setVisibility(View.GONE);
 						mGUIView.findViewById(R.id.manualActivityButtonBar).setVisibility(View.VISIBLE);
-						mGUIView.findViewById(R.id.manualActivityPanelRelativeLayout).setVisibility(View.VISIBLE);
+						mGUIView.findViewById(R.id.manualActivityPanelInclude).setVisibility(View.VISIBLE);
+						mGUIView.findViewById(R.id.manualActivityPanelInclude).setVisibility(View.VISIBLE);
 					}
 			});
 

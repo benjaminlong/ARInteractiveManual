@@ -42,6 +42,7 @@ public class ManualXMLParser {
 	int									CurrentStepCount;
 	
 	Map<String, List<Geometry>>			CurrentStep = null;
+	List<String>						CurrentTasks = null;
 
 	List<String>						GeometriesName = null;
 	
@@ -56,6 +57,7 @@ public class ManualXMLParser {
 			
 			this.CurrentManualInfo = new HashMap<String, String>();
 			this.CurrentStep = new HashMap<String, List<Geometry>>();
+			this.CurrentTasks = new ArrayList<String>();
 			
 			this.StepCount = 0;
 			this.CurrentStepCount = 0;
@@ -147,6 +149,10 @@ public class ManualXMLParser {
 	
 	// ------------------------------------------------------------------------
 	public int getStepCount() {
+		return this.StepCount;
+	}
+	
+	public int getCurrentStepCount() {
 		return this.CurrentStepCount;
 	}
 	
@@ -247,9 +253,8 @@ public class ManualXMLParser {
 	}
 	
 	// ------------------------------------------------------------------------
-	public String getCurrentStepInfo() {
-		// TODO
-		return "";
+	public List<String> getCurrentTasksDescription() {
+		return this.CurrentTasks;
 	}
 	
 	// ------------------------------------------------------------------------
@@ -280,7 +285,9 @@ public class ManualXMLParser {
 	// ------------------------------------------------------------------------
 	private void recoverCurrentStepFromXML(int value) {
 		
+		// Remove information about the previous step
 		this.CurrentStep.clear();
+		this.CurrentTasks.clear();
 		
 		// If we are at the biginning
 		if (value == 0) {
@@ -296,7 +303,7 @@ public class ManualXMLParser {
 		
 		NodeList nList = this.CurrentDocFile.getElementsByTagName("step");
 		Node stepNode = nList.item(value - 1);
-		this.recoverTracksFromCurrentStepNode(stepNode);
+		this.recoverStepFromCurrentStepNode(stepNode);
 	}
 	
 	// ---
@@ -306,23 +313,45 @@ public class ManualXMLParser {
 	// We recover each track, with geometries associates and parameters
 	// ---
 	// ------------------------------------------------------------------------
-	private void recoverTracksFromCurrentStepNode(Node stepNode) {
-//		Log.v("DEBUG", "recoverTracksFromCurrentStepNode::Start");
+	private void recoverStepFromCurrentStepNode(Node stepNode) {
 		NodeList childStepNode = stepNode.getChildNodes();
 		Node trackNode;
+		Node tasksNode;
 		for (int i = 0; i < childStepNode.getLength(); i++) {
-//			Log.v("DEBUG", "recoverTracksFromCurrentStepNode::child " + i 
-//					+ " " + childStepNode.item(i).getNodeName() 
-//					+ " " + childStepNode.item(i).getNodeType()
-//					+ " " + Node.ELEMENT_NODE);
+			// Recover Tracks
 			if (childStepNode.item(i).getNodeName().equals("track") &&
-				childStepNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
+					childStepNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
 				trackNode = childStepNode.item(i);
-//				Log.v("DEBUG", "recoverTracksFromCurrentStepNode::cosIds " + this.recoverAttributeValue(trackNode, "cosIds"));
 				this.CurrentStep.put(this.recoverAttributeValue(trackNode, "cosIds"),
 									 this.recoverGeometries(trackNode));
 			}
+			// Recover Tasks
+			else if (childStepNode.item(i).getNodeName().equals("tasks") &&
+					 childStepNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
+				tasksNode = childStepNode.item(i);
+				this.CurrentTasks.addAll(this.recoverTasksFromTasksNode(tasksNode));
+			}
+		
 		}
+	}
+	
+	// ---
+	// In this function, we recover all the different tasks to complete the step !
+	//
+	// Recover tasks
+	// ---
+	// ------------------------------------------------------------------------
+	private List<String> recoverTasksFromTasksNode(Node tasksNode) {
+		List<String> tasks = new ArrayList<String>();
+		NodeList childTasksNode = tasksNode.getChildNodes();
+		for (int i = 0; i < childTasksNode.getLength(); i++) {
+			if (childTasksNode.item(i).getNodeName().equals("task") &&
+					childTasksNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
+				Log.v("DEBUG", "task : " + childTasksNode.item(i).getTextContent());
+				tasks.add(childTasksNode.item(i).getTextContent());
+			}
+		}
+		return tasks;
 	}
 	
 	// ---
@@ -337,7 +366,7 @@ public class ManualXMLParser {
 		Node geometryNode;
 		for (int i = 0; i < childTrackNode.getLength(); i++) {
 			if (childTrackNode.item(i).getNodeName().equals("geometry") &&
-				childTrackNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
+					childTrackNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
 				geometryNode = childTrackNode.item(i);
 				temp.add(this.recoverGeometry(geometryNode));
 			}

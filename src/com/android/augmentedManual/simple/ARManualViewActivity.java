@@ -20,6 +20,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.augmentedManual.R;
@@ -42,17 +44,17 @@ public class ARManualViewActivity extends ARViewActivity  {
 	
 	private String					mManualName;
 	private List<IGeometry> 		mGeometryList;
-	private List<IGeometry> 		mCurrentGeometries = null;
-	
+	private List<IGeometry> 		mCurrentGeometries = null;	
 	private List<String> 			mCurrentCosIDs;
-//	private String					mCurrentCosName = "";
 	
 	private ManualXMLParser 		XmlParser;
 	private String 					mTrackingDataML3D = "";
-	private TextView				mInfoView;
-
-	public final static float PI_2 = (float) (Math.PI / 2.0);
 	
+	private View					mPanelView;
+	private TextView				mStepTitle;
+	private ImageView				mFromImage;
+	private ImageView				mToImage;
+	private TextView				mTasksDescription;
 
 	// ------------------------------------------------------------------------
 	public void onCreate(Bundle savedInstanceState) {
@@ -106,31 +108,14 @@ public class ARManualViewActivity extends ARViewActivity  {
 	// ------------------------------------------------------------------------
 	public void onNextButtonClick(final View view) {
 		this.XmlParser.nextStep();
+		this.setupUI();
 		this.setCurrentContent();
-	}
-	
-	// ------------------------------------------------------------------------
-	public void onInfoButtonClick(final View view) {
-		// TODO Give more information about what to do.
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setCancelable(true);
-		builder.setIcon(R.drawable.ic_launcher);
-		builder.setTitle("Info");
-		builder.setMessage(this.XmlParser.getCurrentStepInfo());
-		builder.setInverseBackgroundForced(true);
-		builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-		  public void onClick(DialogInterface dialog, int which) {
-		    dialog.dismiss();
-		  }
-		});
-		AlertDialog alert = builder.create();
-		alert.show();
-		
 	}
 	
 	// ------------------------------------------------------------------------
 	public void onPreviousButtonClick(final View view) {
 		this.XmlParser.previousStep();
+		this.setupUI();
 		this.setCurrentContent();
 	}
 	
@@ -186,12 +171,27 @@ public class ARManualViewActivity extends ARViewActivity  {
 		super.onStart();
 		
 		if (mGUIView != null) {
-//			this.mInfoView = (TextView)mGUIView.findViewById(R.id.manualActivityTopText);
-//			this.mInfoView.setText("Please click the next button to start the manual");
-			mGUIView.findViewById(R.id.manualActivityButtonBar).setVisibility(View.GONE);
-			mGUIView.findViewById(R.id.manualActivityPanelRelativeLayout).setVisibility(View.GONE);
-			mGUIView.findViewById(R.id.manualActivityLoadingProgressBar).setVisibility(View.VISIBLE);
-			mGUIView.findViewById(R.id.manualActivityLoadingTextView).setVisibility(View.VISIBLE);
+			// Init Variables
+			this.mPanelView = mGUIView.findViewById(R.id.manualActivityPanelInclude);
+			TextView title = 
+					(TextView)this.mPanelView.findViewById(R.id.panelStepTitleTextView);
+			title.setText(this.mManualName.replace("_", " "));
+			this.mStepTitle = 
+					(TextView)this.mPanelView.findViewById(R.id.panelStepOverviewStepTitle);
+			this.mTasksDescription =
+					(TextView)this.mPanelView.findViewById(R.id.panelStepTasksDescription);
+			this.mFromImage = 
+					(ImageView)this.mPanelView.findViewById(R.id.panelStepOverviewFromImageView);
+			this.mToImage =
+					(ImageView)this.mPanelView.findViewById(R.id.panelStepOverviewToImageView);
+			
+			// Set Visibility
+			mGUIView.findViewById(
+					R.id.manualActivityButtonBar).setVisibility(View.GONE);
+			mGUIView.findViewById(
+					R.id.manualActivityPanelInclude).setVisibility(View.GONE);
+			mGUIView.findViewById(
+					R.id.manualActivityLoadingProgressBar).setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -372,41 +372,34 @@ public class ARManualViewActivity extends ARViewActivity  {
 	
 	// ------------------------------------------------------------------------
 	private void setCurrentContent() {
-		Log.v("DEBUG", "SetCurrentContent::START");
-		
+		// Renitialize the variable mDetectedCosID
 		this.mDetectedCosID = -1;
 		
-		// Remove the previous geometry to the renderer, hide and id = 0.
-		Log.v("DEBUG", "Action on previous geometries");
+		// Remove the previous geometry to the renderer, hide them and set cosId to 0
 		if (!this.mCurrentGeometries.isEmpty()) {
 			this.hideGeometries(this.mCurrentGeometries);
 			this.setCoordinatesSystemIdToGeometries(this.mCurrentGeometries, 0);
 			this.mCurrentGeometries.clear();
 		}
-		Log.v("DEBUG", "Action on previous geometries DONE");
 		
 		// If the manual is over
-		Log.v("DEBUG", "Manual Over ?");
 		if (this.XmlParser.getStepCount() == -1){
-//			this.mCurrentCosID = 0;
+			// TODO Maybe change the UI ?
 			return;
 		}
-		Log.v("DEBUG", "Manual Over DONE");
 		
-		// We recover the current geometry name, and set it to currentGeometry
-		Log.v("DEBUG", "Recover Geometries and set them");
+		// Recover current geometries name, and set it to currentGeometry
 		List<String> geometriesName = this.XmlParser.getCurrentGeometries();
 		this.mCurrentGeometries.addAll(this.getGeometriesFromName(geometriesName));
+		
+		// Turn their variable show to true
 		this.showGeometries(this.mCurrentGeometries);
 		Log.v("DEBUG", "Geometries name : " + geometriesName.toString());
 		Log.v("DEBUG", "Current Geometries : " + this.mCurrentGeometries.toString());
 		
-		// Current Cos ids to track
+		// Recover Cos ids to track
 		this.mCurrentCosIDs = this.XmlParser.getCurrentCosIDs();
 		Log.v("DEBUG", "Current Ids : " + this.mCurrentCosIDs.toString());
-		
-		// We update the top view to give information
-		// TODO
 	}
 	
 	// ------------------------------------------------------------------------
@@ -430,5 +423,33 @@ public class ARManualViewActivity extends ARViewActivity  {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	// ------------------------------------------------------------------------
+	private void setupUI() {
+		// Set Step title
+		this.mStepTitle.setText("Step " + 
+				String.valueOf(this.XmlParser.getCurrentStepCount()) + "/" +
+				String.valueOf(this.XmlParser.getStepCount()));
+		
+		// Set tasks panel
+		List<String> tasks = this.XmlParser.getCurrentTasksDescription();
+		if (tasks.size() == 0) {
+			this.mTasksDescription.setText("No Description for this Step ! \n");
+		}
+		else {
+			this.mTasksDescription.setText(
+					"Following the different tasks to complete the step : \n\n");
+			for (int i = 0; i < tasks.size(); i ++) {
+				this.mTasksDescription.append(
+						"\t" + String.valueOf(i+1) + ". " + tasks.get(i) + " \n\n"); 
+			}
+		}
+		
+		// Set From Image
+		// TODO
+		
+		// Set To Image
+		// TODO
 	}
 }
