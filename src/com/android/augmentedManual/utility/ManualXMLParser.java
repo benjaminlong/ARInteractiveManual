@@ -18,7 +18,6 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 
@@ -41,8 +40,11 @@ public class ManualXMLParser {
 	int 								StepCount;
 	int									CurrentStepCount;
 	
+	String								CurrentTitle;
 	Map<String, List<Geometry>>			CurrentStep = null;
 	List<String>						CurrentTasks = null;
+	List<String>						CurrentNeeds = null;
+	List<String>						CurrentImages = null;
 
 	List<String>						GeometriesName = null;
 	
@@ -55,9 +57,12 @@ public class ManualXMLParser {
 			this.DbFactory = DocumentBuilderFactory.newInstance();
 			this.DBuilder = this.DbFactory.newDocumentBuilder();
 			
+			this.CurrentTitle = "";
 			this.CurrentManualInfo = new HashMap<String, String>();
 			this.CurrentStep = new HashMap<String, List<Geometry>>();
 			this.CurrentTasks = new ArrayList<String>();
+			this.CurrentNeeds = new ArrayList<String>();
+			this.CurrentImages = new ArrayList<String>();
 			
 			this.StepCount = 0;
 			this.CurrentStepCount = 0;
@@ -94,7 +99,7 @@ public class ManualXMLParser {
 				}
 			}
 			
-			// Init manual information
+			// Init manual informatio
 			this.CurrentXMLStream = manualStream;
 			this.CurrentDocFile = docFile;
 			this.CurrentManualInfo = this.recoverManualInfoFromXML();
@@ -253,8 +258,23 @@ public class ManualXMLParser {
 	}
 	
 	// ------------------------------------------------------------------------
+	public String getCurrentTitle() {
+		return this.CurrentTitle;
+	}
+	
+	// ------------------------------------------------------------------------
 	public List<String> getCurrentTasksDescription() {
 		return this.CurrentTasks;
+	}
+	
+	// ------------------------------------------------------------------------
+	public List<String> getCurrentNeedsDescription() {
+		return this.CurrentNeeds;
+	}
+	
+	// ------------------------------------------------------------------------
+	public List<String> getCurrentImagesName() {
+		return this.CurrentImages;
 	}
 	
 	// ------------------------------------------------------------------------
@@ -286,8 +306,11 @@ public class ManualXMLParser {
 	private void recoverCurrentStepFromXML(int value) {
 		
 		// Remove information about the previous step
+		this.CurrentTitle = "";
 		this.CurrentStep.clear();
 		this.CurrentTasks.clear();
+		this.CurrentNeeds.clear();
+		this.CurrentImages.clear();
 		
 		// If we are at the biginning
 		if (value == 0) {
@@ -303,6 +326,7 @@ public class ManualXMLParser {
 		
 		NodeList nList = this.CurrentDocFile.getElementsByTagName("step");
 		Node stepNode = nList.item(value - 1);
+		this.CurrentTitle = this.recoverAttributeValue(stepNode, "title");
 		this.recoverStepFromCurrentStepNode(stepNode);
 	}
 	
@@ -316,7 +340,7 @@ public class ManualXMLParser {
 	private void recoverStepFromCurrentStepNode(Node stepNode) {
 		NodeList childStepNode = stepNode.getChildNodes();
 		Node trackNode;
-		Node tasksNode;
+		Node node;
 		for (int i = 0; i < childStepNode.getLength(); i++) {
 			// Recover Tracks
 			if (childStepNode.item(i).getNodeName().equals("track") &&
@@ -328,30 +352,39 @@ public class ManualXMLParser {
 			// Recover Tasks
 			else if (childStepNode.item(i).getNodeName().equals("tasks") &&
 					 childStepNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
-				tasksNode = childStepNode.item(i);
-				this.CurrentTasks.addAll(this.recoverTasksFromTasksNode(tasksNode));
+				node = childStepNode.item(i);
+				this.CurrentTasks.addAll(this.recoverValuesTypeFromTypeNode(node, "task"));
 			}
-		
+			// Recover Needs
+			else if (childStepNode.item(i).getNodeName().equals("needs") &&
+					 childStepNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
+				node = childStepNode.item(i);
+				this.CurrentNeeds.addAll(this.recoverValuesTypeFromTypeNode(node, "need"));
+			}
+			// Recover Images
+			else if (childStepNode.item(i).getNodeName().equals("images") &&
+					 	childStepNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
+				node = childStepNode.item(i);
+				this.CurrentImages.addAll(this.recoverValuesTypeFromTypeNode(node, "image"));
+			}
 		}
 	}
 	
 	// ---
-	// In this function, we recover all the different tasks to complete the step !
+	// In this function, we recover all the different values under a "value" !
 	//
-	// Recover tasks
 	// ---
 	// ------------------------------------------------------------------------
-	private List<String> recoverTasksFromTasksNode(Node tasksNode) {
-		List<String> tasks = new ArrayList<String>();
-		NodeList childTasksNode = tasksNode.getChildNodes();
-		for (int i = 0; i < childTasksNode.getLength(); i++) {
-			if (childTasksNode.item(i).getNodeName().equals("task") &&
-					childTasksNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
-				Log.v("DEBUG", "task : " + childTasksNode.item(i).getTextContent());
-				tasks.add(childTasksNode.item(i).getTextContent());
+	private List<String> recoverValuesTypeFromTypeNode(Node node, String value) {
+		List<String> list = new ArrayList<String>();
+		NodeList childNode = node.getChildNodes();
+		for (int i = 0; i < childNode.getLength(); i++) {
+			if (childNode.item(i).getNodeName().equals(value) &&
+					childNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
+				list.add(childNode.item(i).getTextContent());
 			}
 		}
-		return tasks;
+		return list;
 	}
 	
 	// ---

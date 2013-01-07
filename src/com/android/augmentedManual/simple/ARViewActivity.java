@@ -25,19 +25,16 @@ import android.widget.FrameLayout;
 
 import com.android.augmentedManual.Configuration;
 import com.android.augmentedManual.R;
-//import com.android.augmentedManual.MobileSDKExampleApplication;
+
 import com.metaio.tools.io.AssetsManager;
 import com.metaio.sdk.MetaioDebug;
 import com.metaio.sdk.MetaioSurfaceView;
 import com.metaio.sdk.SensorsComponentAndroid;
-//import com.metaio.sdk.jni.AS_IMeatioSDKMobile;
 import com.metaio.sdk.jni.ERENDER_SYSTEM;
 import com.metaio.sdk.jni.IMetaioSDKAndroid;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.MetaioSDK;
-import com.metaio.sdk.jni.PoseVector;
-import com.metaio.sdk.jni.TrackingValuesVector;
 import com.metaio.sdk.jni.Vector2di;
 
 /**

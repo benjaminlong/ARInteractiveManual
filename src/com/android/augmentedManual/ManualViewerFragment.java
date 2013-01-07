@@ -11,6 +11,7 @@ import android.app.Fragment;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,11 +27,15 @@ public class ManualViewerFragment extends Fragment{
 	// Variable about the view
 	private View 			rootView = null;
 	private TextView 		Title;
-	private TextView 		DescriptionCotent;
-	private TextView		DescriptionTitle;
-	private LinearLayout	DescriptionLayout;
+	
+	private LinearLayout	Layout;
+
+	private TextView 		DescriptionContent;
+	private ImageView		Image;
+		
 	private ImageView 		Icon;
 	private ImageView 		NoManualIcon;
+	
 	private Button			StartButton;
 	
 	private ManualXMLParser	XmlParser = null;
@@ -46,22 +51,30 @@ public class ManualViewerFragment extends Fragment{
 	// ------------------------------------------------------------------------
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
+		// Around part ...
 		this.rootView = inflater.inflate(
 				R.layout.activity_manual_viewer, container, false);
 		this.Title = (TextView)rootView.findViewById(
 				R.id.manualViewerTitleTextView);
-		this.DescriptionTitle = (TextView)rootView.findViewById(
-				R.id.manualViewerDescriptionTitleTextView);
-		this.DescriptionCotent = (TextView)rootView.findViewById(
-				R.id.manualViewerDescriptionContentTextView);
-		this.DescriptionLayout = (LinearLayout)rootView.findViewById(
-				R.id.manualViewerDescriptionLinearLayout);
 		this.Icon = (ImageView)rootView.findViewById(
 				R.id.manualViewerManualIconImageView);
 		this.NoManualIcon = (ImageView)rootView.findViewById(
 				R.id.manualViewerNoManualImageView);
 		this.StartButton = (Button)rootView.findViewById(
 				R.id.manualViewerStartButton);
+		// Description ...
+		this.DescriptionContent = (TextView)rootView.findViewById(
+				R.id.manualViewerDescriptionContentTextView);
+		// Manual Image ...
+		this.Image = (ImageView)rootView.findViewById(
+				R.id.manualViewerImagesImage);
+		// Layout ...
+		this.Layout = (LinearLayout)rootView.findViewById(
+				R.id.manualViewerLayout);
+		
+		// Shadows ...
+		
+		
 		this.setVisibilitiesData(false);
 		return this.rootView;
 	}
@@ -98,14 +111,37 @@ public class ManualViewerFragment extends Fragment{
 			
 		    if (this.rootView != null) {
 		    	Log.v("DEBUG", "rootView != null");
+		    	// Title
 				this.Title.setText(infos.get("manualname"));
-				this.DescriptionCotent.setText(infos.get("description"));
+				// Logo
 				Bitmap logo = this.getBitmapFromAsset(
 						manualName + "/" + infos.get("manualicon"));
-				// We should use a android default integer set in res/value !
-				logo = Bitmap.createScaledBitmap(logo, 72, 72, true);
-				// TODO if no image ... put the default image (Done by default)
-				this.Icon.setImageBitmap(logo);
+		        if (logo == null) {
+		        	Log.v("DEBUG", "logo is null");
+		        	Drawable drawable =
+		        			this.getResources().getDrawable(R.drawable.no_icon);
+		        	this.Icon.setImageDrawable(drawable);
+		        }
+		        else {
+		        	logo = Bitmap.createScaledBitmap(logo, 72, 72, true);
+		        	this.Icon.setImageBitmap(logo);
+		        }
+		        
+				// Description
+				this.DescriptionContent.setText(infos.get("description"));
+				// Manual Image
+				Bitmap image = this.getBitmapFromAsset(
+						manualName + "/" + infos.get("manualimage"));
+				if (image == null) {
+					Log.v("DEBUG", "image is null");
+		        	Drawable drawable =
+		        			this.getResources().getDrawable(R.drawable.step_default);
+		        	this.Image.setImageDrawable(drawable);
+		        }
+		        else {
+		        	this.Image.setImageBitmap(image);
+		        }
+				
 				this.setVisibilitiesData(true);
 		    }
 		} catch (Exception e) {
@@ -133,10 +169,11 @@ public class ManualViewerFragment extends Fragment{
 	
 	// ------------------------------------------------------------------------
 	private void setVisibilitiesData(boolean Data) {
+		// Layout ...
+		this.Layout.setVisibility(Data ? View.VISIBLE : View.GONE);
+		
+		// Around part
 		this.Icon.setVisibility(Data ? View.VISIBLE : View.GONE);
-		this.DescriptionCotent.setVisibility(Data ? View.VISIBLE : View.GONE);
-		this.DescriptionTitle.setVisibility(Data ? View.VISIBLE : View.GONE);
-		this.DescriptionLayout.setVisibility(Data ? View.VISIBLE : View.GONE);
 		this.Title.setVisibility(Data ? View.VISIBLE : View.GONE);
 		this.StartButton.setVisibility(Data ? View.VISIBLE : View.GONE);
 		this.NoManualIcon.setVisibility(Data ? View.GONE : View.VISIBLE);

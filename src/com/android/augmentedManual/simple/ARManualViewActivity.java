@@ -11,17 +11,20 @@ package com.android.augmentedManual.simple;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.augmentedManual.R;
@@ -52,9 +55,11 @@ public class ARManualViewActivity extends ARViewActivity  {
 	
 	private View					mPanelView;
 	private TextView				mStepTitle;
+	private TextView				mStepCount;
 	private ImageView				mFromImage;
 	private ImageView				mToImage;
 	private TextView				mTasksDescription;
+	private TextView				mNeedsDescription;
 
 	// ------------------------------------------------------------------------
 	public void onCreate(Bundle savedInstanceState) {
@@ -151,6 +156,9 @@ public class ARManualViewActivity extends ARViewActivity  {
 						// Set the position
 						Log.v("DEBUG", "geoToShow size = " + geoToShow.size() + geometriesName);
 						this.setGeometriesPosition(geoToShow, cosID);
+						// We show the geometries
+						Log.v("DEBUG", "geoToShow size = " + geoToShow.size() + geometriesName);
+						this.showGeometries(geoToShow);
 						// Start the animation
 						Log.v("DEBUG", "geoToShow size = " + geoToShow.size() + geometriesName);
 						this.startGeomtriesAnimation(geoToShow, "Take 001", true);
@@ -177,9 +185,13 @@ public class ARManualViewActivity extends ARViewActivity  {
 					(TextView)this.mPanelView.findViewById(R.id.panelStepTitleTextView);
 			title.setText(this.mManualName.replace("_", " "));
 			this.mStepTitle = 
+					(TextView)this.mPanelView.findViewById(R.id.panelStepOverviewTitle);
+			this.mStepCount = 
 					(TextView)this.mPanelView.findViewById(R.id.panelStepOverviewStepTitle);
 			this.mTasksDescription =
 					(TextView)this.mPanelView.findViewById(R.id.panelStepTasksDescription);
+			this.mNeedsDescription =
+					(TextView)this.mPanelView.findViewById(R.id.panelStepNeedsDescription);
 			this.mFromImage = 
 					(ImageView)this.mPanelView.findViewById(R.id.panelStepOverviewFromImageView);
 			this.mToImage =
@@ -357,11 +369,8 @@ public class ARManualViewActivity extends ARViewActivity  {
 	
 	// ------------------------------------------------------------------------
 	private IGeometry getGeometryFromName(String name) {
-//		Log.v("DEBUG", "::getGeometryFromName START with name = " + name);
 		for (int i = 0; i < this.mGeometryList.size(); i++ ) {
-//			Log.v("DEBUG", "i = " + i + ", geo name = " + this.mGeometryList.get(i).getName() +", " +name );
 			if (name.equalsIgnoreCase(this.mGeometryList.get(i).getName())) {
-//				Log.v("DEBUG", "name found, geo is : " + this.mGeometryList.get(i).getName());
 				return this.mGeometryList.get(i);
 			}
 		}
@@ -393,9 +402,9 @@ public class ARManualViewActivity extends ARViewActivity  {
 		this.mCurrentGeometries.addAll(this.getGeometriesFromName(geometriesName));
 		
 		// Turn their variable show to true
-		this.showGeometries(this.mCurrentGeometries);
-		Log.v("DEBUG", "Geometries name : " + geometriesName.toString());
-		Log.v("DEBUG", "Current Geometries : " + this.mCurrentGeometries.toString());
+//		this.showGeometries(this.mCurrentGeometries);
+//		Log.v("DEBUG", "Geometries name : " + geometriesName.toString());
+//		Log.v("DEBUG", "Current Geometries : " + this.mCurrentGeometries.toString());
 		
 		// Recover Cos ids to track
 		this.mCurrentCosIDs = this.XmlParser.getCurrentCosIDs();
@@ -427,11 +436,15 @@ public class ARManualViewActivity extends ARViewActivity  {
 	
 	// ------------------------------------------------------------------------
 	private void setupUI() {
-		// Set Step title
-		this.mStepTitle.setText("Step " + 
+		// Set Step Title
+		this.mStepTitle.setText(this.XmlParser.getCurrentTitle());
+		
+		// Set Step Count
+		this.mStepCount.setText("Step " + 
 				String.valueOf(this.XmlParser.getCurrentStepCount()) + "/" +
 				String.valueOf(this.XmlParser.getStepCount()));
-		
+
+		// TODO Factorize following methods
 		// Set tasks panel
 		List<String> tasks = this.XmlParser.getCurrentTasksDescription();
 		if (tasks.size() == 0) {
@@ -446,9 +459,40 @@ public class ARManualViewActivity extends ARViewActivity  {
 			}
 		}
 		
+		// Set needs panel
+		List<String> needs = this.XmlParser.getCurrentNeedsDescription();
+		if (needs.size() == 0) {
+			this.mNeedsDescription.setText("No Description for this Step ! \n");
+		}
+		else {
+			this.mNeedsDescription.setText(
+					"You need these different tools to complete the step : \n\n");
+			for (int i = 0; i < needs.size(); i ++) {
+				this.mNeedsDescription.append(
+						"\t- " + needs.get(i) + " \n\n"); 
+			}
+		}
 		// Set From Image
-		// TODO
-		
+		List<String> images = this.XmlParser.getCurrentImagesName();
+		if (images.size() == 2) {
+			InputStream inputStream;
+			try {
+				inputStream = this.getAssets().open(this.mManualName + "/" + images.get(0));
+				Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+				this.mFromImage.setImageBitmap(bitmap);
+				
+				inputStream = this.getAssets().open(this.mManualName + "/" + images.get(1));
+				bitmap = BitmapFactory.decodeStream(inputStream);
+				this.mToImage.setImageBitmap(bitmap);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else {
+			this.mFromImage.setImageResource(R.drawable.step_default);
+			this.mToImage.setImageResource(R.drawable.step_default);
+		}
 		// Set To Image
 		// TODO
 	}

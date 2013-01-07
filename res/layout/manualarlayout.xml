@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical" >
@@ -13,24 +13,21 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:visibility="invisible" />
-
+
     <include
         android:id="@+id/manualActivityPanelInclude"
-        android:layout_width="350dip"
+        android:layout_width="200dip"
         android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         layout="@layout/panel_step_view" />
-
+
     <LinearLayout
         android:id="@+id/manualActivityButtonBar"
         style="@android:style/ButtonBar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/manualActivityPanelInclude"
+        android:layout_toRightOf="@id/manualActivityPanelInclude"
         android:background="@drawable/transparent_gray_shade"
         android:gravity="bottom"
         android:orientation="horizontal"
