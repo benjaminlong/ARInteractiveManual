@@ -25,18 +25,17 @@ import android.widget.FrameLayout;
 
 import com.android.augmentedManual.Configuration;
 import com.android.augmentedManual.R;
-//import com.android.augmentedManual.MobileSDKExampleApplication;
+
 import com.metaio.tools.io.AssetsManager;
-import com.metaio.unifeye.UnifeyeDebug;
-import com.metaio.unifeye.UnifeyeGLSurfaceView;
-import com.metaio.unifeye.UnifeyeSensorsManager;
-import com.metaio.unifeye.ndk.AS_UnifeyeSDKMobile;
-import com.metaio.unifeye.ndk.ERENDER_SYSTEM;
-import com.metaio.unifeye.ndk.IUnifeyeMobileAndroid;
-import com.metaio.unifeye.ndk.IUnifeyeMobileCallback;
-import com.metaio.unifeye.ndk.IUnifeyeMobileGeometry;
-import com.metaio.unifeye.ndk.PoseVector;
-import com.metaio.unifeye.ndk.Vector2di;
+import com.metaio.sdk.MetaioDebug;
+import com.metaio.sdk.MetaioSurfaceView;
+import com.metaio.sdk.SensorsComponentAndroid;
+import com.metaio.sdk.jni.ERENDER_SYSTEM;
+import com.metaio.sdk.jni.IMetaioSDKAndroid;
+import com.metaio.sdk.jni.IMetaioSDKCallback;
+import com.metaio.sdk.jni.IGeometry;
+import com.metaio.sdk.jni.MetaioSDK;
+import com.metaio.sdk.jni.Vector2di;
 
 /**
  * This is base activity to use Unifeye SDK Mobile. It creates UnifeyeGLSurface
@@ -48,22 +47,22 @@ import com.metaio.unifeye.ndk.Vector2di;
  */
 //------------------------------------------------------------------------
 public abstract class ARViewActivity extends Activity implements
-		UnifeyeGLSurfaceView.Callback, OnTouchListener {
+		MetaioSurfaceView.Callback, OnTouchListener {
 	
 	// ------------------------------------------------------------------------
 	static {
-		IUnifeyeMobileAndroid.loadNativeLibs();
+		IMetaioSDKAndroid.loadNativeLibs();
 	}
 
 	/**
 	 * Sensor manager
 	 */
-	protected UnifeyeSensorsManager mSensorsManager;
+	protected SensorsComponentAndroid mSensorsManager;
 
 	/**
 	 * Unifeye OpenGL View
 	 */
-	protected UnifeyeGLSurfaceView mUnifeyeSurfaceView;
+	protected MetaioSurfaceView mUnifeyeSurfaceView;
 
 	/**
 	 * The detected coordinate system id of the previous frame. This is used in onDrawFrame
@@ -80,7 +79,7 @@ public abstract class ARViewActivity extends Activity implements
 	/**
 	 * UnifeyeSDK object
 	 */
-	protected IUnifeyeMobileAndroid mMobileSDK;
+	protected IMetaioSDKAndroid mMobileSDK;
 
 	/**
 	 * flag for the renderer
@@ -97,7 +96,7 @@ public abstract class ARViewActivity extends Activity implements
 	/**
 	 * UnifeyeMobile callback handler
 	 */
-	private IUnifeyeMobileCallback mHandler;
+	private IMetaioSDKCallback mHandler;
 
 	/**
 	 * Provide resource for GUI overlay if required.
@@ -115,12 +114,12 @@ public abstract class ARViewActivity extends Activity implements
 	/**
 	 * Provide Unifeye callback handler if desired.
 	 * 
-	 * @see IUnifeyeMobileCallback
+	 * @see IMetaioSDKCallback
 	 * 
 	 * @return Return unifeye callback handler
 	 */
 	// ------------------------------------------------------------------------
-	protected IUnifeyeMobileCallback getMobileSDKCallbackHandler() {
+	protected IMetaioSDKCallback getMobileSDKCallbackHandler() {
 		return null;
 	};
 
@@ -138,7 +137,7 @@ public abstract class ARViewActivity extends Activity implements
 	 *            Geometry that is touched
 	 */
 	// ------------------------------------------------------------------------
-	protected void onGeometryTouched(IUnifeyeMobileGeometry geometry) {
+	protected void onGeometryTouched(IGeometry geometry) {
 	};
 
 	@Override
@@ -147,7 +146,7 @@ public abstract class ARViewActivity extends Activity implements
 		Log.v("DEBUG", "onCreate !");
 		super.onCreate(savedInstanceState);
 		
-		UnifeyeDebug.log("ARViewActivity.onCreate()");
+		MetaioDebug.log("ARViewActivity.onCreate()");
 		mMobileSDK = null;
 		mUnifeyeSurfaceView = null;
 
@@ -156,15 +155,16 @@ public abstract class ARViewActivity extends Activity implements
 		try {
 			// create the sensor manager
 			if (mSensorsManager == null) {
-				mSensorsManager = new UnifeyeSensorsManager(getApplicationContext());
+				mSensorsManager = new SensorsComponentAndroid(getApplicationContext());
 			}
 
 			// create the MobileSDK
-			Log.d("NOS", "creating UnifeyeMobile in onCreate()");
+			Log.v("NOS", "creating UnifeyeMobile in onCreate()");
 			createMobileSDK();
 			
 			// Inflate GUI view if provided
 			mGUIView = View.inflate(this, getGUILayout(), null);
+			Log.v("DEBUG", "ARVIewActivity created");
 		} catch (Exception e) {
 
 		}
@@ -179,11 +179,11 @@ public abstract class ARViewActivity extends Activity implements
 	@Override
 	// ------------------------------------------------------------------------
 	protected void onStart() {
-		Log.v("DEBUG", "onStart !");
+		Log.v("DEBUG", "ARViewActivity::onStart");
 		Log.v("DEBUG", "ARViewActivity.onStart(): "
 				+ Thread.currentThread().getId());
 		super.onStart();
-		UnifeyeDebug.log("ARViewActivity.onStart(): "
+		MetaioDebug.log("ARViewActivity.onStart(): "
 				+ Thread.currentThread().getId());
 
 		try {
@@ -195,16 +195,18 @@ public abstract class ARViewActivity extends Activity implements
 				// create a empty layout, required for the camera on some devices
 				setContentView(new FrameLayout(this));
 //				setContentView(R.layout.activity_manual);
-							
+				
+				
 				Vector2di cameraResolution = mMobileSDK.startCamera(
 						Configuration.Camera.deviceId,
 						Configuration.Camera.resolutionX,
 						Configuration.Camera.resolutionY);
-
+				Log.v("DEBUG", "ARViewActivity, startCamera called");
+				
 				// Create views (UnifeyeGL and GUI)
 
 				// Add Unifeye GL Surface view
-				mUnifeyeSurfaceView = new UnifeyeGLSurfaceView(this);
+				mUnifeyeSurfaceView = new MetaioSurfaceView(this);
 				mUnifeyeSurfaceView.registerCallback(this);
 				mUnifeyeSurfaceView.setKeepScreenOn(true);
 				mUnifeyeSurfaceView.setOnTouchListener(this);
@@ -216,7 +218,7 @@ public abstract class ARViewActivity extends Activity implements
 				FrameLayout.LayoutParams params = mUnifeyeSurfaceView
 						.getLayoutParams(cameraResolution, true);
 
-				UnifeyeDebug.log("UnifeyeSurfaceView layout: " + params.width + ", "
+				MetaioDebug.log("UnifeyeSurfaceView layout: " + params.width + ", "
 						+ params.height);
 
 				addContentView(mUnifeyeSurfaceView, params);
@@ -233,7 +235,7 @@ public abstract class ARViewActivity extends Activity implements
 			}
 
 		} catch (Exception e) {
-			UnifeyeDebug.log(e.getMessage());
+			MetaioDebug.log(e.getMessage());
 		}
 
 	}
@@ -243,7 +245,7 @@ public abstract class ARViewActivity extends Activity implements
 	protected void onPause() {
 		Log.v("DEBUG", "onPause !");
 		super.onPause();
-		UnifeyeDebug.log("ARViewActivity.onPause()");
+		MetaioDebug.log("ARViewActivity.onPause()");
 
 		if (mWakeLock != null)
 			mWakeLock.release();
@@ -263,7 +265,7 @@ public abstract class ARViewActivity extends Activity implements
 	protected void onResume() {
 		Log.v("DEBUG", "onPause !");
 		super.onResume();
-		UnifeyeDebug.log("ARViewActivity.onResume()");
+		MetaioDebug.log("ARViewActivity.onResume()");
 
 		if (mWakeLock != null)
 			mWakeLock.acquire();
@@ -274,7 +276,7 @@ public abstract class ARViewActivity extends Activity implements
 
 		// Open all sensors
 		if (mSensorsManager == null) {
-			mSensorsManager = new UnifeyeSensorsManager(getApplicationContext());
+			mSensorsManager = new SensorsComponentAndroid(getApplicationContext());
 		}
 	}
 
@@ -285,7 +287,7 @@ public abstract class ARViewActivity extends Activity implements
 		Log.v("DEBUG", "onStop !");
 		super.onStop();
 
-		UnifeyeDebug.log("ARViewActivity.onStop()");
+		MetaioDebug.log("ARViewActivity.onStop()");
 
 		if (mMobileSDK != null) {
 			// Disable camera
@@ -302,7 +304,7 @@ public abstract class ARViewActivity extends Activity implements
 	protected void onDestroy() {
 		super.onDestroy();
 
-		UnifeyeDebug.log("ARViewActivity.onDestroy()");
+		MetaioDebug.log("ARViewActivity.onDestroy()");
 
 		if (mMobileSDK != null) {
 			mMobileSDK.delete();
@@ -327,14 +329,14 @@ public abstract class ARViewActivity extends Activity implements
 	public boolean onTouch(View v, MotionEvent event) {
 
 		if (event.getAction() == MotionEvent.ACTION_UP) {
-			UnifeyeDebug.log("ARViewActivity touched at: " + event.toString());
+			MetaioDebug.log("ARViewActivity touched at: " + event.toString());
 
 			try {
 				final int x = (int) event.getX();
 				final int y = (int) event.getY();
 
 				// ask the SDK if a geometry has been hit
-				IUnifeyeMobileGeometry geometry = mMobileSDK
+				IGeometry geometry = mMobileSDK
 						.getGeometryFromScreenCoordinates(x, y, true);
 				if (geometry != null) {
 					onGeometryTouched(geometry);
@@ -357,9 +359,9 @@ public abstract class ARViewActivity extends Activity implements
 	 */
 	// ------------------------------------------------------------------------
 	public void onSurfaceCreated() {
-		UnifeyeDebug.log("onSurfaceCreated() TRIGGERED");
+		MetaioDebug.log("onSurfaceCreated() TRIGGERED");
 		try {
-			UnifeyeDebug.log("onSurfaceCreated: " + Thread.currentThread().getId());
+			MetaioDebug.log("onSurfaceCreated: " + Thread.currentThread().getId());
 
 			// initialize the renderer
 			if (!rendererInitialized) {
@@ -374,7 +376,7 @@ public abstract class ARViewActivity extends Activity implements
 			
 			// connect the audio callbacks
 			mMobileSDK.registerAudioCallback(mUnifeyeSurfaceView
-					.getUnifeyeAudioRenderer());
+					.getAudioRenderer());
 			mHandler = getMobileSDKCallbackHandler();
 			if (mHandler != null)
 				mMobileSDK.registerCallback(mHandler);
@@ -382,16 +384,17 @@ public abstract class ARViewActivity extends Activity implements
 			this.runOnUiThread(new Runnable() {
 				public void run() {
 					if (mGUIView != null) 
-						mGUIView.findViewById(R.id.loadingProgressBar).setVisibility(View.GONE);
-						mGUIView.findViewById(R.id.loadingTextView	).setVisibility(View.GONE);
-						mGUIView.findViewById(R.id.buttonBar).setVisibility(View.VISIBLE);
+						mGUIView.findViewById(R.id.manualActivityLoadingProgressBar).setVisibility(View.GONE);
+						mGUIView.findViewById(R.id.manualActivityButtonBar).setVisibility(View.VISIBLE);
+						mGUIView.findViewById(R.id.manualActivityPanelInclude).setVisibility(View.VISIBLE);
+						mGUIView.findViewById(R.id.manualActivityPanelInclude).setVisibility(View.VISIBLE);
 					}
 			});
 
 			
 		} catch (Exception e) {
 			Log.v("DEBUG", "onSurfaceNOTCreated: " + e);
-			UnifeyeDebug.log("onSurfaceNOTCreated: " + e);
+			MetaioDebug.log("onSurfaceNOTCreated: " + e);
 		}
 	}
 
@@ -402,14 +405,14 @@ public abstract class ARViewActivity extends Activity implements
 	private void createMobileSDK() {
 		Log.v("DEBUG", "createMobileSDK !");
 		try {
-			UnifeyeDebug.log("Creating the metaio mobile SDK");
+			MetaioDebug.log("Creating the metaio mobile SDK");
 
 			// Make sure to provide a valid application signature
-			mMobileSDK = AS_UnifeyeSDKMobile.CreateUnifeyeMobileAndroid(this, Configuration.signature);
+			mMobileSDK = MetaioSDK.CreateMetaioSDKAndroid(this, Configuration.signature);
 			mMobileSDK.registerSensorsComponent(mSensorsManager);
 			
 		} catch (Exception e) {
-			UnifeyeDebug.log(Log.ERROR,
+			MetaioDebug.log(Log.ERROR,
 					"Error creating unifeye mobile: " + e.getMessage());
 		}
 
@@ -420,11 +423,11 @@ public abstract class ARViewActivity extends Activity implements
 		
 		Log.v("DEBUG", "loadingTrackingData !");
 		
-		UnifeyeDebug.log("ARViewActivity.loadTrackingData()");
+		MetaioDebug.log("ARViewActivity.loadTrackingData()");
 		String filepathTracking = AssetsManager.getAssetPath(trackingDataFileName);
-		boolean result = mMobileSDK.setTrackingData(filepathTracking);
-		UnifeyeDebug.log(Log.ASSERT, "Tracking data loaded: " + result + filepathTracking);
-		Log.v("DATA", "Tracking data loaded: " + result + filepathTracking);
+		boolean result = mMobileSDK.setTrackingConfiguration(filepathTracking);
+		MetaioDebug.log(Log.ASSERT, "Tracking data loaded: " + result + filepathTracking);
+		Log.v("DEBUG", "Tracking data loaded: " + result + filepathTracking);
 		return result;
 	}
 
@@ -436,13 +439,13 @@ public abstract class ARViewActivity extends Activity implements
 	 * @throws FileNotFoundException
 	 */
 	// ------------------------------------------------------------------------
-	protected IUnifeyeMobileGeometry loadGeometry(String modelFileName)
+	protected IGeometry loadGeometry(String modelFileName)
 			throws FileNotFoundException {
 		Log.v("DEBUG", "loadGeometry !");
-		IUnifeyeMobileGeometry loadedGeometry = null;
+		IGeometry loadedGeometry = null;
 		String filepath = AssetsManager.getAssetPath(modelFileName);
 		if (filepath != null) {
-			loadedGeometry = mMobileSDK.loadGeometry(filepath);
+			loadedGeometry = mMobileSDK.createGeometry(filepath);
 			if (loadedGeometry == null) {
 				throw new RuntimeException(
 						"Could not load the model file named " + modelFileName);
@@ -457,51 +460,20 @@ public abstract class ARViewActivity extends Activity implements
 	
 	// ------------------------------------------------------------------------
 	public void onDrawFrame() {
-		try {
-			// render the the results
-			mMobileSDK.render();
-			
-			PoseVector poses = mMobileSDK.getValidTrackingValues();
-			if( poses.size() > 0)
-			{ 
-				// log the detected COS
-				int cosID = poses.get(0).getCosID();
-				if( cosID != mDetectedCosID ){
-					Log.v("DEBUG", "DETECTED " +  cosID );
-					Log.v("DEBUG", "CosID " +  poses.get(0).getCosID());
-					Log.v("DEBUG", "CosName " +  poses.get(0).getCosName() );
-					Log.v("DEBUG", "LlaCoordinate " +  poses.get(0).getLlaCoordinate().toString() );
-					Log.v("DEBUG", "Rotation " +  poses.get(0).getRotation().toString() );
-					Log.v("DEBUG", "Translation " +  poses.get(0).getTranslation().toString() );
-					Log.v("DEBUG", "Quality" +  poses.get(0).getQuality() );
-					
-					UnifeyeDebug.log( "DETECTED " +  cosID + poses);
-					Log.v("DETECTED", "DETECTED : " + cosID + poses);
-					mDetectedCosID = cosID;
-				}
-			}else{
-				// reset the detected COS if nothing has been detected 
-				mDetectedCosID = -1;
-			}
-				
-			
-		} catch (Exception e) {
-
-		}
-
+		// To implement in the child class
 	}
 
 	
 	// ------------------------------------------------------------------------
 	public void onSurfaceDestroyed() {
 		mUnifeyeSurfaceView = null;
-		UnifeyeDebug.log("onSurfaceDestroyed");
+		MetaioDebug.log("onSurfaceDestroyed");
 	}
 
 	
 	// ------------------------------------------------------------------------
 	public void onSurfaceChanged() {
-		UnifeyeDebug.log("onSurfaceChanged");
+		MetaioDebug.log("onSurfaceChanged");
 	}
 
 	

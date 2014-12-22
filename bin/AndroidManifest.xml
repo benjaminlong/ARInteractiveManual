@@ -6,35 +6,47 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="15" />
-    
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <uses-feature android:name="android.hardware.camera" android:required="true"/>
-    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
 
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:uiOptions="splitActionBarWhenNarrow" android:logo="@drawable/ic_ab_icon">
         <activity
-            android:name=".MainActivity"
-            android:label="@string/title_main_activity" >
+            android:name=".SplashScreen"
+            android:label="@string/title_activity_splash_screen"
+            android:theme="@style/Theme.FullScreenWithAndroidBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
+            android:name=".ManualListActivity"
+            android:label="@string/title_main_activity" >
+        </activity>
+        <activity
+            android:name=".ManualViewerActivity"
+            android:label="@string/title_activity_manual_viewer" >
+        </activity>
+        <activity
+            android:name=".simple.ARManualViewActivity"
             android:configChanges="keyboardHidden|orientation"
-			android:name=".simple.ARManualViewActivity"
-			android:screenOrientation="landscape"
+            android:screenOrientation="landscape"
             android:theme="@style/Theme.FullScreen" >
         </activity>
     </application>
-
 </manifest>

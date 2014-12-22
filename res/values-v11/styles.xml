@@ -1,5 +1,10 @@
-<resources>
-
-    <style name="AppTheme" parent="android:Theme.Holo.Light" />
-
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar" >
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+    
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@drawable/gradient_bg_actionbar</item>
+        <item name="android:backgroundSplit">@drawable/gradient_bg_actionbarsplit</item>
+    </style>
 </resources>

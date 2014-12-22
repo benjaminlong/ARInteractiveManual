@@ -1,0 +1,169 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="1"
+    android:background="@drawable/gradient_bg" >
+
+    <ImageView
+        android:id="@+id/manualViewerNoManualImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:alpha="0.7"
+        android:src="@drawable/ic_splash_green" />
+
+    <Button
+        android:id="@+id/manualViewerStartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="15dip"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="15dip"
+        android:background="@drawable/button_selector"
+        android:gravity="center|clip_vertical|clip_horizontal"
+        android:minHeight="48dip"
+        android:minWidth="96dip"
+        android:onClick="onButtonStartClick"
+        android:text="Start"
+        android:textAppearance="?android:attr/textAppearanceLargeInverse"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/manualViewerManualIconImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="10dip"
+        android:maxHeight="96dip"
+        android:maxWidth="96dip"
+        android:src="@drawable/no_icon" />
+
+    <TextView
+        android:id="@+id/manualViewerTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/manualViewerManualIconImageView"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/manualViewerManualIconImageView"
+        android:layout_marginRight="15dip"
+        android:layout_toRightOf="@+id/manualViewerManualIconImageView"
+        android:gravity="center"
+        android:text="Manual Title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <LinearLayout
+        android:id="@+id/manualViewerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/manualViewerStartButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/manualViewerTitleTextView"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="15dip"
+        android:orientation="horizontal" >
+    
+	    <LinearLayout
+	        android:id="@+id/manualViewerInfoLayout"
+	        android:layout_width="wrap_content"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="0.6"
+	        android:orientation="vertical" >
+	    
+	        <LinearLayout
+	            android:id="@+id/manualViewerImagesLayout"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_alignBottom="@+id/manualViewerNoManualImageView"
+	            android:layout_alignParentLeft="true"
+	            android:layout_below="@id/manualViewerTitleTextView"
+	            android:layout_toLeftOf="@+id/manualViewerNoManualImageView"
+	            android:layout_weight="0.3"
+	            android:background="@color/white"
+	            android:orientation="vertical" >
+	
+	            <TextView
+	                android:id="@+id/manualViewerImagesTitle"
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_margin="10dip"
+	                android:text="Manual"
+	                android:textAppearance="?android:attr/textAppearanceLarge" />
+	
+	            <ImageView
+	                android:id="@+id/manualViewerImagesImage"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:layout_marginBottom="5dip"
+	                android:layout_marginTop="5dip"
+	                android:layout_weight="4.62"
+	                android:src="@drawable/step_default" />
+	        </LinearLayout>
+		    
+		    <View
+		        android:id="@+id/manualViewerImagesLayoutShadow"
+		        android:layout_width="fill_parent"
+		        android:layout_height="2dip"
+		        android:layout_alignLeft="@+id/manualViewerImagesLayout"
+		        android:layout_alignRight="@+id/manualViewerImagesLayout"
+		        android:layout_below="@+id/manualViewerImagesLayout"
+		        android:background="@drawable/gradient_bg_actionbar" >
+			
+			</View>
+		    
+		    <LinearLayout
+		        android:id="@+id/manualViewerDescriptionLayout"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_above="@+id/manualViewerStartButton"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignRight="@+id/manualViewerImagesLayout"
+		        android:layout_below="@+id/manualViewerImagesLayoutShadow"
+		        android:layout_marginTop="15dip"
+		        android:layout_weight="0.3"
+		        android:background="@color/white"
+		        android:orientation="vertical" >
+		
+		        <TextView
+		            android:id="@+id/manualViewerDescriptionTitleTextView"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_margin="10dip"
+		            android:text="Description"
+		            android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+		        <TextView
+		            android:id="@+id/manualViewerDescriptionContentTextView"
+		            android:layout_width="match_parent"
+		            android:layout_height="match_parent"
+		            android:layout_margin="10dip"
+		            android:layout_marginRight="10dip"
+		            android:text="Small Text to descripte the manual"
+		            android:textAppearance="?android:attr/textAppearanceSmall" />
+		
+		    </LinearLayout>
+		    
+		    <View
+		        android:id="@+id/manualViewerDescriptionLayoutShadow"
+		        android:layout_width="fill_parent"
+		        android:layout_height="2dip"
+		        android:layout_alignLeft="@+id/manualViewerDescriptionLayout"
+		        android:layout_alignRight="@+id/manualViewerDescriptionLayout"
+		        android:layout_below="@+id/manualViewerDescriptionLayout"
+		        android:background="@drawable/gradient_bg_actionbar" >
+			
+			</View>
+		        
+	    </LinearLayout>
+    
+	</LinearLayout>    
+</RelativeLayout>

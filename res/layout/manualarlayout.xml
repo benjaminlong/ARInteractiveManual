@@ -1,70 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical" >
 
-    <ImageButton
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:background="@android:color/transparent"
-        android:onClick="onButtonClick" />
-
-    <LinearLayout
-        android:id="@+id/buttonBar"
-        style="@android:style/ButtonBar"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/previousButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onPreviousButtonClick"
-            android:text="Previous" />
-        
-        <Button
-            android:id="@+id/infoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onInfoButtonClick"
-            android:text="Info" />
-
-        <Button
-            android:id="@+id/nextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onNextButtonClick"
-            android:text="Next" />
-        
-    </LinearLayout>
-
     <ProgressBar
-        android:id="@+id/loadingProgressBar"
+        android:id="@+id/manualActivityLoadingProgressBar"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:visibility="invisible" />
-
-    <TextView
-        android:id="@+id/loadingTextView"
-        android:layout_width="wrap_content"
+
+    <include
+        android:id="@+id/manualActivityPanelInclude"
+        android:layout_width="200dip"
+        android:layout_height="fill_parent"
+        layout="@layout/panel_step_view" />
+
+    <LinearLayout
+        android:id="@+id/manualActivityButtonBar"
+        style="@android:style/ButtonBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/loadingProgressBar"
-        android:layout_centerHorizontal="true"
-        android:text="Loading content ..."
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:visibility="invisible" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/manualActivityPanelInclude"
+        android:background="@drawable/transparent_gray_shade"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingTop="10dip" >
+
+        <Button
+            android:id="@+id/manualActivityPreviousButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip"
+            android:layout_weight="1"
+            android:minWidth="96dip"
+            android:onClick="onPreviousButtonClick"
+            android:paddingLeft="2dip"
+            android:paddingRight="2dip"
+            android:text="Previous"
+            android:textColor="@color/black"
+            android:textColorHint="@color/white" />
+
+        <Button
+            android:id="@+id/manualActivityNextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip"
+            android:layout_weight="1"
+            android:onClick="onNextButtonClick"
+            android:text="Next"
+            android:textColor="@color/black" />
+    </LinearLayout>
 
 </RelativeLayout>

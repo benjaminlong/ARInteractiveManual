@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/panelStepLinearLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+	
+	<TextView
+	    android:id="@+id/panelStepTitleTextView"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true"
+	    android:background="@drawable/gradient_bg_actionbar"
+	    android:gravity="center"
+	    android:paddingBottom="10dip"
+	    android:paddingTop="10dip"
+	    android:text="Manual Title"
+	    android:textAppearance="?android:attr/textAppearanceLarge"
+	    android:textColor="@color/white"
+	    android:textStyle="bold" />
+	
+	<ScrollView
+	    android:id="@+id/panelStepScrollView"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:background="@drawable/gradient_bg"
+	    android:overScrollMode="always" >
+	    	
+		<RelativeLayout
+		    android:id="@+id/panelStepRelativeLayout"
+		    android:layout_width="fill_parent"
+		    android:layout_height="match_parent"
+		    android:gravity="left"
+		    android:paddingBottom="10dip" >
+				
+								
+		    <View
+		        android:id="@+id/panelStepTitleShadowView"
+		        android:layout_width="fill_parent"
+		        android:layout_height="1dip"
+		        android:layout_below="@+id/panelStepTitleTextView"
+		        android:background="@color/white" >
+		
+		    </View>
+		    		
+		    <RelativeLayout
+		        android:id="@+id/panelStepOverviewRelativeLayout"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@+id/panelStepTitleTextView"
+		        android:layout_marginLeft="10dip"
+		        android:layout_marginRight="10dip"
+		        android:layout_marginTop="10dip"
+		        android:background="@color/white"
+		        android:gravity="left"
+		        android:paddingBottom="10dip" >
+						
+		        <TextView
+		            android:id="@+id/panelStepOverviewStepTitle"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_margin="5dip"
+		            android:text="Step 0"
+		            android:textSize="20dip" />
+						
+		        <TextView
+		            android:id="@+id/panelStepOverviewFromTitle"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_alignLeft="@+id/panelStepOverviewStepTitle"
+		            android:layout_below="@+id/panelStepOverviewTitle"
+		            android:layout_weight="1"
+		            android:text="From" />
+						
+		        <ImageView
+		            android:id="@+id/panelStepOverviewFromImageView"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentLeft="true"
+		            android:layout_alignParentRight="true"
+		            android:layout_below="@+id/panelStepOverviewFromTitle"
+		            android:layout_marginBottom="10dip"
+		            android:layout_marginTop="10dip"
+		            android:scaleType="fitXY"
+		            android:src="@drawable/step_default" />
+										
+		        <TextView
+		            android:id="@+id/panelStepOverviewToTitle"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_alignLeft="@+id/panelStepOverviewStepTitle"
+		            android:layout_below="@+id/panelStepOverviewFromImageView"
+		            android:text="To"
+		            android:textAppearance="?android:attr/textAppearanceSmall" />
+						
+		        <ImageView
+		            android:id="@+id/panelStepOverviewToImageView"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentLeft="true"
+		            android:layout_alignParentRight="true"
+		            android:layout_below="@+id/panelStepOverviewToTitle"
+		            android:layout_marginBottom="10dip"
+		            android:layout_marginTop="10dip"
+		            android:scaleType="fitXY"
+		            android:src="@drawable/step_default" />
+
+		        <TextView
+		            android:id="@+id/panelStepOverviewTitle"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentLeft="true"
+		            android:layout_below="@+id/panelStepOverviewStepTitle"
+		            android:gravity="center"
+		            android:text="Title"
+		            android:textAppearance="?android:attr/textAppearanceMedium" />
+		
+		    </RelativeLayout>
+								
+		    <View
+		        android:id="@+id/panelStepOverviewShadowView"
+		        android:layout_width="fill_parent"
+		        android:layout_height="2dip"
+		        android:layout_below="@+id/panelStepOverviewRelativeLayout"
+		        android:layout_marginLeft="10dip"
+		        android:layout_marginRight="10dip"
+		        android:background="@drawable/gradient_bg_actionbar" >
+		
+		    </View>
+		    		
+		    <LinearLayout
+		        android:id="@+id/panelStepTasksLienarLayout"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@+id/panelStepOverviewRelativeLayout"
+		        android:layout_marginLeft="10dip"
+		        android:layout_marginRight="10dip"
+		        android:layout_marginTop="10dip"
+		        android:background="@color/white"
+		        android:orientation="vertical" >
+						
+		        <TextView
+		            android:id="@+id/panelStepTasksTitle"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_margin="5dip"
+		            android:text="Tasks"
+		            android:textAppearance="?android:attr/textAppearanceMedium" />
+								
+		        <TextView
+		            android:id="@+id/panelStepTasksDescription"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginBottom="5dip"
+		            android:layout_marginLeft="10dip"
+		            android:layout_marginRight="10dip"
+		            android:layout_marginTop="5dip"
+		            android:text="No tasks for this step !" />
+		
+		    </LinearLayout>
+			
+		    <View
+		        android:id="@+id/panelStepTasksShadowView"
+		        android:layout_width="fill_parent"
+		        android:layout_height="2dip"
+		        android:layout_below="@+id/panelStepTasksLienarLayout"
+		        android:layout_marginLeft="10dip"
+		        android:layout_marginRight="10dip"
+		        android:background="@drawable/gradient_bg_actionbar" >
+		
+		    </View>
+		
+		    <LinearLayout
+		        android:id="@+id/panelStepNeedLinearLayout"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@+id/panelStepTasksShadowView"
+		        android:layout_marginLeft="10dip"
+		        android:layout_marginRight="10dip"
+		        android:layout_marginTop="10dip"
+		        android:background="@color/white"
+		        android:orientation="vertical" >
+								
+		        <TextView
+		            android:id="@+id/panelStepNeedsTitle"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_margin="5dip"
+		            android:text="Needs"
+		            android:textAppearance="?android:attr/textAppearanceMedium" />
+								
+		        <TextView
+		            android:id="@+id/panelStepNeedsDescription"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginBottom="5dip"
+		            android:layout_marginLeft="10dip"
+		            android:layout_marginRight="10dip"
+		            android:layout_marginTop="5dip"
+		            android:text="No needs for this step !"
+		            android:textAppearance="?android:attr/textAppearanceSmall" />
+		
+		    </LinearLayout>
+		    		
+		    <View
+		        android:id="@+id/panelStepNeedShadowView"
+		        android:layout_width="fill_parent"
+		        android:layout_height="2dip"
+		        android:layout_below="@+id/panelStepNeedLinearLayout"
+		        android:layout_marginLeft="10dip"
+		        android:layout_marginRight="10dip"
+		        android:background="@drawable/gradient_bg_actionbar" >
+		
+		    </View>
+		    
+		</RelativeLayout>
+	</ScrollView>
+</LinearLayout>

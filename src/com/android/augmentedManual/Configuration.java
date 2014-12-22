@@ -9,13 +9,16 @@ package com.android.augmentedManual;
 //------------------------------------------------------------------------
 public abstract class Configuration 
 {
-	public static final String signature = "wpq0KQEy5lf1fwuwhXpPfbQ9WjUo3jcIK0HZEUGOdF0=";
+	public static final String signature = "Xciq/dU9A6Znh2zP5aB3Xu8wHlHBDEx86xIVtIi6Tz8=";
 
 	// ------------------------------------------------------------------------
 	public abstract class Camera
 	{
 		public static final long resolutionX = 640;  	
 		public static final long resolutionY = 400;
+		
+//		public static final long resolutionX = 1280;  	
+//		public static final long resolutionY = 800;
 		/*
 		 * 0: normal camera
 		 * 1: front facing camera

@@ -11,21 +11,30 @@ package com.android.augmentedManual.simple;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.augmentedManual.R;
 import com.android.augmentedManual.utility.ManualXMLParser;
-import com.metaio.unifeye.UnifeyeDebug;
-import com.metaio.unifeye.ndk.IUnifeyeMobileAndroid;
-import com.metaio.unifeye.ndk.IUnifeyeMobileGeometry;
-import com.metaio.unifeye.ndk.PoseVector;
+import com.metaio.sdk.MetaioDebug;
+import com.metaio.sdk.jni.IMetaioSDKAndroid;
+import com.metaio.sdk.jni.IGeometry;
+import com.metaio.sdk.jni.Rotation;
+import com.metaio.sdk.jni.TrackingValuesVector;
+import com.metaio.sdk.jni.Vector3d;
 
 
 //------------------------------------------------------------------------
@@ -33,36 +42,44 @@ public class ARManualViewActivity extends ARViewActivity  {
 	
 	// ------------------------------------------------------------------------
 	static {
-		IUnifeyeMobileAndroid.loadNativeLibs();
+		IMetaioSDKAndroid.loadNativeLibs();
 	}
 	
-	List<IUnifeyeMobileGeometry> 	mGeometryList;
-	private IUnifeyeMobileGeometry 	mCurrentGeometry;
+	private String					mManualName;
+	private List<IGeometry> 		mGeometryList;
+	private List<IGeometry> 		mCurrentGeometries = null;	
+	private List<String> 			mCurrentCosIDs;
+	
 	private ManualXMLParser 		XmlParser;
 	private String 					mTrackingDataML3D = "";
-
-	public final static float PI_2 = (float) (Math.PI / 2.0);
 	
+	private View					mPanelView;
+	private TextView				mStepTitle;
+	private TextView				mStepCount;
+	private ImageView				mFromImage;
+	private ImageView				mToImage;
+	private TextView				mTasksDescription;
+	private TextView				mNeedsDescription;
 
 	// ------------------------------------------------------------------------
 	public void onCreate(Bundle savedInstanceState) {
+		Log.v("DEBUG", "ARManualViewActivity::onCreate");
 		super.onCreate(savedInstanceState);
 		
 		// Init variables
-		Bundle b = getIntent().getExtras();
-		String manualName = b.getString("manualName");
+		Intent launchingIntent = getIntent();
+        this.mManualName = launchingIntent.getData().toString();
+		Log.v("DEBUG", "ARManualViewActivity::onCreate manual Name : " + this.mManualName);
 		
 		try {
 			this.XmlParser = new ManualXMLParser();
 			
-			String path = 
-					manualName.replaceAll("_", "") + "/" + manualName + ".xml";
+			String path = this.mManualName + "/" + this.mManualName + ".xml";
 //			this.XmlParser.setXMLDescription(getAssets().open("XML/ManualXMLDescription.xsd"));
 			this.XmlParser.setXMLManual(getAssets().open(path));
 			
 			String trackingData = this.XmlParser.getManualInfo().get("trackingdata");
-			this.mTrackingDataML3D = 
-					manualName.replaceAll("_", "") + "/" + trackingData;
+			this.mTrackingDataML3D = this.mManualName + "/" + trackingData;
 			Log.v("DEBUG", "tracking data path : " + this.mTrackingDataML3D);
 		
 			if (this.XmlParser.getCurrentFile() == null) {
@@ -82,9 +99,12 @@ public class ARManualViewActivity extends ARViewActivity  {
 				AlertDialog alert = builder.create();
 				alert.show();
 			}
-			else {
-				Log.v("DEBUG", this.XmlParser.getManualInfo().toString());
-			}
+			
+			// Init variables
+			this.mCurrentCosIDs = new ArrayList<String>();
+			this.mCurrentGeometries = new ArrayList<IGeometry>();
+			
+			Log.v("DEBUG", "INFO : " + this.XmlParser.getManualInfo().toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -93,39 +113,15 @@ public class ARManualViewActivity extends ARViewActivity  {
 	// ------------------------------------------------------------------------
 	public void onNextButtonClick(final View view) {
 		this.XmlParser.nextStep();
-		
-		String geometryName = this.XmlParser.getCurrentGeometry();
-		Log.v("DEBUG", "new geometry name :" + geometryName);
-//		this.setCurrentGeometry(this.getGeometryFromName(geometryName));
-//		this.setCurrentTrackedData(this.XmlParser.getCurrentCosName());
-//		this.showGeometry(this.mCurrentGeometry);
-//		
-	}
-	
-	// ------------------------------------------------------------------------
-	public void onInfoButtonClick(final View view) {
-		// TODO Give more information about what to do.
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setCancelable(true);
-		builder.setIcon(R.drawable.ic_launcher);
-		builder.setTitle("Info");
-		builder.setMessage(this.XmlParser.getCurrentStepInfo());
-		builder.setInverseBackgroundForced(true);
-		builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-		  public void onClick(DialogInterface dialog, int which) {
-		    dialog.dismiss();
-		  }
-		});
-		AlertDialog alert = builder.create();
-		alert.show();
-		
+		this.setupUI();
+		this.setCurrentContent();
 	}
 	
 	// ------------------------------------------------------------------------
 	public void onPreviousButtonClick(final View view) {
 		this.XmlParser.previousStep();
-//		this.showGeometry(this.XmlParser.getCurrentGeometry());
-//		this.setCurrentTrackedData(this.XmlParser.getCurrentCosName());
+		this.setupUI();
+		this.setCurrentContent();
 	}
 	
 	@Override
@@ -133,11 +129,49 @@ public class ARManualViewActivity extends ARViewActivity  {
 	public void onDrawFrame() {
 		super.onDrawFrame();
 		
-		PoseVector poses = mMobileSDK.getValidTrackingValues();
-		if( poses.size() > 0)
-		{
-			// TODO
+		try {
+			// render the the results
+			mMobileSDK.render();
+
+			// Recover all the poses tracked
+			TrackingValuesVector poses = mMobileSDK.getTrackingValues();
+			int size = (int) poses.size();
+			if (size > 0 ) {
+				int cosID = poses.get(0).getCoordinateSystemID();
+				
+				// Check if a target has been just detected
+				if( cosID!= mDetectedCosID ) {
+					MetaioDebug.log( "DETECTED " +  cosID + " " + poses + " " + size);
+					mDetectedCosID = cosID;
+					
+					if(this.mCurrentCosIDs.contains(String.valueOf(cosID))) {
+						Log.v("DEBUG", "DrawFrame : CurrentGeos name" + this.mCurrentGeometries.toString());
+						// TODO Maybe something better ?!
+						List<String> geometriesName = 
+								this.XmlParser.getCurrentGeometries(String.valueOf(cosID));
+						// Set the geometry that we have to link to this specific cosID
+						List<IGeometry> geoToShow = this.getGeometriesFromName(geometriesName); 
+						Log.v("DEBUG", "geoToShow size = " + geoToShow.size() + geometriesName);
+						this.setCoordinatesSystemIdToGeometries(geoToShow, cosID);
+						// Set the position
+						Log.v("DEBUG", "geoToShow size = " + geoToShow.size() + geometriesName);
+						this.setGeometriesPosition(geoToShow, cosID);
+						// We show the geometries
+						Log.v("DEBUG", "geoToShow size = " + geoToShow.size() + geometriesName);
+						this.showGeometries(geoToShow);
+						// Start the animation
+						Log.v("DEBUG", "geoToShow size = " + geoToShow.size() + geometriesName);
+						this.startGeomtriesAnimation(geoToShow, "Take 001", true);
+					}
+				}
+			}
+			else{
+				// reset the detected COS if nothing has been detected 
+				mDetectedCosID = -1;
+			}	
+		} catch (Exception e) {
 		}
+
 	}
 	
 	// ------------------------------------------------------------------------
@@ -145,9 +179,31 @@ public class ARManualViewActivity extends ARViewActivity  {
 		super.onStart();
 		
 		if (mGUIView != null) {
-			mGUIView.findViewById(R.id.buttonBar).setVisibility(View.GONE);
-			mGUIView.findViewById(R.id.loadingProgressBar).setVisibility(View.VISIBLE);
-			mGUIView.findViewById(R.id.loadingTextView).setVisibility(View.VISIBLE);
+			// Init Variables
+			this.mPanelView = mGUIView.findViewById(R.id.manualActivityPanelInclude);
+			TextView title = 
+					(TextView)this.mPanelView.findViewById(R.id.panelStepTitleTextView);
+			title.setText(this.mManualName.replace("_", " "));
+			this.mStepTitle = 
+					(TextView)this.mPanelView.findViewById(R.id.panelStepOverviewTitle);
+			this.mStepCount = 
+					(TextView)this.mPanelView.findViewById(R.id.panelStepOverviewStepTitle);
+			this.mTasksDescription =
+					(TextView)this.mPanelView.findViewById(R.id.panelStepTasksDescription);
+			this.mNeedsDescription =
+					(TextView)this.mPanelView.findViewById(R.id.panelStepNeedsDescription);
+			this.mFromImage = 
+					(ImageView)this.mPanelView.findViewById(R.id.panelStepOverviewFromImageView);
+			this.mToImage =
+					(ImageView)this.mPanelView.findViewById(R.id.panelStepOverviewToImageView);
+			
+			// Set Visibility
+			mGUIView.findViewById(
+					R.id.manualActivityButtonBar).setVisibility(View.GONE);
+			mGUIView.findViewById(
+					R.id.manualActivityPanelInclude).setVisibility(View.GONE);
+			mGUIView.findViewById(
+					R.id.manualActivityLoadingProgressBar).setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -182,20 +238,21 @@ public class ARManualViewActivity extends ARViewActivity  {
 		try {
 
 			// Load Tracking data
-			UnifeyeDebug.log("Hello.loadTrackingData()");
+			MetaioDebug.log("Hello.loadTrackingData()");
+			Log.v("DEBUG", "tracking data name : " + this.mTrackingDataML3D); 
+			
 			boolean success = loadTrackingData( this.mTrackingDataML3D );
 			if ( !success )
 			{
-				UnifeyeDebug.log("Loading of the tracking data failed.");
+				MetaioDebug.log("Loading of the tracking data failed.");
 			}
 			
 			// Load all geometry
-			Log.v("DEBUG", "geometries :" + this.XmlParser.getGeometryList().toString());
-			this.mGeometryList = new ArrayList<IUnifeyeMobileGeometry>();
+			this.mGeometryList = new ArrayList<IGeometry>();
 			this.loadGeometries(this.XmlParser.getGeometryList());
 			
 		} catch (Exception e) {
-			UnifeyeDebug.printStackTrace(Log.ERROR, e);
+			MetaioDebug.printStackTrace(Log.ERROR, e);
 			Log.v("VISIBILITY", "tracking data fail exception");
 		}
 	}
@@ -212,38 +269,146 @@ public class ARManualViewActivity extends ARViewActivity  {
 	}
 	
 	// ------------------------------------------------------------------------
-	protected IUnifeyeMobileGeometry getCurrentGeometry() {
-		return mCurrentGeometry;
+	protected List<IGeometry> getCurrentGeometries() {
+		return this.mCurrentGeometries;
 	}
 	
 	// ------------------------------------------------------------------------
-	protected void setCurrentGeometry(IUnifeyeMobileGeometry newGeometry) {
-		this.mCurrentGeometry= newGeometry ;
+	protected void setCurrentGeometries(List<IGeometry> newGeometries) {
+		this.mCurrentGeometries = newGeometries;
 	}
 	
 	// ------------------------------------------------------------------------
-	private void showGeometry(IUnifeyeMobileGeometry newGeometry) {
-		for (int i = 0; i < this.mGeometryList.size(); i++ ) {
-			if (newGeometry == this.mGeometryList.get(i)) {
-				newGeometry.setVisible(true);
-				continue;
-			}
-			this.mGeometryList.get(i).setVisible(false);
+	private void showGeometries(List<IGeometry> geometries) {
+		for(int i = 0; i < geometries.size(); i++ ) {
+			this.showGeometry(geometries.get(i));
 		}
 	}
 	
 	// ------------------------------------------------------------------------
-	private IUnifeyeMobileGeometry getGeometryFromName(String name) {
-		IUnifeyeMobileGeometry geometry = null;
-		
+	private void showGeometry(IGeometry geometry) {
+		geometry.setVisible(true);
+	}
+	
+	// ------------------------------------------------------------------------
+	private void hideGeometries(List<IGeometry> geometries) {
+		for(int i = 0; i < geometries.size(); i++ ) {
+			this.hideGeometry(geometries.get(i));
+		}
+	}
+	
+	// ------------------------------------------------------------------------
+	private void hideGeometry(IGeometry geometry) {
+		geometry.setVisible(false);
+		geometry.stopAnimation();
+	}
+	
+	// ------------------------------------------------------------------------
+	private void startGeomtriesAnimation(List<IGeometry> geometries, String name, Boolean loop) {
+		for (int i = 0; i < geometries.size(); i++) {
+			startGeomtryAnimation(geometries.get(i), name, loop);
+		}
+	}
+	
+	// ------------------------------------------------------------------------
+	private void startGeomtryAnimation(IGeometry geometry, String name, Boolean loop) {
+		Log.v("DEBUG", "startGeomtryAnimation : name : " + 
+				geometry.getAnimationNames().get(0) + " " );
+		if (geometry.getAnimationNames().isEmpty()) {
+			return;
+		}
+		geometry.setAnimationSpeed((float) 100);
+		geometry.startAnimation(name, loop);
+	}
+	
+	// ------------------------------------------------------------------------
+	private void setCoordinatesSystemIdToGeometries(List<IGeometry> geometries,
+													int id) {
+		Log.v("DEBUG", "setCoordinatesSystemIdToGeometries::START");
+		for (int i = 0; i < geometries.size(); i++) {
+			Log.v("DEBUG", "setcoord to geo name : " + geometries.get(i).getName());
+			geometries.get(i).setCoordinateSystemID(id);
+		}
+	}
+	
+	// ------------------------------------------------------------------------
+	private void setGeometriesPosition(List<IGeometry> geometries, int cosID) {
+		Log.v("DEBUG", "SetPosition::START ");
+		for (int i = 0; i < geometries.size(); i++) {
+			Log.v("DEBUG", "setPos to geo name : " + geometries.get(i).getName());
+			Float[] temp = new Float[3];
+			Log.v("DEBUG", "get rotation");
+			temp = this.XmlParser.getRotation(geometries.get(i).getName(),
+											  String.valueOf(cosID));
+			Log.v("DEBUG", "set rotation");
+			geometries.get(i).setRotation(
+					new Rotation(temp[0], temp[1], temp[2]));
+			Log.v("DEBUG", "get scale");
+			temp = this.XmlParser.getScale(geometries.get(i).getName(),
+					  					   String.valueOf(cosID));
+			Log.v("DEBUG", "set scale");
+			geometries.get(i).setScale(
+					new Vector3d(temp[0], temp[1], temp[2]));
+			Log.v("DEBUG", "get translation");
+			temp = this.XmlParser.getTranslation(geometries.get(i).getName(),
+					  							 String.valueOf(cosID));
+			Log.v("DEBUG", "set translation");
+			geometries.get(i).setTranslation(
+					new Vector3d(temp[0], temp[1], temp[2]));
+		}
+	}
+	
+	// ------------------------------------------------------------------------
+	private List<IGeometry> getGeometriesFromName(List<String> names) {
+		List<IGeometry> temp = new ArrayList<IGeometry>();
+		for (int i = 0; i < names.size(); i++) {
+			temp.add(this.getGeometryFromName(names.get(i)));
+		}
+		return temp;
+	}
+	
+	// ------------------------------------------------------------------------
+	private IGeometry getGeometryFromName(String name) {
 		for (int i = 0; i < this.mGeometryList.size(); i++ ) {
-			if (name == this.mGeometryList.get(i).getName()) {
-				geometry = this.mGeometryList.get(i);
-				break;
+			if (name.equalsIgnoreCase(this.mGeometryList.get(i).getName())) {
+				return this.mGeometryList.get(i);
 			}
 		}
 		
-		return geometry;
+		Log.v("DEBUG", "::getGeometryFromName is null");
+		return null;
+	}
+	
+	// ------------------------------------------------------------------------
+	private void setCurrentContent() {
+		// Renitialize the variable mDetectedCosID
+		this.mDetectedCosID = -1;
+		
+		// Remove the previous geometry to the renderer, hide them and set cosId to 0
+		if (!this.mCurrentGeometries.isEmpty()) {
+			this.hideGeometries(this.mCurrentGeometries);
+			this.setCoordinatesSystemIdToGeometries(this.mCurrentGeometries, 0);
+			this.mCurrentGeometries.clear();
+		}
+		
+		// If the manual is over
+		if (this.XmlParser.getStepCount() == -1){
+			// TODO Maybe change the UI ?
+			return;
+		}
+		
+		// Recover current geometries name, and set it to currentGeometry
+		List<String> geometriesName = this.XmlParser.getCurrentGeometries();
+		this.mCurrentGeometries.addAll(this.getGeometriesFromName(geometriesName));
+		
+		// Turn their variable show to true
+//		this.showGeometries(this.mCurrentGeometries);
+//		Log.v("DEBUG", "Geometries name : " + geometriesName.toString());
+//		Log.v("DEBUG", "Current Geometries : " + this.mCurrentGeometries.toString());
+		
+		// Recover Cos ids to track
+		this.mCurrentCosIDs = this.XmlParser.getCurrentCosIDs();
+		Log.v("DEBUG", "Current Ids : " + this.mCurrentCosIDs.toString());
 	}
 	
 	// ------------------------------------------------------------------------
@@ -256,13 +421,79 @@ public class ARManualViewActivity extends ARViewActivity  {
 		try {
 			for (int i = 0; i < geometries.size(); i++) {
 				String geometryName = geometries.get(i);
-				IUnifeyeMobileGeometry geometry = this.loadGeometry(geometryName);
-				geometry.setVisible(true);
-				geometry.setCos(i + 1);
+				String geometryPath =
+						this.mManualName + "/Geometries/" + geometryName;
+				IGeometry geometry = this.loadGeometry(geometryPath);
+				geometry.setVisible(false);
+				geometry.setName(geometryName);
+//				geometry.(i + 1);
 				this.mGeometryList.add(geometry);
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	// ------------------------------------------------------------------------
+	private void setupUI() {
+		// Set Step Title
+		this.mStepTitle.setText(this.XmlParser.getCurrentTitle());
+		
+		// Set Step Count
+		this.mStepCount.setText("Step " + 
+				String.valueOf(this.XmlParser.getCurrentStepCount()) + "/" +
+				String.valueOf(this.XmlParser.getStepCount()));
+
+		// TODO Factorize following methods
+		// Set tasks panel
+		List<String> tasks = this.XmlParser.getCurrentTasksDescription();
+		if (tasks.size() == 0) {
+			this.mTasksDescription.setText("No Description for this Step ! \n");
+		}
+		else {
+			this.mTasksDescription.setText(
+					"Following the different tasks to complete the step : \n\n");
+			for (int i = 0; i < tasks.size(); i ++) {
+				this.mTasksDescription.append(
+						"\t" + String.valueOf(i+1) + ". " + tasks.get(i) + " \n\n"); 
+			}
+		}
+		
+		// Set needs panel
+		List<String> needs = this.XmlParser.getCurrentNeedsDescription();
+		if (needs.size() == 0) {
+			this.mNeedsDescription.setText("No Description for this Step ! \n");
+		}
+		else {
+			this.mNeedsDescription.setText(
+					"You need these different tools to complete the step : \n\n");
+			for (int i = 0; i < needs.size(); i ++) {
+				this.mNeedsDescription.append(
+						"\t- " + needs.get(i) + " \n\n"); 
+			}
+		}
+		// Set From Image
+		List<String> images = this.XmlParser.getCurrentImagesName();
+		if (images.size() == 2) {
+			InputStream inputStream;
+			try {
+				inputStream = this.getAssets().open(this.mManualName + "/" + images.get(0));
+				Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+				this.mFromImage.setImageBitmap(bitmap);
+				
+				inputStream = this.getAssets().open(this.mManualName + "/" + images.get(1));
+				bitmap = BitmapFactory.decodeStream(inputStream);
+				this.mToImage.setImageBitmap(bitmap);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else {
+			this.mFromImage.setImageResource(R.drawable.step_default);
+			this.mToImage.setImageResource(R.drawable.step_default);
+		}
+		// Set To Image
+		// TODO
 	}
 }

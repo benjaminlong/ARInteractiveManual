@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<manual>
+	<manualinfo>
+	    <manualname>Manual Banch With Textured</manualname>
+	    <manualicon>Manual_Test.png</manualicon>
+	    <manualimage>Images/Manual.png</manualimage>
+	    <factoryname>IKEA</factoryname>
+	    <factoryicon>noIcon</factoryicon>
+	    <description>This is only a manual test to test the architecture of the application and to test fews trackings data, based on metaio SDK</description>
+		<trackingdata>TrackingData_ML3D.xml</trackingdata>
+	</manualinfo>
+	<steps>	    
+		<step ID="1" title="Find first wood board">
+		    <track cosIds="1;2">
+		    	<geometry name="square.obj">
+		    	    <translation><x>-25.374966430664063</x><y>183.52532958984375</y><z>-5</z></translation>
+					<rotation><x>89.50</x><y>0.00</y><z>0.00</z></rotation>
+					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
+		    	</geometry>
+		    </track>
+			<tasks>
+			    <task>Find the top piece of the banch</task>
+			    <task>Place this piece somewhere else</task>
+			</tasks>
+			<images>
+			    <image>Images/step0.png</image>
+			    <image>Images/step1.png</image>
+			</images>
+		</step>
+		
+		<step ID="2" title="Screw first screw">
+		    <track cosIds="2">
+		    	<geometry name="screw.zip">
+		    	    <translation><x>-94.940510559082031</x><y>114.55665283203125</y><z>22.371505737304688</z></translation>
+					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>3.2525129318237305</x><y>3.2525129318237305</y><z>3.2525129318237305</z></scale>
+		    	</geometry>
+		    	<geometry name="arrow1.zip">
+		    	    <translation><x>-94.945762634277344</x><y>114.55978393554687</y><z>11</z></translation>
+					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>1.8231074810028076</x><y>1.8231074810028076</y><z>1.8231074810028076</z></scale>
+		    	</geometry>
+		    	<geometry name="square.obj">
+		    	    <translation><x>-25.374966430664063</x><y>183.52532958984375</y><z>-5</z></translation>
+					<rotation><x>89.50</x><y>0.00</y><z>0.00</z></rotation>
+					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
+		    	</geometry>
+		    </track>
+		    <track cosIds="1">
+		        <geometry name="fliparrow.zip">
+		    	    <translation><x>182.5985107421875</x><y>163.73446655273438</y><z>53.282119750976563</z></translation>
+					<rotation><x>-5.5282383982557803e-005</x><y>85.812637329101563</y><z>-90.000038146972656</z></rotation>
+					<scale><x>1.8870795965194702</x><y>1.8870795965194702</y><z>1.8870795965194702</z></scale>
+		    	</geometry>
+		    	<geometry name="square.obj">
+		    	    <translation><x>-25.374966430664063</x><y>183.52532958984375</y><z>-5</z></translation>
+					<rotation><x>89.50</x><y>0.00</y><z>0.00</z></rotation>
+					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
+		    	</geometry>
+		    </track>
+			<tasks>
+			    <task>Find the main piece of the banch</task>
+			    <task>Be sure to see the bottom part (The AR will tell you if you have to rotate the piece)</task>
+			    <task>Partially screw the first screw into the wood board</task>
+			</tasks>
+			<needs>
+			    <need>Screwdriver x1</need>
+			    <need>Screw x1</need>
+			</needs>
+			<images>
+			    <image>Images/step1.png</image>
+			    <image>Images/step2.png</image>
+			</images>
+		</step>
+		
+		<step ID="3" title="Screw second screw">
+		    <track cosIds="2">
+		    	<geometry name="screw.zip">
+		    	    <translation><x>95.590522766113281</x><y>114.82634735107422</y><z>22</z></translation>
+					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>3.2525129318237305</x><y>3.2525129318237305</y><z>3.2525129318237305</z></scale>
+		    	</geometry>
+		    	<geometry name="arrow1.zip">
+		    	    <translation><x>95.445762634277344</x><y>114.55978393554687</y><z>11</z></translation>
+					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>1.8231074810028076</x><y>1.8231074810028076</y><z>1.8231074810028076</z></scale>
+		    	</geometry>
+		    	<geometry name="square.obj">
+		    	    <translation><x>-25.374966430664063</x><y>183.52532958984375</y><z>-5</z></translation>
+					<rotation><x>89.50</x><y>0.00</y><z>0.00</z></rotation>
+					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
+		    	</geometry>
+		    </track>
+		    <track cosIds="1">
+		        <geometry name="fliparrow.zip">
+		    	    <translation><x>182.5985107421875</x><y>163.73446655273438</y><z>53.282119750976563</z></translation>
+					<rotation><x>-5.5282383982557803e-005</x><y>85.812637329101563</y><z>-90.000038146972656</z></rotation>
+					<scale><x>1.8870795965194702</x><y>1.8870795965194702</y><z>1.8870795965194702</z></scale>
+		    	</geometry>
+		    	<geometry name="square.obj">
+		    	    <translation><x>-25.374966430664063</x><y>183.52532958984375</y><z>-5</z></translation>
+					<rotation><x>89.50</x><y>0.00</y><z>0.00</z></rotation>
+					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
+		    	</geometry>
+		    </track>
+		    <tasks>
+			    <task>Find the main piece of the banch</task>
+			    <task>Be sure to see the bottom part (The AR will tell you if you have to rotate the piece)</task>
+			    <task>Partially screw the second screw into the wood board</task>
+			</tasks>
+			<needs>
+			    <need>Screwdriver x1</need>
+			    <need>Screw x1</need>
+			</needs>
+			<images>
+			    <image>Images/step2.png</image>
+			    <image>Images/step3.png</image>
+			</images>
+		</step>
+		
+		<step ID="4" title="Find second wood board">
+		    <track cosIds="3;4">
+		    	<geometry name="square.obj">
+		    	    <translation><x>-27.26171875</x><y>144.48710632324219</y><z>1</z></translation>
+					<rotation><x>80.00</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>0.99157077074050903</x><y>0.46515586972236633</y><z>0.28516095876693726</z></scale>
+		    	</geometry>
+		    </track>
+		    <tasks>
+			    <task>Find the second piece of the banch</task>
+			    <task>Bring it next to the previous piece of wood</task>
+			</tasks>
+			<images>
+			    <image>Images/step3.png</image>
+			    <image>Images/step4.png</image>
+			</images>
+		</step>
+		
+		<step ID="5" title="Finish the banch">
+		    <track cosIds="1">
+		    	<geometry name="woodBoard.zip">
+		    	    <translation><x>-4.683563232421875</x><y>119.82212829589844</y><z>11.735542297363281</z></translation>
+					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>2.6122682094573975</x><y>2.1397230625152588</y><z>2.1397230625152588</z></scale>
+		    	</geometry>
+		    	<geometry name="arrow1.zip">
+		    	    <translation><x>100.19468688964844</x><y>117.83078002929687</y><z>11</z></translation>
+					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>1.8231074810028076</x><y>1.8231074810028076</y><z>1.8231074810028076</z></scale>
+		    	</geometry>
+		    	<geometry name="arrow2.zip">
+		    	    <translation><x>-113.12998199462891</x><y>117.02534484863281</y><z>11</z></translation>
+					<rotation><x>89.50</x><y>0.00000</y><z>0.00000</z></rotation>
+					<scale><x>1.8231074810028076</x><y>1.8231074810028076</y><z>1.8231074810028076</z></scale>
+		    	</geometry>
+		    	<geometry name="square.obj">
+		    	    <translation><x>-25.374966430664063</x><y>183.52532958984375</y><z>-5</z></translation>
+					<rotation><x>89.50</x><y>0.00</y><z>0.00</z></rotation>
+					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
+		    	</geometry>
+		    </track>
+		    <track cosIds="2">
+		        <geometry name="fliparrow.zip">
+		    	    <translation><x>182.5985107421875</x><y>163.73446655273438</y><z>53.282119750976563</z></translation>
+					<rotation><x>-5.5282383982557803e-005</x><y>85.812637329101563</y><z>-90.000038146972656</z></rotation>
+					<scale><x>1.8870795965194702</x><y>1.8870795965194702</y><z>1.8870795965194702</z></scale>
+		    	</geometry>
+		    	<geometry name="square.obj">
+		    	    <translation><x>-25.374966430664063</x><y>183.52532958984375</y><z>-5</z></translation>
+					<rotation><x>89.50</x><y>0.00</y><z>0.00</z></rotation>
+					<scale><x>1.0326411390304565</x><y>0.26015586972236633</y><z>0.50943440198898315</z></scale>
+		    	</geometry>
+		    </track>
+		    <tasks>
+			    <task>Find the main piece of the banch with the 2 screws partially added</task>
+			    <task>Place the second piece of wood on the main part</task>
+			    <task>Then finish to screw the 2 screws</task>
+			</tasks>
+			<images>
+			    <image>Images/step4.png</image>
+			    <image>Images/step5.png</image>
+			</images>
+			<needs>
+			    <need>Screwdriver x1</need>
+			    <need>Screw x2</need>
+			</needs>
+		</step>
+
+	</steps>
+</manual>

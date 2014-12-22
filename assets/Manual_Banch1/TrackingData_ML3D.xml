@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<TrackingData>
+	<Sensors>
+		<Sensor type="FeatureBasedSensorSource" subtype="ML3D">
+      
+    		<SensorID>FeatureTracking1</SensorID>
+      		
+ 		    <Parameters>
+		    	<FeatureDescriptorAlignment>regular</FeatureDescriptorAlignment>
+			</Parameters>
+		      
+  			<SensorCOS>
+		        <SensorCosID>Map3D_Top</SensorCosID>
+		        <Parameters>
+			        <numExtensibleFeatures>200</numExtensibleFeatures>
+			        <Map>Cos/banchtopfullpiece.f3b</Map>
+		        </Parameters>
+			</SensorCOS>
+			
+   			<SensorCOS>
+		        <SensorCosID>Map3D_Back</SensorCosID>
+		        <Parameters>
+			        <numExtensibleFeatures>200</numExtensibleFeatures>
+			        <Map>Cos/banchbackfullpiece.f3b</Map>
+		        </Parameters>
+			</SensorCOS>
+			
+			<SensorCOS>
+		        <SensorCosID>Map3D_Feet1</SensorCosID>
+		        <Parameters>
+			        <numExtensibleFeatures>200</numExtensibleFeatures>
+			        <Map>Cos/banchfeet1fullpiece.f3b</Map>
+		        </Parameters>
+			</SensorCOS>
+			
+			<SensorCOS>
+		        <SensorCosID>Map3D_Feet2</SensorCosID>
+		        <Parameters>
+			        <SourceSensorID>FeatureTracking1</SourceSensorID>
+			        <numExtensibleFeatures>200</numExtensibleFeatures>
+			        <Map>Cos/banchfeet2fullpiece.f3b</Map>
+		        </Parameters>
+			</SensorCOS>
+			
+    	</Sensor>
+    </Sensors>
+  
+</TrackingData>
